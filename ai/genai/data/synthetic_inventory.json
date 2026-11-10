@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "project": "ROKKUS AI Inventory Assistant",
+    "dataset_type": "synthetic_mock_data",
+    "disclaimer": "PERINGATAN: Seluruh nama barang, nilai stok, harga, dan riwayat transaksi dalam file ini bersifat ILUSTRATIF untuk keperluan pengujian dan prototipe sistem. Data ini BUKAN merupakan data operasional nyata UMKM ROKKUS.",
+    "version": "1.0.0",
+    "generated_at": "2026-11-10T17:00:00Z"
+  },
+  "store": {
+    "id": "STORE-ROKKUS-MARDANI",
+    "name": "UMKM ROKKUS Mardani Raya (Mock Environment)",
+    "address": "Jl. Mardani Raya, Jakarta Pusat (Ilustratif)",
+    "business_unit": "Kuliner Roti Kukus"
+  },
+  "items": [
+    {
+      "id": "BB-001",
+      "name": "[Ilustratif] Tepung Terigu Protein Sedang",
+      "category": "bahan_baku",
+      "current_stock": 4.0,
+      "minimum_stock": 10.0,
+      "unit": "kg",
+      "unit_cost": 13000,
+      "status": "CRITICAL",
+      "last_restocked": "2026-11-05T09:00:00Z",
+      "notes": "Stok kritis di bawah batas minimum 10 kg, segera lakukan restock untuk produksi roti."
+    },
+    {
+      "id": "BB-002",
+      "name": "[Ilustratif] Gula Pasir Tebu",
+      "category": "bahan_baku",
+      "current_stock": 20.0,
+      "minimum_stock": 10.0,
+      "unit": "kg",
+      "unit_cost": 17500,
+      "status": "SAFE",
+      "last_restocked": "2026-11-08T10:00:00Z",
+      "notes": "Stok aman melampaui 150% batas minimum."
+    },
+    {
+      "id": "BB-003",
+      "name": "[Ilustratif] Margarin Bakeri Spesial",
+      "category": "bahan_baku",
+      "current_stock": 8.0,
+      "minimum_stock": 6.0,
+      "unit": "kg",
+      "unit_cost": 28000,
+      "status": "WARNING",
+      "last_restocked": "2026-11-06T14:00:00Z",
+      "notes": "Stok berada di rentang peringatan (antara 6 kg dan 9 kg)."
+    },
+    {
+      "id": "TP-001",
+      "name": "[Ilustratif] Selai Srikaya Pandan Premium",
+      "category": "topping_filling",
+      "current_stock": 6.0,
+      "minimum_stock": 5.0,
+      "unit": "kg",
+      "unit_cost": 48000,
+      "status": "WARNING",
+      "last_restocked": "2026-11-07T11:00:00Z",
+      "notes": "Stok mendekati batas minimum 5 kg, persiapkan order ke supplier."
+    },
+    {
+      "id": "TP-002",
+      "name": "[Ilustratif] Cokelat Filling Pasta",
+      "category": "topping_filling",
+      "current_stock": 12.0,
+      "minimum_stock": 5.0,
+      "unit": "kg",
+      "unit_cost": 42000,
+      "status": "SAFE",
+      "last_restocked": "2026-11-09T08:30:00Z",
+      "notes": "Ketersediaan stok cokelat sangat memadai."
+    },
+    {
+      "id": "PJ-001",
+      "name": "[Ilustratif] Roti Kukus Rasa Srikaya",
+      "category": "produk_jadi",
+      "current_stock": 10.0,
+      "minimum_stock": 15.0,
+      "unit": "porsi",
+      "unit_cost": 16000,
+      "status": "CRITICAL",
+      "last_restocked": "2026-11-10T08:00:00Z",
+      "notes": "Porsi siap saji tersisa 10, di bawah batas minimum 15 porsi."
+    },
+    {
+      "id": "PJ-002",
+      "name": "[Ilustratif] Roti Kukus Rasa Cokelat Klasik",
+      "category": "produk_jadi",
+      "current_stock": 30.0,
+      "minimum_stock": 15.0,
+      "unit": "porsi",
+      "unit_cost": 15000,
+      "status": "SAFE",
+      "last_restocked": "2026-11-10T08:00:00Z",
+      "notes": "Stok produk jadi varian cokelat dalam kondisi aman."
+    },
+    {
+      "id": "PK-001",
+      "name": "[Ilustratif] Kotak Dus Kemasan Roti 15x15",
+      "category": "kemasan",
+      "current_stock": 150.0,
+      "minimum_stock": 50.0,
+      "unit": "pcs",
+      "unit_cost": 1200,
+      "status": "SAFE",
+      "last_restocked": "2026-11-01T10:00:00Z",
+      "notes": "Kemasan dus dalam kondisi stok melimpah."
+    },
+    {
+      "id": "PK-002",
+      "name": "[Ilustratif] Kantong Plastik Jinjing Ramah Lingkungan",
+      "category": "kemasan",
+      "current_stock": 80.0,
+      "minimum_stock": 100.0,
+      "unit": "pcs",
+      "unit_cost": 400,
+      "status": "CRITICAL",
+      "last_restocked": "2026-11-02T13:00:00Z",
+      "notes": "Kemasan kantong jinjing sudah di bawah ambang minimum 100 pcs."
+    }
+  ],
+  "recent_transactions": [
+    {
+      "transaction_id": "TRX-ILUS-001",
+      "item_id": "BB-001",
+      "item_name": "[Ilustratif] Tepung Terigu Protein Sedang",
+      "type": "OUT",
+      "quantity": 6.0,
+      "unit": "kg",
+      "reason": "Penggunaan produksi adonan pagi",
+      "timestamp": "2026-11-10T06:30:00Z"
+    },
+    {
+      "transaction_id": "TRX-ILUS-002",
+      "item_id": "PJ-001",
+      "item_name": "[Ilustratif] Roti Kukus Rasa Srikaya",
+      "type": "IN",
+      "quantity": 25.0,
+      "unit": "porsi",
+      "reason": "Selesai produksi kukus batch 1",
+      "timestamp": "2026-11-10T07:45:00Z"
+    },
+    {
+      "transaction_id": "TRX-ILUS-003",
+      "item_id": "PJ-001",
+      "item_name": "[Ilustratif] Roti Kukus Rasa Srikaya",
+      "type": "OUT",
+      "quantity": 15.0,
+      "unit": "porsi",
+      "reason": "Penjualan pesanan pagi",
+      "timestamp": "2026-11-10T10:15:00Z"
+    }
+  ]
+}
+
