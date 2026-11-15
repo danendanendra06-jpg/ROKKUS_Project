@@ -41,6 +41,22 @@ class TestStockRules(unittest.TestCase):
         self.assertEqual(evaluate_stock_status(25.0, 10.0), StockStatus.SAFE)
         self.assertEqual(evaluate_stock_status(100.0, 10.0), StockStatus.SAFE)
 
+    def test_zero_minimum_stock_behavior(self):
+        """Dokumentasi dan pengujian perilaku formula ketika minimum_stock = 0.
+
+        Sesuai aturan:
+        - Jika current_stock = 0 dan minimum_stock = 0: current_stock <= minimum_stock (0 <= 0 True) -> CRITICAL
+        - Jika current_stock > 0 dan minimum_stock = 0: current_stock <= 0 (False),
+          current_stock <= 0 * 1.5 = 0 (False), sehingga langsung terklasifikasi SAFE.
+          (Pada minimum_stock = 0, tidak ada zona WARNING numerik).
+        """
+        # Stok kosong saat minimum 0 tetap CRITICAL
+        self.assertEqual(evaluate_stock_status(0.0, 0.0), StockStatus.CRITICAL)
+
+        # Stok positif saat minimum 0 langsung SAFE
+        self.assertEqual(evaluate_stock_status(0.1, 0.0), StockStatus.SAFE)
+        self.assertEqual(evaluate_stock_status(5.0, 0.0), StockStatus.SAFE)
+
     def test_descriptions_registered(self):
         """Memastikan setiap status memiliki dokumentasi deskripsi."""
         for status in [StockStatus.SAFE, StockStatus.WARNING, StockStatus.CRITICAL]:
