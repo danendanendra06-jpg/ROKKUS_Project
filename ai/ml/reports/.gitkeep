@@ -1,0 +1,7 @@
+# Direktori ini diisi oleh train.py dengan file:
+# - model_comparison.csv
+# - model_comparison.md
+# - figures/cm_*.png
+# - figures/metric_comparison.png
+#
+# Jalankan: python src/train.py
