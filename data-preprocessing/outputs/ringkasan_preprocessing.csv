@@ -1,0 +1,6 @@
+Tahapan,Jumlah Data Sebelum,Jumlah Data Sesudah,Keterangan
+Master Produk,29,29,Pembersihan spasi dan pemeriksaan tipe data
+Stok Awal,29,29,Pembersihan spasi dan konversi tanggal ke datetime
+Transaksi Stok,300,300,"Pembersihan spasi, standarisasi jenis transaksi, dan konversi tanggal"
+Penggabungan Dataset,29,29,"Penggabungan master produk, stok awal, dan ringkasan transaksi"
+Klasifikasi Stok,29,29,"Penambahan kolom status Safe, Low, dan Empty"

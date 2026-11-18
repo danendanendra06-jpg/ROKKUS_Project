@@ -1,0 +1,14 @@
+product_id,product_name,category,stok_akhir,status_stok
+PR004,Nutella Keju,Roti Manis,0,Empty
+PR007,Srikaya,Roti Manis,0,Empty
+PR010,Strawberry,Roti Manis,0,Empty
+PR012,Tiramisu,Roti Manis,0,Empty
+PR025,Telur Beef Sosis,Roti Asin,0,Empty
+AD003,Telur,Tambahan,2,Low
+PR009,Keju,Roti Manis,4,Low
+PR020,Telur Sosis Mayo,Roti Asin,4,Low
+PR024,Double Beef,Roti Asin,4,Low
+AD001,Keju Slice,Tambahan,4,Low
+PR018,Telur Mayo,Roti Asin,5,Low
+PR023,Telur Beef,Roti Asin,5,Low
+AD002,Keju Parut,Tambahan,5,Low
