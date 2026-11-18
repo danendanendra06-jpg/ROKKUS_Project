@@ -1,8 +1,17 @@
-"""Layanan bisnis untuk menghasilkan Daily Stock Summary menggunakan Mock Engine."""
+"""Layanan bisnis Daily Stock Summary dengan Prompt Engineering, Guardrails, dan Fallback."""
 
 from datetime import datetime, timezone
-from typing import List
+import logging
+from typing import Any, Dict, List, Optional
 
+from ..core.guardrails import (
+    ActionType,
+    GuardrailValidationResult,
+    LLMSummaryOutput,
+    StructuredActionItem,
+    SummaryOutputGuardrail,
+)
+from ..core.prompt_builder import SummaryPromptBuilder
 from ..core.rules import (
     StockStatus,
     evaluate_stock_status,
@@ -16,14 +25,28 @@ from ..schemas.summary import (
     ProcessedStockItem,
     StockStatusCounts,
 )
+from .summary_llm import BaseSummaryLLMService, MockSummaryLLMService
+
+logger = logging.getLogger(__name__)
 
 
 class DailySummaryService:
-    """Service untuk menganalisis data stok harian dan menyusun ringkasan naratif.
+    """Service untuk menyusun ringkasan stok harian menggunakan pipeline aman:
 
-    Menggunakan klasifikasi konsisten dari core.rules dan menghasilkan ringkasan
-    bahasa Indonesia yang terstruktur tanpa prediksi waktu spekulatif.
+    1. Deterministik Stock Evaluator (core.rules)
+    2. PromptBuilder (Isolasi data mentah tidak tepercaya)
+    3. LLM Service (Menghasilkan format terstruktur)
+    4. Guardrails (Validasi anti-halusinasi entitas, klaim finansial, dan waktu spekulatif)
+    5. Fallback Deterministik (Fail-safe jika AI gagal atau output melanggar guardrail)
     """
+
+    def __init__(
+        self,
+        llm_service: Optional[BaseSummaryLLMService] = None,
+        guardrail: Optional[SummaryOutputGuardrail] = None,
+    ):
+        self.llm_service = llm_service or MockSummaryLLMService()
+        self.guardrail = guardrail or SummaryOutputGuardrail()
 
     def generate_summary(
         self,
@@ -33,18 +56,21 @@ class DailySummaryService:
         source: str = "synthetic_input",
     ) -> DailyStockSummaryResponse:
         """Memproses request data stok harian dan mengembalikan response lengkap."""
+        # 1. EVALUASI DETERMINISTIK (core.rules)
         processed_items: List[ProcessedStockItem] = []
         critical_items: List[ProcessedStockItem] = []
         warning_items: List[ProcessedStockItem] = []
         safe_items: List[ProcessedStockItem] = []
+        valid_item_refs: Dict[str, ProcessedStockItem] = {}
 
-        # 1. Evaluasi status setiap item
-        for item in request.items:
+        for idx, item in enumerate(request.items):
             status = evaluate_stock_status(item.current_stock, item.minimum_stock)
             desc = STOCK_STATUS_DESCRIPTIONS.get(status, "")
+            ref = item.id if item.id else f"ITEM_{idx+1}"
 
             processed = ProcessedStockItem(
                 id=item.id,
+                item_ref=ref,
                 name=item.name,
                 category=item.category,
                 current_stock=item.current_stock,
@@ -54,6 +80,7 @@ class DailySummaryService:
                 status_description=desc,
             )
             processed_items.append(processed)
+            valid_item_refs[ref] = processed
 
             if status == StockStatus.CRITICAL:
                 critical_items.append(processed)
@@ -62,6 +89,7 @@ class DailySummaryService:
             else:
                 safe_items.append(processed)
 
+        # Hitung kuantitas status secara matematis dan deterministik
         total_items = len(processed_items)
         counts = StockStatusCounts(
             critical=len(critical_items),
@@ -70,35 +98,118 @@ class DailySummaryService:
             total_items=total_items,
         )
 
-        # 2. Susun narasi ringkasan stok harian (Bahasa Indonesia)
-        summary_text = self._build_summary_narrative(
-            date_str=request.date.isoformat(),
-            store_name=request.store_name or "UMKM ROKKUS Mardani Raya",
-            counts=counts,
-            critical_items=critical_items,
-            warning_items=warning_items,
-            safe_items=safe_items,
+        date_str = request.date.isoformat()
+        store_name = request.store_name or "UMKM ROKKUS Mardani Raya"
+
+        # 2. PROMPT BUILDING
+        system_prompt = SummaryPromptBuilder.build_system_prompt()
+        user_prompt = SummaryPromptBuilder.build_user_prompt(
+            date_str=date_str,
+            store_name=store_name,
+            processed_items=processed_items,
+            status_counts=counts,
         )
 
-        # 3. Susun daftar tindakan yang disarankan (tanpa prediksi spekulatif)
-        suggested_actions = self._build_suggested_actions(
-            critical_items=critical_items,
-            warning_items=warning_items,
-            safe_items=safe_items,
-        )
+        # Context untuk LLM Service
+        context: Dict[str, Any] = {
+            "date": date_str,
+            "store_name": store_name,
+            "status_counts": counts.model_dump(),
+            "items": processed_items,
+        }
 
-        # 4. Susun metadata
+        # 3 & 4. EKSEKUSI MODEL & GUARDRAIL VALIDATION
+        fallback_applied = False
+        guardrail_status = "passed"
+        raw_llm_output: Optional[str] = None
+        validation_result: Optional[GuardrailValidationResult] = None
+
+        try:
+            # Panggil LLM Service (sync wrapper)
+            import asyncio
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                loop = None
+
+            if loop and loop.is_running():
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor() as pool:
+                    raw_llm_output = pool.submit(
+                        asyncio.run,
+                        self.llm_service.generate_summary_json(
+                            system_prompt, user_prompt, valid_item_refs, context
+                        )
+                    ).result()
+            else:
+                raw_llm_output = asyncio.run(
+                    self.llm_service.generate_summary_json(
+                        system_prompt, user_prompt, valid_item_refs, context
+                    )
+                )
+
+            # Validasi Guardrail
+            validation_result = self.guardrail.validate(
+                raw_output=raw_llm_output,
+                valid_item_refs=valid_item_refs,
+                processed_items_by_ref=valid_item_refs,
+            )
+
+        except Exception as e:
+            logger.warning(f"Kegagalan eksekusi LLM Service: {str(e)}")
+            fallback_applied = True
+            guardrail_status = f"fallback_triggered (provider_error: {str(e)})"
+            validation_result = GuardrailValidationResult(
+                is_valid=False,
+                violations=[f"Penyedia LLM mengalami error: {str(e)}"],
+            )
+
+        # 5. PEMILIHAN OUTPUT: AI RESMI VS DETERMINISTIC FALLBACK
+        if validation_result and validation_result.is_valid and validation_result.parsed_output:
+            # Model sukses dan lolos guardrail
+            parsed: LLMSummaryOutput = validation_result.parsed_output
+            summary_text = parsed.narrative
+
+            # Konversi structured actions ke list of string (kompatibilitas 100%)
+            suggested_actions = self._format_structured_actions(parsed.actions, valid_item_refs)
+            fallback_applied = False
+            guardrail_status = "passed"
+        else:
+            # Terjadi pelanggaran guardrail atau error -> FALLBACK KE GENERATOR DETERMINISTIK
+            fallback_applied = True
+            if not guardrail_status.startswith("fallback_triggered"):
+                violations_detail = "; ".join(validation_result.violations) if validation_result else "Unknown validation failure"
+                guardrail_status = f"fallback_triggered: {violations_detail}"
+            logger.info(f"Mengaktifkan fallback deterministik. Status: {guardrail_status}")
+
+            summary_text = self._build_deterministic_narrative(
+                date_str=date_str,
+                store_name=store_name,
+                counts=counts,
+                critical_items=critical_items,
+                warning_items=warning_items,
+                safe_items=safe_items,
+            )
+            suggested_actions = self._build_deterministic_actions(
+                critical_items=critical_items,
+                warning_items=warning_items,
+                safe_items=safe_items,
+            )
+
+        # 6. PENYUSUNAN METADATA & RESPONSE
         now_iso = datetime.now(timezone.utc).isoformat()
         meta = DailySummaryMeta(
             provider=provider,
             is_synthetic=is_synthetic,
             source=source,
             generated_at=now_iso,
+            fallback_applied=fallback_applied,
+            guardrail_status=guardrail_status,
         )
 
         data = DailySummaryData(
-            date=request.date.isoformat(),
-            store_name=request.store_name or "UMKM ROKKUS Mardani Raya",
+            date=date_str,
+            store_name=store_name,
             summary=summary_text,
             status_counts=counts,
             items=processed_items,
@@ -111,7 +222,24 @@ class DailySummaryService:
             data=data,
         )
 
-    def _build_summary_narrative(
+    def _format_structured_actions(
+        self,
+        actions: List[StructuredActionItem],
+        valid_item_refs: Dict[str, ProcessedStockItem],
+    ) -> List[str]:
+        """Memformat tindakan terstruktur menjadi list string untuk kompatibilitas respon."""
+        formatted: List[str] = []
+        for act in actions:
+            target_item = valid_item_refs.get(act.target_item_ref)
+            target_name = target_item.name if target_item else act.target_item_ref
+            formatted.append(f"[{act.action_type.value}] {target_name}: {act.notes}")
+
+        if not formatted:
+            formatted.append("Pertahankan rotasi barang menggunakan metode FIFO (First In First Out).")
+
+        return formatted
+
+    def _build_deterministic_narrative(
         self,
         date_str: str,
         store_name: str,
@@ -120,7 +248,7 @@ class DailySummaryService:
         warning_items: List[ProcessedStockItem],
         safe_items: List[ProcessedStockItem],
     ) -> str:
-        """Menyusun teks narasi ringkasan berbasis data faktual tanpa estimasi spekulatif."""
+        """Generator narasi deterministik tanpa prediksi spekulatif (Fail-safe)."""
         parts: List[str] = []
 
         parts.append(
@@ -162,13 +290,13 @@ class DailySummaryService:
 
         return " ".join(parts)
 
-    def _build_suggested_actions(
+    def _build_deterministic_actions(
         self,
         critical_items: List[ProcessedStockItem],
         warning_items: List[ProcessedStockItem],
         safe_items: List[ProcessedStockItem],
     ) -> List[str]:
-        """Menyusun rekomendasi aksi operasional berdasarkan klasifikasi status."""
+        """Generator rekomendasi tindakan deterministik (Fail-safe)."""
         actions: List[str] = []
 
         if critical_items:
@@ -186,4 +314,3 @@ class DailySummaryService:
             actions.append("Lanjutkan pencatatan mutasi stok harian secara berkala.")
 
         return actions
-

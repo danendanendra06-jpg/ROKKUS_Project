@@ -23,6 +23,48 @@ Klasifikasi status ketersediaan barang dihitung secara otomatis berdasarkan atur
 
 ---
 
+## Arsitektur Pipeline Analisis Stok (Tahap 3)
+
+```
+[ Request JSON ] ──► [ Validasi Pydantic (Kalender & Angka Finite) ]
+                              │
+                              ▼
+        [ Deterministik Stock Evaluator (core.rules) ]
+        - Menghitung status: CRITICAL, WARNING, SAFE
+        - Menghitung status_counts: total, critical, warning, safe
+                              │
+                              ▼
+                 [ SummaryPromptBuilder ]
+        - System Prompt: Aturan ketat & pembatas peran
+        - User Prompt: Isolasi data mentah tidak tepercaya (<inventory_data>)
+                              │
+                              ▼
+           [ LLM Service / MockSummaryLLMService ]
+        - Mengembalikan skema JSON terstruktur (LLMSummaryOutput)
+                              │
+                              ▼
+                [ SummaryOutputGuardrail ]
+        - Memeriksa validitas skema JSON
+        - Memeriksa keabsahan referensi produk (target_item_ref)
+        - Memeriksa konsistensi tindakan (RESTOCK_REVIEW, MONITOR, NO_ACTION)
+        - Mendeteksi klaim nominal finansial & prediksi waktu spekulatif
+                 │                             │
+            [ Lolos ]                     [ Gagal / Error ]
+                 │                             │
+                 ▼                             ▼
+       [ Format AI Valid ]          [ Fallback ke Ringkasan ]
+                                    [ Deterministik Template]
+                 │                             │
+                 └──────────────┬──────────────┘
+                                ▼
+                   [ Response JSON Standar ]
+```
+
+> **Catatan Guardrail & Halusinasi**:
+> Lapisan guardrail dan validasi skema dirancang sebagai sistem pertahanan berlapis (*defense-in-depth*) untuk memitigasi penyimpangan output. Namun, secara teoritis tidak ada sistem guardrail yang dapat menjamin 100% bebas halusinasi untuk seluruh variasi input tak terbatas; oleh karena itu, sistem selalu menyediakan jalur **fallback deterministik** sebagai fail-safe yang sepenuhnya terkontrol.
+
+---
+
 ## Struktur Direktori
 
 ```text
@@ -35,7 +77,9 @@ ai/genai/
 │   ├── main.py                  # Entrypoint aplikasi FastAPI
 │   ├── core/
 │   │   ├── config.py            # Pengaturan aplikasi & path resolver
-│   │   └── rules.py             # Definisi aturan SAFE, WARNING, CRITICAL
+│   │   ├── rules.py             # Definisi aturan SAFE, WARNING, CRITICAL
+│   │   ├── prompt_builder.py    # Builder prompt dengan isolasi data tidak tepercaya
+│   │   └── guardrails.py        # Validasi output terstruktur & deteksi halusinasi
 │   ├── schemas/
 │   │   ├── chat.py              # DTO Request & Response interaksi chat
 │   │   ├── inventory.py         # DTO data barang & transaksi
@@ -44,10 +88,11 @@ ai/genai/
 │   │   ├── base.py              # Abstract Base Inventory Repository
 │   │   └── mock_inventory.py    # Repository pembaca JSON lokal
 │   ├── services/
-│   │   ├── llm_base.py          # Abstract Base LLM Service
-│   │   ├── mock_llm.py          # Generator respons mock berbasis aturan & data
+│   │   ├── llm_base.py          # Abstract Base LLM Service (Chat)
+│   │   ├── mock_llm.py          # Generator respons mock chat
 │   │   ├── assistant_service.py # Orchestrator chat assistant
-│   │   └── summary_service.py   # Service ringkasan stok harian (Mock Engine)
+│   │   ├── summary_llm.py       # Mock LLM terstruktur untuk ringkasan
+│   │   └── summary_service.py   # Pipeline ringkasan stok harian & fallback
 │   └── api/
 │       └── v1/
 │           ├── router.py        # Agregator router API v1
@@ -56,12 +101,15 @@ ai/genai/
 │               ├── chat.py      # POST /api/v1/assistant/chat
 │               └── summary.py   # POST /api/v1/summary/daily
 └── tests/
-    ├── conftest.py              # Fixture pytest & path import
-    ├── test_stock_rules.py      # Unit test aturan stok & minimum_stock = 0
-    ├── test_mock_inventory.py   # Unit test repository & dataset sintetis
-    ├── test_mock_llm.py         # Unit test logika respons mock chat & provider
-    ├── test_endpoints.py        # Integration test endpoint HTTP v1
-    └── test_daily_summary.py    # Unit & integration test Daily Stock Summary
+    ├── conftest.py                       # Fixture pytest & path import
+    ├── test_stock_rules.py               # Unit test aturan stok & minimum_stock = 0
+    ├── test_mock_inventory.py            # Unit test repository & dataset sintetis
+    ├── test_mock_llm.py                  # Unit test logika respons mock chat & provider
+    ├── test_endpoints.py                 # Integration test endpoint HTTP v1
+    ├── test_daily_summary.py             # Unit & integration test Daily Stock Summary
+    ├── test_prompt_builder.py            # Unit test isolasi prompt injection & builder
+    ├── test_guardrails.py                # Unit test validasi skema, referensi & halusinasi
+    └── test_daily_summary_guardrails.py  # Integration test guardrails & alur fallback
 ```
 
 ---
@@ -76,10 +124,11 @@ Menerima payload JSON data stok harian, mengklasifikasi status item secara konsi
 curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
      -H "Content-Type: application/json" \
      -d '{
-       "date": "2026-11-15",
+       "date": "2026-11-18",
        "store_name": "UMKM ROKKUS Mardani Raya",
        "items": [
          {
+           "id": "BB-001",
            "name": "Tepung Terigu Protein Sedang",
            "current_stock": 4.0,
            "minimum_stock": 10.0,
@@ -87,6 +136,7 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
            "category": "bahan_baku"
          },
          {
+           "id": "BB-002",
            "name": "Margarin Bakeri Spesial",
            "current_stock": 8.0,
            "minimum_stock": 6.0,
@@ -94,6 +144,7 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
            "category": "bahan_baku"
          },
          {
+           "id": "BB-003",
            "name": "Gula Pasir Tebu",
            "current_stock": 20.0,
            "minimum_stock": 10.0,
@@ -109,9 +160,9 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
 {
   "status": "success",
   "data": {
-    "date": "2026-11-15",
+    "date": "2026-11-18",
     "store_name": "UMKM ROKKUS Mardani Raya",
-    "summary": "Ringkasan Stok Harian (2026-11-15) untuk UMKM ROKKUS Mardani Raya: Dari total 3 barang yang dipantau, tercatat 1 barang berstatus CRITICAL, 1 barang berstatus WARNING, dan 1 barang berstatus SAFE. Perhatian mendesak diperlukan pada item berstatus kritis: Tepung Terigu Protein Sedang (sisa 4.0 kg, min: 10.0 kg). Barang-barang ini berada pada atau di bawah batas minimum dan membutuhkan pengadaan ulang segera. Item pada zona waspada yang perlu dipantau ketat: Margarin Bakeri Spesial (sisa 8.0 kg, min: 6.0 kg). Sebanyak 1 barang lainnya berada dalam kondisi stok aman untuk operasional.",
+    "summary": "Ringkasan Stok Harian (2026-11-18) untuk UMKM ROKKUS Mardani Raya: Dari total 3 barang yang dipantau, tercatat 1 berstatus CRITICAL, 1 berstatus WARNING, dan 1 berstatus SAFE. Perhatian mendesak diperlukan pada item berstatus kritis: Tepung Terigu Protein Sedang (sisa 4.0 kg). Item zona waspada yang memerlukan pemantauan ketat: Margarin Bakeri Spesial (sisa 8.0 kg). Sebanyak 1 barang lainnya berada dalam kondisi stok aman.",
     "status_counts": {
       "critical": 1,
       "warning": 1,
@@ -120,7 +171,8 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
     },
     "items": [
       {
-        "id": null,
+        "id": "BB-001",
+        "item_ref": "BB-001",
         "name": "Tepung Terigu Protein Sedang",
         "category": "bahan_baku",
         "current_stock": 4.0,
@@ -130,7 +182,8 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
         "status_description": "Stok sama atau di bawah batas minimum (current <= min). Butuh restock darurat."
       },
       {
-        "id": null,
+        "id": "BB-002",
+        "item_ref": "BB-002",
         "name": "Margarin Bakeri Spesial",
         "category": "bahan_baku",
         "current_stock": 8.0,
@@ -140,7 +193,8 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
         "status_description": "Stok mendekati batas minimum (min < current <= min * 1.5). Pantau & rencanakan restock."
       },
       {
-        "id": null,
+        "id": "BB-003",
+        "item_ref": "BB-003",
         "name": "Gula Pasir Tebu",
         "category": "bahan_baku",
         "current_stock": 20.0,
@@ -151,16 +205,18 @@ curl -X POST "http://127.0.0.1:8001/api/v1/summary/daily" \
       }
     ],
     "suggested_actions": [
-      "Lakukan pemesanan ulang (restock) darurat hari ini untuk: Tepung Terigu Protein Sedang.",
-      "Lakukan pengecekan fisik dan koordinasi jadwal pengadaan untuk item waspada: Margarin Bakeri Spesial.",
-      "Pertahankan rotasi barang menggunakan metode FIFO (First In First Out)."
+      "[RESTOCK_REVIEW] Tepung Terigu Protein Sedang: Lakukan restock darurat untuk Tepung Terigu Protein Sedang karena stok berada pada atau di bawah batas minimum.",
+      "[MONITOR] Margarin Bakeri Spesial: Pantau pengeluaran dan siapkan pengadaan berkala untuk Margarin Bakeri Spesial.",
+      "[NO_ACTION] Gula Pasir Tebu: Stok Gula Pasir Tebu aman. Pertahankan rotasi penyimpanan normal."
     ],
     "meta": {
       "provider": "mock",
       "is_synthetic": true,
       "source": "synthetic_input",
       "disclaimer": "PERINGATAN: Ringkasan ini dihasilkan oleh Mock Service menggunakan data sintetis/ilustratif untuk prototipe ROKKUS, bukan data operasional nyata UMKM.",
-      "generated_at": "2026-11-15T08:43:54.409564+00:00"
+      "generated_at": "2026-11-18T17:15:00.000000+00:00",
+      "fallback_applied": false,
+      "guardrail_status": "passed"
     }
   }
 }
@@ -202,10 +258,12 @@ Akses dokumentasi interaktif:
 
 Jalankan test suite menggunakan pytest di dalam virtual environment:
 ```bash
-# Menjalankan seluruh pengujian:
+# Menjalankan seluruh 48 pengujian:
 pytest tests/ -v
 
-# Menjalankan pengujian fitur ringkasan harian:
-pytest tests/test_daily_summary.py -v
+# Menjalankan pengujian spesifik Prompt Builder & Guardrails:
+pytest tests/test_prompt_builder.py -v
+pytest tests/test_guardrails.py -v
+pytest tests/test_daily_summary_guardrails.py -v
 ```
-Semua 30 pengujian dirancang untuk memverifikasi fungsionalitas normal, edge cases (input kosong, stok negatif, angka non-finite, validasi tanggal kalender), serta konsistensi aturan status stok.
+Seluruh 48 pengujian dirancang untuk memverifikasi fungsionalitas normal, edge cases (input kosong, stok negatif, angka non-finite, validasi tanggal kalender), ketahanan terhadap prompt injection, pencegahan referensi produk fiktif, pembatasan tipe aksi (`RESTOCK_REVIEW`, `MONITOR`, `NO_ACTION`), serta keandalan fallback otomatis.

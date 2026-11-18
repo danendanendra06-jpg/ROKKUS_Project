@@ -59,6 +59,7 @@ class DailyStockSummaryRequest(BaseModel):
 class ProcessedStockItem(BaseModel):
     """Item barang yang telah dievaluasi status ketersediaannya."""
     id: Optional[str] = None
+    item_ref: Optional[str] = Field(default=None, description="Identifier unik per-request (misal 'BB-001' atau 'ITEM_1')")
     name: str
     category: Optional[str] = None
     current_stock: float
@@ -86,6 +87,8 @@ class DailySummaryMeta(BaseModel):
         description="Pernyataan resmi sifat data ilustratif"
     )
     generated_at: str = Field(..., description="Timestamp ISO-8601 pembuatan ringkasan")
+    fallback_applied: bool = Field(default=False, description="Penanda apakah ringkasan beralih ke fallback deterministik")
+    guardrail_status: str = Field(default="passed", description="Status verifikasi guardrail ('passed', 'fallback_triggered', dll.)")
 
 
 class DailySummaryData(BaseModel):
