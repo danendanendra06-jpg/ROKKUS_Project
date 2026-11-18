@@ -1,0 +1,6 @@
+No,Pengujian,Hasil yang Diharapkan,Status
+1,Perhitungan stok akhir,29 data sesuai,PASS
+2,Klasifikasi status stok,29 data sesuai,PASS
+3,Batas klasifikasi,Seluruh batas sesuai,PASS
+4,Validasi stok negatif,0 stok negatif,PASS
+5,Ringkasan dashboard,Ringkasan konsisten,PASS

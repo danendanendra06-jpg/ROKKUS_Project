@@ -1,0 +1,30 @@
+product_id,product_name,category,tanggal_stok,stok_awal
+PR001,Lotus Biscoff,Roti Manis,2026-09-01,16
+PR002,Coklat Keju,Roti Manis,2026-09-01,29
+PR003,Coklat Kacang,Roti Manis,2026-09-01,24
+PR004,Nutella Keju,Roti Manis,2026-09-01,20
+PR005,Silverqueen Keju,Roti Manis,2026-09-01,17
+PR006,Ovomaltine Keju,Roti Manis,2026-09-01,30
+PR007,Srikaya,Roti Manis,2026-09-01,16
+PR008,Coklat Crunchy,Roti Manis,2026-09-01,28
+PR009,Keju,Roti Manis,2026-09-01,20
+PR010,Strawberry,Roti Manis,2026-09-01,20
+PR011,Blueberry,Roti Manis,2026-09-01,30
+PR012,Tiramisu,Roti Manis,2026-09-01,13
+PR013,Greentea,Roti Manis,2026-09-01,17
+PR014,Kacang (Peanut Butter),Roti Manis,2026-09-01,12
+PR015,Nutella,Roti Manis,2026-09-01,30
+PR016,Silverqueen,Roti Manis,2026-09-01,11
+PR017,Ovomaltine,Roti Manis,2026-09-01,21
+PR018,Telur Mayo,Roti Asin,2026-09-01,15
+PR019,Sosis Mayo,Roti Asin,2026-09-01,11
+PR020,Telur Sosis Mayo,Roti Asin,2026-09-01,30
+PR021,Beef Mayo,Roti Asin,2026-09-01,10
+PR022,Beef Sosis Mayo,Roti Asin,2026-09-01,21
+PR023,Telur Beef,Roti Asin,2026-09-01,21
+PR024,Double Beef,Roti Asin,2026-09-01,26
+PR025,Telur Beef Sosis,Roti Asin,2026-09-01,19
+AD001,Keju Slice,Tambahan,2026-09-01,25
+AD002,Keju Parut,Tambahan,2026-09-01,24
+AD003,Telur,Tambahan,2026-09-01,24
+AD004,Selai Lain,Tambahan,2026-09-01,28
