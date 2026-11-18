@@ -22,32 +22,33 @@ Bagian Data Science mendukung pengembangan aplikasi pengelolaan dan pemantauan s
 ## 4. Struktur Folder
 
 ```text
-Data-Science/
-├── notebooks/
-│   ├── ROKKUS_Data_Science.ipynb
-│   └── ROKKUS_Data_Preparation.ipynb
-├── data/
-│   ├── raw/
-│   │   ├── master_produk_rokkus.csv
-│   │   ├── stok_awal.csv
-│   │   └── transaksi_stok.csv
-│   └── processed/
-│       ├── ringkasan_stok_rokkus.csv
-│       ├── hasil_klasifikasi_stok_rokkus.csv
-│       └── dataset_stok_rokkus_final.csv
-├── outputs/
-│   ├── dashboard_summary_rokkus.csv
-│   ├── grafik_stok_per_kategori.png
-│   ├── grafik_stok_masuk_keluar.png
-│   ├── grafik_distribusi_status.png
-│   └── hasil_pengujian_fungsional.csv
-└── README.md
+ROKKUS_Project/
+└── data-science/
+    ├── notebooks/
+    │   ├── ROKKUS_Data_Preparation.ipynb
+    │   └── ROKKUS_Data_Science.ipynb
+    ├── data/
+    │   ├── raw/
+    │   │   ├── master_produk_rokkus.csv
+    │   │   ├── stok_awal.csv
+    │   │   └── transaksi_stok.csv
+    │   └── processed/
+    │       ├── dataset_stok_rokkus_final.csv
+    │       ├── hasil_klasifikasi_stok_rokkus.csv
+    │       └── ringkasan_stok_rokkus.csv
+    ├── outputs/
+    │   ├── dashboard_summary_rokkus.csv
+    │   ├── grafik_distribusi_status.png
+    │   ├── grafik_stok_masuk_keluar.png
+    │   ├── grafik_stok_per_kategori.png
+    │   └── hasil_pengujian_fungsional.csv
+    └── README.md
 ```
 
 ## 5. Notebook
 
-- `ROKKUS_Data_Science.ipynb`: eksplorasi dataset inventori publik untuk latihan dan referensi analisis. Dataset publik ini bukan data operasional ROKKUS.
 - `ROKKUS_Data_Preparation.ipynb`: penyusunan dan pengolahan dataset sintetis yang disiapkan untuk skenario project ROKKUS.
+- `ROKKUS_Data_Science.ipynb`: eksplorasi dataset inventori publik untuk latihan dan referensi analisis. Dataset publik ini bukan data operasional ROKKUS.
 
 ## 6. Dataset dan Batasan
 
@@ -116,7 +117,7 @@ Pengujian fungsional dilakukan menggunakan lima pemeriksaan otomatis:
 4. Memastikan seluruh produk memiliki klasifikasi status stok.
 5. Memastikan nilai total stok pada dashboard sesuai dengan ringkasan stok.
 
-Berdasarkan hasil pengujian terakhir yang dijalankan pada dataset sintetis, diperoleh hasil sebagai berikut : 
+Berdasarkan hasil pengujian terakhir yang dijalankan pada dataset sintetis, diperoleh hasil sebagai berikut:
 
 - PASS: 5
 - FAIL: 0
@@ -137,5 +138,6 @@ Seluruh output merupakan hasil pengolahan dataset sintetis dan disiapkan sebagai
 
 ---
 
-**Project:** Pengembangan Aplikasi Pengelolaan dan Pemantauan Stok Harian Terintegrasi pada UMKM ROKKUS Mardani Raya  
+**Project:** Pengembangan Aplikasi Pengelolaan dan Pemantauan Stok Harian Terintegrasi pada UMKM ROKKUS Mardani Raya
+
 **Divisi:** Data Science
