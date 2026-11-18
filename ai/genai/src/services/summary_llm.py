@@ -9,6 +9,12 @@ from ..core.guardrails import ActionType, LLMSummaryOutput, StructuredActionItem
 class BaseSummaryLLMService(ABC):
     """Kontrak dasar layanan LLM untuk pembuatan Daily Stock Summary."""
 
+    @property
+    @abstractmethod
+    def provider_name(self) -> str:
+        """Nama identitas provider (misal 'mock' atau 'gemini-2.5-flash')."""
+        pass
+
     @abstractmethod
     async def generate_summary_json(
         self,
@@ -38,6 +44,10 @@ class MockSummaryLLMService(BaseSummaryLLMService):
     def __init__(self, mode: str = MODE_NORMAL, custom_response: Optional[str] = None):
         self.mode = mode
         self.custom_response = custom_response
+
+    @property
+    def provider_name(self) -> str:
+        return "mock"
 
     async def generate_summary_json(
         self,

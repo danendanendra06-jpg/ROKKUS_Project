@@ -1,19 +1,42 @@
 """Endpoint untuk layanan Daily Stock Summary."""
 
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from ....core.config import settings
 from ....schemas.summary import (
     DailyStockSummaryRequest,
     DailyStockSummaryResponse,
 )
 from ....services.summary_service import DailySummaryService
+from ....services.summary_llm import MockSummaryLLMService
+from ....services.gemini_summary_llm import GeminiSummaryLLMService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/summary", tags=["Summary"])
 
 
 def get_summary_service() -> DailySummaryService:
-    """Dependency provider untuk DailySummaryService."""
-    return DailySummaryService()
+    """Dependency provider untuk DailySummaryService dengan Factory Pattern.
+
+    Memilih antara GeminiSummaryLLMService atau MockSummaryLLMService
+    berdasarkan konfigurasi environment (LLM_PROVIDER).
+    """
+    if str(settings.LLM_PROVIDER).lower() == "gemini" and settings.GEMINI_API_KEY:
+        try:
+            gemini_llm = GeminiSummaryLLMService(
+                api_key=settings.GEMINI_API_KEY,
+                model_name=settings.GEMINI_MODEL_NAME,
+                timeout_seconds=getattr(settings, "GEMINI_TIMEOUT_SECONDS", 10.0),
+            )
+            return DailySummaryService(llm_service=gemini_llm)
+        except Exception as e:
+            logger.warning(
+                f"Gagal menginisialisasi GeminiSummaryLLMService: {e}. Menggunakan MockSummaryLLMService."
+            )
+
+    return DailySummaryService(llm_service=MockSummaryLLMService())
 
 
 @router.post(

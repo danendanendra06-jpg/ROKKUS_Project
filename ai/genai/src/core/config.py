@@ -27,9 +27,10 @@ try:
         # Path file data inventaris sintetis
         INVENTORY_DATA_PATH: str = "data/synthetic_inventory.json"
 
-        # Gemini API (Masa depan)
+        # Konfigurasi Google Gemini API
         GEMINI_API_KEY: str | None = None
-        GEMINI_MODEL_NAME: str = "gemini-1.5-flash"
+        GEMINI_MODEL_NAME: str = "gemini-2.5-flash"
+        GEMINI_TIMEOUT_SECONDS: float = 10.0
 
 except ImportError:  # pragma: no cover
     # Fallback jika pydantic-settings belum terinstal
@@ -45,7 +46,8 @@ except ImportError:  # pragma: no cover
             "INVENTORY_DATA_PATH", "data/synthetic_inventory.json"
         )
         GEMINI_API_KEY: str | None = os.getenv("GEMINI_API_KEY", None)
-        GEMINI_MODEL_NAME: str = os.getenv("GEMINI_MODEL_NAME", "gemini-1.5-flash")
+        GEMINI_MODEL_NAME: str = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash")
+        GEMINI_TIMEOUT_SECONDS: float = float(os.getenv("GEMINI_TIMEOUT_SECONDS", "10.0"))
 
 
 settings = Settings()

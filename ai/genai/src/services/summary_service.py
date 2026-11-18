@@ -51,11 +51,12 @@ class DailySummaryService:
     def generate_summary(
         self,
         request: DailyStockSummaryRequest,
-        provider: str = "mock",
+        provider: Optional[str] = None,
         is_synthetic: bool = True,
         source: str = "synthetic_input",
     ) -> DailyStockSummaryResponse:
         """Memproses request data stok harian dan mengembalikan response lengkap."""
+        resolved_provider = provider or getattr(self.llm_service, "provider_name", "mock")
         # 1. EVALUASI DETERMINISTIK (core.rules)
         processed_items: List[ProcessedStockItem] = []
         critical_items: List[ProcessedStockItem] = []
@@ -199,7 +200,7 @@ class DailySummaryService:
         # 6. PENYUSUNAN METADATA & RESPONSE
         now_iso = datetime.now(timezone.utc).isoformat()
         meta = DailySummaryMeta(
-            provider=provider,
+            provider=resolved_provider,
             is_synthetic=is_synthetic,
             source=source,
             generated_at=now_iso,

@@ -4,6 +4,7 @@ from .mock_llm import MockLLMService
 from .assistant_service import AssistantService
 from .summary_service import DailySummaryService
 from .summary_llm import BaseSummaryLLMService, MockSummaryLLMService
+from .gemini_summary_llm import GeminiSummaryLLMService
 
 __all__ = [
     "BaseLLMService",
@@ -12,4 +13,5 @@ __all__ = [
     "DailySummaryService",
     "BaseSummaryLLMService",
     "MockSummaryLLMService",
+    "GeminiSummaryLLMService",
 ]
