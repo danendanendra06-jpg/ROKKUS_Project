@@ -38,22 +38,22 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
             store_name="ROKKUS Mardani Raya",
             items=[
                 DailyStockItemInput(
-                    name="Tepung Terigu",
-                    current_stock=4.0,
-                    minimum_stock=10.0,
-                    unit="kg",
+                    name="Lotus Biscoff",
+                    current_stock=0.0,   # EMPTY
+                    minimum_stock=5.0,
+                    unit="porsi",
                 ),
                 DailyStockItemInput(
-                    name="Margarin Bakeri",
-                    current_stock=8.0,
-                    minimum_stock=6.0,
-                    unit="kg",
+                    name="Coklat Keju",
+                    current_stock=3.0,   # LOW (1–5)
+                    minimum_stock=5.0,
+                    unit="porsi",
                 ),
                 DailyStockItemInput(
-                    name="Gula Pasir",
-                    current_stock=25.0,
-                    minimum_stock=10.0,
-                    unit="kg",
+                    name="Telur Mayo",
+                    current_stock=20.0,  # SAFE (> 5)
+                    minimum_stock=5.0,
+                    unit="porsi",
                 ),
             ],
         )
@@ -64,8 +64,8 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
         data = response.data
         self.assertEqual(data.date, "2026-11-15")
         self.assertEqual(data.status_counts.total_items, 3)
-        self.assertEqual(data.status_counts.critical, 1)
-        self.assertEqual(data.status_counts.warning, 1)
+        self.assertEqual(data.status_counts.empty, 1)
+        self.assertEqual(data.status_counts.low, 1)
         self.assertEqual(data.status_counts.safe, 1)
 
         # Verifikasi metadata
@@ -78,8 +78,8 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
         self.assertNotIn("akan habis pada", data.summary)
 
         # Verifikasi item detail
-        self.assertEqual(data.items[0].status, StockStatus.CRITICAL)
-        self.assertEqual(data.items[1].status, StockStatus.WARNING)
+        self.assertEqual(data.items[0].status, StockStatus.EMPTY)
+        self.assertEqual(data.items[1].status, StockStatus.LOW)
         self.assertEqual(data.items[2].status, StockStatus.SAFE)
 
     def test_all_safe_scenario(self):
@@ -97,19 +97,19 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
         )
 
         response = self.service.generate_summary(request)
-        self.assertEqual(response.data.status_counts.critical, 0)
-        self.assertEqual(response.data.status_counts.warning, 0)
+        self.assertEqual(response.data.status_counts.empty, 0)
+        self.assertEqual(response.data.status_counts.low, 0)
         self.assertEqual(response.data.status_counts.safe, 1)
         self.assertIn("aman", response.data.summary.lower())
 
-    def test_all_critical_scenario(self):
-        """Memvalidasi aksi saat seluruh barang dalam kondisi kritis."""
+    def test_all_empty_scenario(self):
+        """Memvalidasi aksi saat barang dalam kondisi habis (EMPTY)."""
         request = DailyStockSummaryRequest(
             date=date(2026, 11, 15),
             items=[
                 DailyStockItemInput(
                     name="Ragi Instan",
-                    current_stock=0.0,
+                    current_stock=0.0,   # == 0 → EMPTY
                     minimum_stock=5.0,
                     unit="sachet",
                 )
@@ -117,24 +117,24 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
         )
 
         response = self.service.generate_summary(request)
-        self.assertEqual(response.data.status_counts.critical, 1)
+        self.assertEqual(response.data.status_counts.empty, 1)
         self.assertEqual(response.data.status_counts.safe, 0)
         self.assertIn("restock", response.data.suggested_actions[0].lower())
 
-    def test_zero_minimum_stock_in_service(self):
-        """Memvalidasi penanganan barang dengan batas minimum 0 di dalam ringkasan."""
+    def test_low_and_empty_scenario(self):
+        """Memvalidasi penanganan barang EMPTY dan LOW."""
         request = DailyStockSummaryRequest(
             date=date(2026, 11, 15),
             items=[
                 DailyStockItemInput(
                     name="Bahan Percobaan",
-                    current_stock=5.0,
+                    current_stock=5.0,  # 1–5 → LOW
                     minimum_stock=0.0,
                     unit="kg",
                 ),
                 DailyStockItemInput(
                     name="Bahan Kosong",
-                    current_stock=0.0,
+                    current_stock=0.0,  # == 0 → EMPTY
                     minimum_stock=0.0,
                     unit="kg",
                 ),
@@ -142,8 +142,9 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
         )
 
         response = self.service.generate_summary(request)
-        self.assertEqual(response.data.status_counts.safe, 1)
-        self.assertEqual(response.data.status_counts.critical, 1)
+        self.assertEqual(response.data.status_counts.low, 1)
+        self.assertEqual(response.data.status_counts.empty, 1)
+        self.assertEqual(response.data.status_counts.safe, 0)
 
 
 class TestDailySummaryEndpointsIntegration(unittest.TestCase):
@@ -186,7 +187,8 @@ class TestDailySummaryEndpointsIntegration(unittest.TestCase):
         self.assertEqual(data["data"]["meta"]["provider"], "mock")
         self.assertTrue(data["data"]["meta"]["is_synthetic"])
         self.assertEqual(data["data"]["status_counts"]["total_items"], 2)
-        self.assertEqual(data["data"]["status_counts"]["critical"], 1)
+        self.assertEqual(data["data"]["status_counts"]["low"], 1)
+        self.assertEqual(data["data"]["status_counts"]["empty"], 0)
         self.assertEqual(data["data"]["status_counts"]["safe"], 1)
 
     def test_endpoint_empty_items_validation_error(self):

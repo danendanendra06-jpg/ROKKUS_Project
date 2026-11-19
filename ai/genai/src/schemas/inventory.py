@@ -32,7 +32,7 @@ class InventoryItem(BaseModel):
     minimum_stock: float = Field(..., ge=0, description="Ambang batas minimum stok")
     unit: str = Field(..., description="Satuan unit (kg, porsi, pcs, dll.)")
     unit_cost: Optional[float] = Field(default=None, description="Estimasi biaya per unit (IDR)")
-    status: StockStatus = Field(..., description="Status stok: SAFE, WARNING, atau CRITICAL")
+    status: StockStatus = Field(..., description="Status stok: SAFE, LOW, atau EMPTY")
     last_restocked: Optional[str] = None
     notes: Optional[str] = None
 

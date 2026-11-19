@@ -26,8 +26,8 @@ class TestSummaryPromptBuilder(unittest.TestCase):
                 current_stock=4.0,
                 minimum_stock=10.0,
                 unit="kg",
-                status=StockStatus.CRITICAL,
-                status_description="Stok kritis.",
+                status=StockStatus.LOW,
+                status_description="Stok menipis.",
             ),
             ProcessedStockItem(
                 id="BB-002",
@@ -42,8 +42,8 @@ class TestSummaryPromptBuilder(unittest.TestCase):
             ),
         ]
         self.status_counts = StockStatusCounts(
-            critical=1,
-            warning=0,
+            empty=0,
+            low=1,
             safe=1,
             total_items=2,
         )
@@ -72,7 +72,7 @@ class TestSummaryPromptBuilder(unittest.TestCase):
         self.assertIn("2026-11-18", user_prompt)
         self.assertIn("BB-001", user_prompt)
         self.assertIn("Tepung Terigu", user_prompt)
-        self.assertIn('"critical": 1', user_prompt)
+        self.assertIn('"low": 1', user_prompt)
         self.assertIn('"safe": 1', user_prompt)
         self.assertIn('"total_items": 2', user_prompt)
 
@@ -88,15 +88,15 @@ class TestSummaryPromptBuilder(unittest.TestCase):
                 current_stock=5.0,
                 minimum_stock=5.0,
                 unit="pcs",
-                status=StockStatus.CRITICAL,
-                status_description="Stok kritis.",
+                status=StockStatus.LOW,
+                status_description="Stok menipis.",
             )
         ]
         user_prompt = SummaryPromptBuilder.build_user_prompt(
             date_str="2026-11-18",
             store_name="ROKKUS",
             processed_items=items,
-            status_counts=StockStatusCounts(critical=1, warning=0, safe=0, total_items=1),
+            status_counts=StockStatusCounts(empty=0, low=1, safe=0, total_items=1),
         )
 
         # Karakter '<' dan '>' dibersihkan agar tidak merusak tag pembatas <inventory_data>

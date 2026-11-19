@@ -6,6 +6,8 @@ import re
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field, ValidationError
 
+from .rules import StockStatus
+
 
 class ActionType(str, Enum):
     """Tipe rekomendasi operasional yang diizinkan dan dapat divalidasi."""
@@ -164,11 +166,18 @@ class SummaryOutputGuardrail:
             for action in parsed_model.actions:
                 item = processed_items_by_ref.get(action.target_item_ref.strip())
                 if item:
-                    # Item berstatus SAFE tidak boleh diberi tindakan RESTOCK_REVIEW tanpa alasan
-                    if getattr(item, "status", None) == "SAFE" and action.action_type == ActionType.RESTOCK_REVIEW:
+                    item_status = getattr(item, "status", None)
+                    # Item berstatus SAFE tidak boleh diberi tindakan RESTOCK_REVIEW
+                    if item_status == StockStatus.SAFE and action.action_type == ActionType.RESTOCK_REVIEW:
                         violations.append(
                             f"Rekomendasi tidak konsisten: Item '{action.target_item_ref}' berstatus SAFE "
                             f"tetapi diberi tindakan RESTOCK_REVIEW."
+                        )
+                    # Item berstatus EMPTY atau LOW tidak boleh diberi tindakan NO_ACTION
+                    if item_status in (StockStatus.EMPTY, StockStatus.LOW) and action.action_type == ActionType.NO_ACTION:
+                        violations.append(
+                            f"Rekomendasi tidak konsisten: Item '{action.target_item_ref}' berstatus {item_status} "
+                            f"tetapi diberi tindakan NO_ACTION."
                         )
 
         is_valid = len(violations) == 0

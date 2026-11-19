@@ -34,8 +34,8 @@ class MockLLMService(BaseLLMService):
         now_iso = datetime.now(timezone.utc).isoformat()
 
         # Identifikasi item berdasarkan status
-        critical_items = [i for i in context_items if i.status == StockStatus.CRITICAL]
-        warning_items = [i for i in context_items if i.status == StockStatus.WARNING]
+        empty_items = [i for i in context_items if i.status == StockStatus.EMPTY]
+        low_items = [i for i in context_items if i.status == StockStatus.LOW]
         safe_items = [i for i in context_items if i.status == StockStatus.SAFE]
 
         # Penentuan intent & peracikan jawaban
@@ -44,54 +44,55 @@ class MockLLMService(BaseLLMService):
 
         if any(w in query_lower for w in ["kritis", "menipis", "habis", "restock", "kurang", "minimum"]):
             # Skenario 1: Pertanyaan stok kritis / kebutuhan restock
-            relevant_context = critical_items if critical_items else context_items[:3]
-            if critical_items:
+            urgent_items = empty_items + low_items
+            relevant_context = urgent_items if urgent_items else context_items[:3]
+            if urgent_items:
                 items_summary = ", ".join(
-                    f"{item.name} ({item.current_stock} {item.unit}, min: {item.minimum_stock} {item.unit})"
-                    for item in critical_items
+                    f"{item.name} ({item.current_stock} {item.unit}) [{item.status}]"
+                    for item in urgent_items
                 )
                 reply = (
-                    f"Berdasarkan data stok ilustratif {store_name}, terdapat {len(critical_items)} barang "
-                    f"yang berada dalam status CRITICAL (stok <= batas minimum): {items_summary}. "
+                    f"Berdasarkan data stok ilustratif {store_name}, terdapat "
+                    f"{len(empty_items)} barang EMPTY (habis) dan {len(low_items)} barang LOW (menipis): "
+                    f"{items_summary}. "
                     f"Disarankan segera melakukan restock darurat agar operasional tidak terganggu."
                 )
                 suggested_actions = [
-                    f"Buat purchase order untuk item: {', '.join(i.id for i in critical_items)}",
+                    f"Buat purchase order untuk item: {', '.join(i.id for i in urgent_items)}",
                     "Prioritaskan bahan baku yang dibutuhkan untuk batch produksi berikutnya",
                 ]
             else:
                 reply = (
-                    f"Saat ini tidak ada item yang berada dalam status CRITICAL pada data ilustratif {store_name}. "
-                    f"Seluruh stok masih berada di atas ambang minimum."
+                    f"Saat ini tidak ada item yang berstatus EMPTY atau LOW pada data ilustratif {store_name}. "
+                    f"Seluruh stok berada dalam kondisi aman (> 5 unit)."
                 )
                 suggested_actions = ["Lanjutkan pemantauan rutin stok harian."]
 
-        elif any(w in query_lower for w in ["waspada", "peringatan", "warning", "hampir"]):
-            # Skenario 2: Pertanyaan stok waspada (warning)
-            relevant_context = warning_items if warning_items else context_items[:3]
-            if warning_items:
+        elif any(w in query_lower for w in ["waspada", "peringatan", "warning", "hampir", "low"]):
+            # Skenario 2: Pertanyaan stok menipis (LOW)
+            relevant_context = low_items if low_items else context_items[:3]
+            if low_items:
                 items_summary = ", ".join(
                     f"{item.name} ({item.current_stock} {item.unit})"
-                    for item in warning_items
+                    for item in low_items
                 )
                 reply = (
-                    f"Terdapat {len(warning_items)} barang yang berstatus WARNING di {store_name}: {items_summary}. "
-                    f"Barang-barang ini berada di rentang 100%-150% batas minimum dan berpotensi menjadi kritis "
-                    f"dalam 1-2 hari ke depan jika terjadi peningkatan pesanan."
+                    f"Terdapat {len(low_items)} barang yang berstatus LOW di {store_name}: {items_summary}. "
+                    f"Barang-barang ini memiliki stok antara 1–5 unit dan perlu dijadwalkan restock segera."
                 )
                 suggested_actions = [
                     "Hubungi supplier untuk konfirmasi jadwal pengiriman berkala.",
-                    "Lakukan pengecekan fisik fisik barang di gudang penyimpanan.",
+                    "Lakukan pengecekan fisik barang di tempat penyimpanan.",
                 ]
             else:
-                reply = f"Tidak ada item berstatus WARNING dalam data inventaris yang diperiksa."
+                reply = f"Tidak ada item berstatus LOW dalam data inventaris yang diperiksa."
                 suggested_actions = ["Kondisi stok relatif stabil."]
 
         elif any(w in query_lower for w in ["aman", "cukup", "banyak", "safe"]):
             # Skenario 3: Pertanyaan stok aman
             relevant_context = safe_items if safe_items else context_items[:3]
             reply = (
-                f"Terdapat {len(safe_items)} item dengan status SAFE (stok > 150% batas minimum) di {store_name}. "
+                f"Terdapat {len(safe_items)} item dengan status SAFE (stok > 5 unit) di {store_name}. "
                 f"Ketersediaan barang-barang tersebut sangat mencukupi untuk mendukung proses operasional harian."
             )
             suggested_actions = ["Pertahankan rotasi FIFO (First In First Out) agar barang tidak kedaluwarsa."]
@@ -102,13 +103,14 @@ class MockLLMService(BaseLLMService):
             reply = (
                 f"Ringkasan stok inventaris ilustratif {store_name}: "
                 f"Total {len(context_items)} item terpantau, dengan rincian: "
-                f"{len(critical_items)} berstatus CRITICAL, "
-                f"{len(warning_items)} berstatus WARNING, dan "
-                f"{len(safe_items)} berstatus SAFE. "
-                f"Perhatian utama saat ini tertuju pada item berstatus kritis untuk segera dipasok."
+                f"{len(empty_items)} berstatus EMPTY (habis), "
+                f"{len(low_items)} berstatus LOW (menipis), dan "
+                f"{len(safe_items)} berstatus SAFE (aman). "
+                f"Perhatian utama saat ini tertuju pada item berstatus EMPTY dan LOW untuk segera dipasok."
             )
-            if critical_items:
-                suggested_actions.append(f"Restock mendesak untuk {critical_items[0].name}.")
+            urgent = empty_items + low_items
+            if urgent:
+                suggested_actions.append(f"Restock mendesak untuk {urgent[0].name}.")
             suggested_actions.append("Lakukan rekonsiliasi data stok keluar batch harian.")
 
         else:

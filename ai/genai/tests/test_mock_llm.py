@@ -36,7 +36,8 @@ class TestMockLLMService(unittest.TestCase):
 
         self.assertEqual(response.status, "success")
         self.assertEqual(response.data.meta.provider, "mock")
-        self.assertIn("CRITICAL", response.data.reply)
+        self.assertIn("EMPTY", response.data.reply)
+        self.assertIn("LOW", response.data.reply)
         self.assertGreater(len(response.data.context_items), 0)
         self.assertGreater(len(response.data.suggested_actions), 0)
 

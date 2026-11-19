@@ -59,8 +59,8 @@ class DailySummaryService:
         resolved_provider = provider or getattr(self.llm_service, "provider_name", "mock")
         # 1. EVALUASI DETERMINISTIK (core.rules)
         processed_items: List[ProcessedStockItem] = []
-        critical_items: List[ProcessedStockItem] = []
-        warning_items: List[ProcessedStockItem] = []
+        empty_items: List[ProcessedStockItem] = []
+        low_items: List[ProcessedStockItem] = []
         safe_items: List[ProcessedStockItem] = []
         valid_item_refs: Dict[str, ProcessedStockItem] = {}
 
@@ -83,18 +83,18 @@ class DailySummaryService:
             processed_items.append(processed)
             valid_item_refs[ref] = processed
 
-            if status == StockStatus.CRITICAL:
-                critical_items.append(processed)
-            elif status == StockStatus.WARNING:
-                warning_items.append(processed)
+            if status == StockStatus.EMPTY:
+                empty_items.append(processed)
+            elif status == StockStatus.LOW:
+                low_items.append(processed)
             else:
                 safe_items.append(processed)
 
         # Hitung kuantitas status secara matematis dan deterministik
         total_items = len(processed_items)
         counts = StockStatusCounts(
-            critical=len(critical_items),
-            warning=len(warning_items),
+            empty=len(empty_items),
+            low=len(low_items),
             safe=len(safe_items),
             total_items=total_items,
         )
@@ -187,13 +187,13 @@ class DailySummaryService:
                 date_str=date_str,
                 store_name=store_name,
                 counts=counts,
-                critical_items=critical_items,
-                warning_items=warning_items,
+                empty_items=empty_items,
+                low_items=low_items,
                 safe_items=safe_items,
             )
             suggested_actions = self._build_deterministic_actions(
-                critical_items=critical_items,
-                warning_items=warning_items,
+                empty_items=empty_items,
+                low_items=low_items,
                 safe_items=safe_items,
             )
 
@@ -245,8 +245,8 @@ class DailySummaryService:
         date_str: str,
         store_name: str,
         counts: StockStatusCounts,
-        critical_items: List[ProcessedStockItem],
-        warning_items: List[ProcessedStockItem],
+        empty_items: List[ProcessedStockItem],
+        low_items: List[ProcessedStockItem],
         safe_items: List[ProcessedStockItem],
     ) -> str:
         """Generator narasi deterministik tanpa prediksi spekulatif (Fail-safe)."""
@@ -255,33 +255,32 @@ class DailySummaryService:
         parts.append(
             f"Ringkasan Stok Harian ({date_str}) untuk {store_name}: "
             f"Dari total {counts.total_items} barang yang dipantau, tercatat "
-            f"{counts.critical} barang berstatus CRITICAL, "
-            f"{counts.warning} barang berstatus WARNING, dan "
-            f"{counts.safe} barang berstatus SAFE."
+            f"{counts.empty} barang berstatus EMPTY (habis), "
+            f"{counts.low} barang berstatus LOW (menipis), dan "
+            f"{counts.safe} barang berstatus SAFE (aman)."
         )
 
-        if critical_items:
-            crit_details = "; ".join(
-                f"{item.name} (sisa {item.current_stock} {item.unit}, min: {item.minimum_stock} {item.unit})"
-                for item in critical_items
+        if empty_items:
+            empty_details = "; ".join(
+                f"{item.name} (sisa {item.current_stock} {item.unit})"
+                for item in empty_items
             )
             parts.append(
-                f"Perhatian mendesak diperlukan pada item berstatus kritis: {crit_details}. "
-                f"Barang-barang ini berada pada atau di bawah batas minimum dan membutuhkan pengadaan ulang segera."
+                f"Stok habis dan butuh pengadaan darurat segera: {empty_details}."
             )
 
-        if warning_items:
-            warn_details = "; ".join(
-                f"{item.name} (sisa {item.current_stock} {item.unit}, min: {item.minimum_stock} {item.unit})"
-                for item in warning_items
+        if low_items:
+            low_details = "; ".join(
+                f"{item.name} (sisa {item.current_stock} {item.unit})"
+                for item in low_items
             )
             parts.append(
-                f"Item pada zona waspada yang perlu dipantau ketat: {warn_details}."
+                f"Stok menipis yang perlu dijadwalkan restock: {low_details}."
             )
 
-        if safe_items and not critical_items and not warning_items:
+        if safe_items and not empty_items and not low_items:
             parts.append(
-                "Seluruh stok barang saat ini berada dalam kondisi aman melampaui 150% ambang batas minimum "
+                "Seluruh stok barang saat ini berada dalam kondisi aman (> 5 unit) "
                 "untuk mendukung operasional."
             )
         elif safe_items:
@@ -293,25 +292,25 @@ class DailySummaryService:
 
     def _build_deterministic_actions(
         self,
-        critical_items: List[ProcessedStockItem],
-        warning_items: List[ProcessedStockItem],
+        empty_items: List[ProcessedStockItem],
+        low_items: List[ProcessedStockItem],
         safe_items: List[ProcessedStockItem],
     ) -> List[str]:
         """Generator rekomendasi tindakan deterministik (Fail-safe)."""
         actions: List[str] = []
 
-        if critical_items:
-            names = ", ".join(i.name for i in critical_items)
+        if empty_items:
+            names = ", ".join(i.name for i in empty_items)
             actions.append(f"Lakukan pemesanan ulang (restock) darurat hari ini untuk: {names}.")
 
-        if warning_items:
-            names = ", ".join(i.name for i in warning_items)
-            actions.append(f"Lakukan pengecekan fisik dan koordinasi jadwal pengadaan untuk item waspada: {names}.")
+        if low_items:
+            names = ", ".join(i.name for i in low_items)
+            actions.append(f"Jadwalkan restock dalam waktu dekat untuk item menipis: {names}.")
 
         if safe_items:
             actions.append("Pertahankan rotasi barang menggunakan metode FIFO (First In First Out).")
 
-        if not critical_items and not warning_items:
+        if not empty_items and not low_items:
             actions.append("Lanjutkan pencatatan mutasi stok harian secara berkala.")
 
         return actions

@@ -70,10 +70,16 @@ class ProcessedStockItem(BaseModel):
 
 
 class StockStatusCounts(BaseModel):
-    """Agregasi kuantitas barang berdasarkan status stok."""
-    critical: int = Field(default=0, ge=0, description="Jumlah item berstatus CRITICAL")
-    warning: int = Field(default=0, ge=0, description="Jumlah item berstatus WARNING")
-    safe: int = Field(default=0, ge=0, description="Jumlah item berstatus SAFE")
+    """Agregasi kuantitas barang berdasarkan status stok.
+
+    Label diselaraskan dengan dataset Data Science ROKKUS (origin/main):
+    - empty: stok habis (current_stock == 0)
+    - low:   stok menipis (0 < current_stock <= 5)
+    - safe:  stok aman (current_stock > 5)
+    """
+    empty: int = Field(default=0, ge=0, description="Jumlah item stok habis (current_stock == 0)")
+    low: int = Field(default=0, ge=0, description="Jumlah item stok menipis (0 < current_stock <= 5)")
+    safe: int = Field(default=0, ge=0, description="Jumlah item stok aman (current_stock > 5)")
     total_items: int = Field(default=0, ge=0, description="Total keseluruhan barang yang diproses")
 
 

@@ -21,9 +21,9 @@
       "minimum_stock": 10.0,
       "unit": "kg",
       "unit_cost": 13000,
-      "status": "CRITICAL",
+      "status": "LOW",
       "last_restocked": "2026-11-05T09:00:00Z",
-      "notes": "Stok kritis di bawah batas minimum 10 kg, segera lakukan restock untuk produksi roti."
+      "notes": "Stok menipis di rentang 1-5 kg, segera jadwalkan restock untuk produksi roti."
     },
     {
       "id": "BB-002",
@@ -35,7 +35,7 @@
       "unit_cost": 17500,
       "status": "SAFE",
       "last_restocked": "2026-11-08T10:00:00Z",
-      "notes": "Stok aman melampaui 150% batas minimum."
+      "notes": "Stok aman melampaui batas 5 kg."
     },
     {
       "id": "BB-003",
@@ -45,21 +45,21 @@
       "minimum_stock": 6.0,
       "unit": "kg",
       "unit_cost": 28000,
-      "status": "WARNING",
+      "status": "SAFE",
       "last_restocked": "2026-11-06T14:00:00Z",
-      "notes": "Stok berada di rentang peringatan (antara 6 kg dan 9 kg)."
+      "notes": "Stok aman melampaui batas 5 kg."
     },
     {
       "id": "TP-001",
       "name": "[Ilustratif] Selai Srikaya Pandan Premium",
       "category": "topping_filling",
-      "current_stock": 6.0,
+      "current_stock": 0.0,
       "minimum_stock": 5.0,
       "unit": "kg",
       "unit_cost": 48000,
-      "status": "WARNING",
+      "status": "EMPTY",
       "last_restocked": "2026-11-07T11:00:00Z",
-      "notes": "Stok mendekati batas minimum 5 kg, persiapkan order ke supplier."
+      "notes": "Stok habis (0 kg), segera lakukan pemesanan darurat ke supplier."
     },
     {
       "id": "TP-002",
@@ -77,13 +77,13 @@
       "id": "PJ-001",
       "name": "[Ilustratif] Roti Kukus Rasa Srikaya",
       "category": "produk_jadi",
-      "current_stock": 10.0,
+      "current_stock": 3.0,
       "minimum_stock": 15.0,
       "unit": "porsi",
       "unit_cost": 16000,
-      "status": "CRITICAL",
+      "status": "LOW",
       "last_restocked": "2026-11-10T08:00:00Z",
-      "notes": "Porsi siap saji tersisa 10, di bawah batas minimum 15 porsi."
+      "notes": "Porsi siap saji tersisa 3 porsi (menipis <= 5), jadwalkan batch kukus berikutnya."
     },
     {
       "id": "PJ-002",
@@ -113,13 +113,13 @@
       "id": "PK-002",
       "name": "[Ilustratif] Kantong Plastik Jinjing Ramah Lingkungan",
       "category": "kemasan",
-      "current_stock": 80.0,
+      "current_stock": 2.0,
       "minimum_stock": 100.0,
       "unit": "pcs",
       "unit_cost": 400,
-      "status": "CRITICAL",
+      "status": "LOW",
       "last_restocked": "2026-11-02T13:00:00Z",
-      "notes": "Kemasan kantong jinjing sudah di bawah ambang minimum 100 pcs."
+      "notes": "Kemasan kantong jinjing tersisa 2 pcs (menipis <= 5), segera jadwalkan pengadaan."
     }
   ],
   "recent_transactions": [

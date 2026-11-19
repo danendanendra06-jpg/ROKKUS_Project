@@ -33,8 +33,8 @@ class TestSummaryOutputGuardrail(unittest.TestCase):
                 current_stock=4.0,
                 minimum_stock=10.0,
                 unit="kg",
-                status=StockStatus.CRITICAL,
-                status_description="Stok kritis.",
+                status=StockStatus.LOW,
+                status_description="Stok menipis.",
             ),
             "BB-002": ProcessedStockItem(
                 id="BB-002",

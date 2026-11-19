@@ -105,26 +105,26 @@ class MockSummaryLLMService(BaseSummaryLLMService):
         counts = context.get("status_counts", {})
         items = context.get("items", [])
 
-        critical_items = [i for i in items if getattr(i, "status", None) == "CRITICAL"]
-        warning_items = [i for i in items if getattr(i, "status", None) == "WARNING"]
+        empty_items = [i for i in items if getattr(i, "status", None) == "EMPTY"]
+        low_items = [i for i in items if getattr(i, "status", None) == "LOW"]
         safe_items = [i for i in items if getattr(i, "status", None) == "SAFE"]
 
         narrative_parts = [
             f"Ringkasan Stok Harian ({date_str}) untuk {store_name}: "
-            f"Dari total {len(items)} barang yang dipantau, tercatat {len(critical_items)} berstatus CRITICAL, "
-            f"{len(warning_items)} berstatus WARNING, dan {len(safe_items)} berstatus SAFE."
+            f"Dari total {len(items)} barang yang dipantau, tercatat {len(empty_items)} berstatus EMPTY (habis), "
+            f"{len(low_items)} berstatus LOW (menipis), dan {len(safe_items)} berstatus SAFE (aman)."
         ]
 
-        if critical_items:
-            crit_names = ", ".join(f"{i.name} (sisa {i.current_stock} {i.unit})" for i in critical_items)
-            narrative_parts.append(f"Perhatian mendesak diperlukan pada item berstatus kritis: {crit_names}.")
+        if empty_items:
+            empty_names = ", ".join(f"{i.name} (sisa {i.current_stock} {i.unit})" for i in empty_items)
+            narrative_parts.append(f"Stok habis yang memerlukan pengadaan darurat: {empty_names}.")
 
-        if warning_items:
-            warn_names = ", ".join(f"{i.name} (sisa {i.current_stock} {i.unit})" for i in warning_items)
-            narrative_parts.append(f"Item zona waspada yang memerlukan pemantauan ketat: {warn_names}.")
+        if low_items:
+            low_names = ", ".join(f"{i.name} (sisa {i.current_stock} {i.unit})" for i in low_items)
+            narrative_parts.append(f"Stok menipis yang perlu dijadwalkan restock: {low_names}.")
 
-        if safe_items and not critical_items and not warning_items:
-            narrative_parts.append("Seluruh persediaan stok berada dalam ambang batas aman untuk operasional harian.")
+        if safe_items and not empty_items and not low_items:
+            narrative_parts.append("Seluruh persediaan stok berada dalam kondisi aman untuk operasional harian.")
         elif safe_items:
             narrative_parts.append(f"Sebanyak {len(safe_items)} barang lainnya berada dalam kondisi stok aman.")
 
@@ -132,28 +132,28 @@ class MockSummaryLLMService(BaseSummaryLLMService):
 
         # Susun tindakan terstruktur dengan identifier sah
         actions_list: List[Dict[str, Any]] = []
-        for crit in critical_items:
-            ref = getattr(crit, "item_ref", None) or getattr(crit, "id", None) or "ITEM"
+        for item in empty_items:
+            ref = getattr(item, "item_ref", None) or getattr(item, "id", None) or "ITEM"
             actions_list.append({
                 "action_type": ActionType.RESTOCK_REVIEW.value,
                 "target_item_ref": ref,
-                "notes": f"Lakukan restock darurat untuk {crit.name} karena stok berada pada atau di bawah batas minimum."
+                "notes": f"Lakukan restock darurat untuk {item.name} karena stok habis (== 0)."
             })
 
-        for warn in warning_items:
-            ref = getattr(warn, "item_ref", None) or getattr(warn, "id", None) or "ITEM"
+        for item in low_items:
+            ref = getattr(item, "item_ref", None) or getattr(item, "id", None) or "ITEM"
             actions_list.append({
-                "action_type": ActionType.MONITOR.value,
+                "action_type": ActionType.RESTOCK_REVIEW.value,
                 "target_item_ref": ref,
-                "notes": f"Pantau pengeluaran dan siapkan pengadaan berkala untuk {warn.name}."
+                "notes": f"Jadwalkan restock untuk {item.name} karena stok menipis (<= 5 unit)."
             })
 
-        for safe in safe_items:
-            ref = getattr(safe, "item_ref", None) or getattr(safe, "id", None) or "ITEM"
+        for item in safe_items:
+            ref = getattr(item, "item_ref", None) or getattr(item, "id", None) or "ITEM"
             actions_list.append({
                 "action_type": ActionType.NO_ACTION.value,
                 "target_item_ref": ref,
-                "notes": f"Stok {safe.name} aman. Pertahankan rotasi penyimpanan normal."
+                "notes": f"Stok {item.name} aman (> 5 unit). Pertahankan rotasi penyimpanan normal."
             })
 
         output_data = {

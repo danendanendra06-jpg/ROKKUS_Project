@@ -32,16 +32,22 @@ class TestMockInventoryRepository(unittest.TestCase):
         self.assertGreater(len(items), 0)
         for item in items:
             self.assertTrue(item.name.startswith("[Ilustratif]"))
-            self.assertIn(item.status, [StockStatus.SAFE, StockStatus.WARNING, StockStatus.CRITICAL])
+            self.assertIn(item.status, [StockStatus.SAFE, StockStatus.LOW, StockStatus.EMPTY])
 
     def test_get_items_by_status(self):
-        """Memastikan pemfilteran status CRITICAL akurat."""
-        critical_items = self.repo.get_items_by_status(StockStatus.CRITICAL)
-        self.assertGreater(len(critical_items), 0)
-        for item in critical_items:
-            self.assertEqual(item.status, StockStatus.CRITICAL)
-            # Pastikan sesuai aturan: current_stock <= minimum_stock
-            self.assertLessEqual(item.current_stock, item.minimum_stock)
+        """Memastikan pemfilteran status LOW dan EMPTY akurat."""
+        low_items = self.repo.get_items_by_status(StockStatus.LOW)
+        self.assertGreater(len(low_items), 0)
+        for item in low_items:
+            self.assertEqual(item.status, StockStatus.LOW)
+            self.assertGreater(item.current_stock, 0)
+            self.assertLessEqual(item.current_stock, 5.0)
+
+        empty_items = self.repo.get_items_by_status(StockStatus.EMPTY)
+        self.assertGreater(len(empty_items), 0)
+        for item in empty_items:
+            self.assertEqual(item.status, StockStatus.EMPTY)
+            self.assertEqual(item.current_stock, 0.0)
 
     def test_get_items_by_category(self):
         """Memastikan pemfilteran kategori bahan_baku bekerja."""

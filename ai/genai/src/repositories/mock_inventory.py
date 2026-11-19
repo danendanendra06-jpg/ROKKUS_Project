@@ -39,12 +39,13 @@ class MockInventoryRepository(BaseInventoryRepository):
     def get_snapshot(self) -> InventorySnapshot:
         """Memuat snapshot lengkap dan melakukan validasi status konsisten."""
         raw_data = self._load_data()
+        # Harmonisasi status konsisten berdasarkan formula aturan stok sebelum validasi
+        for item_dict in raw_data.get("items", []):
+            item_dict["status"] = evaluate_stock_status(
+                item_dict.get("current_stock", 0.0),
+                item_dict.get("minimum_stock", 0.0),
+            ).value
         snapshot = InventorySnapshot.model_validate(raw_data)
-
-        # Harmonisasi status konsisten berdasarkan formula aturan stok
-        for item in snapshot.items:
-            item.status = evaluate_stock_status(item.current_stock, item.minimum_stock)
-
         return snapshot
 
     def get_all_items(self) -> List[InventoryItem]:

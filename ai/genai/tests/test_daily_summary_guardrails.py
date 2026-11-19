@@ -58,9 +58,9 @@ class TestDailySummaryGuardrailsIntegration(unittest.TestCase):
 
         # Verifikasi determinisme status dan kuantitas
         self.assertEqual(response.data.status_counts.total_items, 2)
-        self.assertEqual(response.data.status_counts.critical, 1)
+        self.assertEqual(response.data.status_counts.low, 1)
         self.assertEqual(response.data.status_counts.safe, 1)
-        self.assertEqual(response.data.items[0].status, StockStatus.CRITICAL)
+        self.assertEqual(response.data.items[0].status, StockStatus.LOW)
         self.assertEqual(response.data.items[1].status, StockStatus.SAFE)
 
     def test_malformed_json_triggers_deterministic_fallback(self):
@@ -148,9 +148,9 @@ class TestDailySummaryGuardrailsIntegration(unittest.TestCase):
 
         self.assertEqual(response.status, "success")
         # Nilai status sistem tidak dapat dimanipulasi oleh injeksi prompt
-        self.assertEqual(response.data.status_counts.critical, 1)
+        self.assertEqual(response.data.status_counts.low, 1)
         self.assertEqual(response.data.status_counts.safe, 0)
-        self.assertEqual(response.data.items[0].status, StockStatus.CRITICAL)
+        self.assertEqual(response.data.items[0].status, StockStatus.LOW)
 
 
 if __name__ == "__main__":
