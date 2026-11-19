@@ -40,7 +40,7 @@ def read_root():
         "docs": "/docs",
         "health": "/api/v1/health",
         "status": "online",
-        "active_provider": "mock",
+        "active_provider": settings.LLM_PROVIDER,
     }
 
 

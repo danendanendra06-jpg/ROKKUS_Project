@@ -199,10 +199,40 @@ class DailySummaryService:
 
         # 6. PENYUSUNAN METADATA & RESPONSE
         now_iso = datetime.now(timezone.utc).isoformat()
+
+        requested_provider = resolved_provider
+        if fallback_applied:
+            execution_provider = "deterministic_fallback"
+            actual_provider = "deterministic_fallback"
+            generator_label = "Fallback Deterministik"
+        else:
+            execution_provider = resolved_provider
+            actual_provider = resolved_provider
+            if resolved_provider.lower().startswith("gemini"):
+                generator_label = f"AI Assistant ({resolved_provider})"
+            elif resolved_provider.lower() == "mock":
+                generator_label = "Mock Service"
+            else:
+                generator_label = f"Layanan AI ({resolved_provider})"
+
+        if is_synthetic:
+            disclaimer_text = (
+                f"PERINGATAN: Ringkasan ini dihasilkan oleh {generator_label} menggunakan "
+                "data sintetis/ilustratif untuk prototipe ROKKUS, bukan data operasional nyata UMKM."
+            )
+        else:
+            disclaimer_text = (
+                f"PERINGATAN: Ringkasan ini dihasilkan oleh {generator_label}. "
+                "Selalu verifikasi kondisi fisik inventaris toko sebelum mengambil keputusan pengadaan besar."
+            )
+
         meta = DailySummaryMeta(
-            provider=resolved_provider,
+            provider=actual_provider,
+            requested_provider=requested_provider,
+            execution_provider=execution_provider,
             is_synthetic=is_synthetic,
             source=source,
+            disclaimer=disclaimer_text,
             generated_at=now_iso,
             fallback_applied=fallback_applied,
             guardrail_status=guardrail_status,

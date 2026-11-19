@@ -131,6 +131,10 @@ class TestGeminiIntegration(unittest.TestCase):
 
         self.assertEqual(response.status, "success")
         self.assertTrue(response.data.meta.fallback_applied)
+        self.assertEqual(response.data.meta.requested_provider, "gemini-2.5-flash")
+        self.assertEqual(response.data.meta.execution_provider, "deterministic_fallback")
+        self.assertEqual(response.data.meta.provider, "deterministic_fallback")
+        self.assertIn("Fallback Deterministik", response.data.meta.disclaimer)
         self.assertIn("timeout", response.data.meta.guardrail_status.lower())
         self.assertIn("Ringkasan Stok Harian (2026-11-18)", response.data.summary)
 
@@ -152,7 +156,36 @@ class TestGeminiIntegration(unittest.TestCase):
 
         self.assertEqual(response.status, "success")
         self.assertTrue(response.data.meta.fallback_applied)
+        self.assertEqual(response.data.meta.requested_provider, "gemini-2.5-flash")
+        self.assertEqual(response.data.meta.execution_provider, "deterministic_fallback")
+        self.assertEqual(response.data.meta.provider, "deterministic_fallback")
+        self.assertIn("Fallback Deterministik", response.data.meta.disclaimer)
         self.assertIn("ResourceExhausted", response.data.meta.guardrail_status)
+        self.assertIn("Ringkasan Stok Harian", response.data.summary)
+
+    def test_gemini_503_unavailable_triggers_deterministic_fallback(self):
+        """Memastikan error 503 UNAVAILABLE (model overloaded) beralih ke fallback deterministik."""
+        mock_client = MagicMock()
+        mock_client.aio.models.generate_content = AsyncMock(
+            side_effect=RuntimeError("Google API Error 503: The model is overloaded. Please try again later.")
+        )
+
+        gemini_service = GeminiSummaryLLMService(
+            api_key="test-key",
+            model_name="gemini-2.5-flash",
+            client=mock_client,
+        )
+        daily_service = DailySummaryService(llm_service=gemini_service)
+
+        response = daily_service.generate_summary(self.request)
+
+        self.assertEqual(response.status, "success")
+        self.assertTrue(response.data.meta.fallback_applied)
+        self.assertEqual(response.data.meta.requested_provider, "gemini-2.5-flash")
+        self.assertEqual(response.data.meta.execution_provider, "deterministic_fallback")
+        self.assertEqual(response.data.meta.provider, "deterministic_fallback")
+        self.assertIn("Fallback Deterministik", response.data.meta.disclaimer)
+        self.assertIn("503", response.data.meta.guardrail_status)
         self.assertIn("Ringkasan Stok Harian", response.data.summary)
 
     def test_gemini_hallucination_triggers_guardrail_fallback(self):

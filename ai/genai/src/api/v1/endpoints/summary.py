@@ -46,8 +46,8 @@ def get_summary_service() -> DailySummaryService:
     summary="Menghasilkan ringkasan stok harian UMKM",
     description=(
         "Menerima data stok sintetis harian melalui request JSON, mengklasifikasikan "
-        "status barang (CRITICAL, WARNING, SAFE) sesuai aturan konsisten, dan "
-        "menghasilkan narasi ringkasan stok dalam bahasa Indonesia berbasis Mock Service."
+        "status barang (EMPTY, LOW, SAFE) sesuai aturan konsisten, dan "
+        "menghasilkan narasi ringkasan stok dalam bahasa Indonesia berbasis AI/Mock Service."
     ),
 )
 async def generate_daily_stock_summary(

@@ -85,11 +85,22 @@ class StockStatusCounts(BaseModel):
 
 class DailySummaryMeta(BaseModel):
     """Metadata eksekusi dan penanda sumber data ringkasan."""
-    provider: str = Field(default="mock", description="Identitas penyedia ringkasan ('mock' untuk tahap ini)")
+    provider: str = Field(
+        default="mock",
+        description="Identitas penyedia aktif yang menghasilkan ringkasan ('mock', 'gemini-2.5-flash', atau 'deterministic_fallback')"
+    )
+    requested_provider: Optional[str] = Field(
+        default=None,
+        description="Identitas penyedia AI/LLM yang awalnya diminta (misal 'gemini-2.5-flash' atau 'mock')"
+    )
+    execution_provider: Optional[str] = Field(
+        default=None,
+        description="Penyedia yang secara nyata mengeksekusi dan menghasilkan teks ringkasan ('gemini-2.5-flash', 'mock', atau 'deterministic_fallback')"
+    )
     is_synthetic: bool = Field(default=True, description="Penanda apakah data berasal dari sumber sintetis/ilustratif")
     source: str = Field(default="synthetic_input", description="Sumber masukan data (dapat disesuaikan pada integrasi database)")
     disclaimer: str = Field(
-        default="PERINGATAN: Ringkasan ini dihasilkan oleh Mock Service menggunakan data sintetis/ilustratif untuk prototipe ROKKUS, bukan data operasional nyata UMKM.",
+        default="PERINGATAN: Ringkasan ini dihasilkan menggunakan data sintetis/ilustratif untuk prototipe ROKKUS, bukan data operasional nyata UMKM.",
         description="Pernyataan resmi sifat data ilustratif"
     )
     generated_at: str = Field(..., description="Timestamp ISO-8601 pembuatan ringkasan")

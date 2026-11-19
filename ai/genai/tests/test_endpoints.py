@@ -12,6 +12,7 @@ if str(BASE_DIR) not in sys.path:
 try:
     from fastapi.testclient import TestClient
     from src.main import app
+    from src.core.config import settings
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
@@ -23,7 +24,13 @@ class TestAPIEndpoints(unittest.TestCase):
     def setUp(self):
         if not FASTAPI_AVAILABLE:
             self.skipTest("FastAPI belum terinstal di environment saat ini.")
+        self._orig_provider = settings.LLM_PROVIDER
+        settings.LLM_PROVIDER = "mock"
         self.client = TestClient(app)
+
+    def tearDown(self):
+        if FASTAPI_AVAILABLE:
+            settings.LLM_PROVIDER = self._orig_provider
 
     def test_root_endpoint(self):
         """Endpoint GET / harus mengembalikan status online dan active_provider mock."""
@@ -40,7 +47,8 @@ class TestAPIEndpoints(unittest.TestCase):
         data = response.json()
         self.assertEqual(data["status"], "healthy")
         self.assertEqual(data["active_provider"], "mock")
-        self.assertFalse(data["gemini_configured"])
+        self.assertIn("gemini_configured", data)
+        self.assertIsInstance(data["gemini_configured"], bool)
         self.assertGreater(data["inventory_items_loaded"], 0)
 
     def test_chat_endpoint_success(self):

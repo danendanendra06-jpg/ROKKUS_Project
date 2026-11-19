@@ -12,6 +12,7 @@ if str(BASE_DIR) not in sys.path:
 try:
     from fastapi.testclient import TestClient
     from src.main import app
+    from src.core.config import settings
     from src.services.summary_service import DailySummaryService
     from src.schemas.summary import (
         DailyStockItemInput,
@@ -29,7 +30,13 @@ class TestDailySummaryServiceUnit(unittest.TestCase):
     def setUp(self):
         if not FASTAPI_AVAILABLE:
             self.skipTest("FastAPI / Pydantic belum terinstal di environment.")
+        self._orig_provider = settings.LLM_PROVIDER
+        settings.LLM_PROVIDER = "mock"
         self.service = DailySummaryService()
+
+    def tearDown(self):
+        if FASTAPI_AVAILABLE:
+            settings.LLM_PROVIDER = self._orig_provider
 
     def test_mixed_stock_items_summary(self):
         """Memvalidasi kalkulasi status dan narasi ringkasan untuk item campuran."""
@@ -153,7 +160,13 @@ class TestDailySummaryEndpointsIntegration(unittest.TestCase):
     def setUp(self):
         if not FASTAPI_AVAILABLE:
             self.skipTest("FastAPI belum terinstal di environment.")
+        self._orig_provider = settings.LLM_PROVIDER
+        settings.LLM_PROVIDER = "mock"
         self.client = TestClient(app)
+
+    def tearDown(self):
+        if FASTAPI_AVAILABLE:
+            settings.LLM_PROVIDER = self._orig_provider
 
     def test_endpoint_success_flow(self):
         """Pengujian flow normal endpoint dengan data sintetis valid."""

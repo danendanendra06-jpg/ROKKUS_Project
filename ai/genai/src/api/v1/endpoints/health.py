@@ -44,7 +44,7 @@ async def check_health() -> HealthResponse:
         service=settings.APP_NAME,
         version=settings.APP_VERSION,
         environment=settings.ENVIRONMENT,
-        active_provider="mock",
+        active_provider=settings.LLM_PROVIDER,
         data_source=str(inv_path) if file_exists else "not_found",
         inventory_items_loaded=items_count,
         gemini_configured=bool(settings.GEMINI_API_KEY),

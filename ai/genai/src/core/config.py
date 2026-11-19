@@ -4,13 +4,16 @@ import os
 from pathlib import Path
 from typing import Literal
 
+_MODULE_DIR = Path(__file__).resolve().parent.parent.parent
+_ENV_PATH = _MODULE_DIR / ".env"
+
 try:
     from pydantic_settings import BaseSettings, SettingsConfigDict
 
     class Settings(BaseSettings):
         """Konfigurasi utama layanan ROKKUS AI Inventory Assistant."""
         model_config = SettingsConfigDict(
-            env_file=".env",
+            env_file=(_ENV_PATH, ".env"),
             env_file_encoding="utf-8",
             extra="ignore",
         )
