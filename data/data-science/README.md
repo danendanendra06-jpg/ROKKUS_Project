@@ -2,16 +2,17 @@
 
 ## 1. Deskripsi Project
 
-Bagian Data Science mendukung pengembangan aplikasi pengelolaan dan pemantauan stok harian terintegrasi pada UMKM ROKKUS Mardani Raya. Pekerjaan mencakup penyusunan data produk, simulasi pergerakan stok, pengolahan data, Exploratory Data Analysis (EDA), klasifikasi status stok berbasis aturan, visualisasi, dan pengujian fungsional.
+Bagian Data Science mendukung pengembangan aplikasi pengelolaan dan pemantauan stok harian terintegrasi pada UMKM ROKKUS Mardani Raya. Pekerjaan mencakup penyusunan dataset produk jadi dan bahan baku, simulasi pergerakan stok, pengolahan data, Exploratory Data Analysis (EDA), klasifikasi status stok berbasis aturan, visualisasi, dan pengujian fungsional.
 
 ## 2. Tujuan
 
-- Menyusun master data produk berdasarkan daftar menu yang diberikan.
+- Menyusun dataset produk jadi dan bahan baku untuk kebutuhan project.
 - Menyiapkan data sintetis stok awal dan transaksi stok.
-- Menghitung stok akhir produk dari stok awal, stok masuk, dan stok keluar.
+- Menghitung stok akhir berdasarkan stok awal, stok masuk, dan stok keluar.
 - Menganalisis distribusi stok dan pergerakan stok.
-- Mengelompokkan status stok menjadi Safe, Low, dan Empty menggunakan aturan simulasi.
-- Menyiapkan ringkasan dan file pendukung integrasi aplikasi.
+- Mengelompokkan status stok produk jadi menjadi Safe, Low, dan Empty menggunakan aturan simulasi.
+- Melakukan eksplorasi dan visualisasi data untuk mendukung analisis persediaan.
+- Menyiapkan dataset hasil pengolahan dan file pendukung integrasi aplikasi.
 
 ## 3. Teknologi
 
@@ -22,55 +23,82 @@ Bagian Data Science mendukung pengembangan aplikasi pengelolaan dan pemantauan s
 ## 4. Struktur Folder
 
 ```text
-ROKKUS_Project/
-└── data-science/
-    ├── notebooks/
-    │   ├── ROKKUS_Data_Preparation.ipynb
-    │   └── ROKKUS_Data_Science.ipynb
-    ├── data/
-    │   ├── raw/
-    │   │   ├── master_produk_rokkus.csv
-    │   │   ├── stok_awal.csv
-    │   │   └── transaksi_stok.csv
-    │   └── processed/
-    │       ├── dataset_stok_rokkus_final.csv
-    │       ├── hasil_klasifikasi_stok_rokkus.csv
-    │       └── ringkasan_stok_rokkus.csv
-    ├── outputs/
-    │   ├── dashboard_summary_rokkus.csv
-    │   ├── grafik_distribusi_status.png
-    │   ├── grafik_stok_masuk_keluar.png
-    │   ├── grafik_stok_per_kategori.png
-    │   └── hasil_pengujian_fungsional.csv
-    └── README.md
+Data-Science/
+├── notebooks/
+│   ├── ROKKUS_Data_Preparation.ipynb
+│   └── ROKKUS_Data_Science.ipynb
+├── data/
+│   ├── raw/
+│   │   ├── master_produk_rokkus.csv
+│   │   ├── stok_awal.csv
+│   │   ├── transaksi_stok.csv
+│   ├── dictionary/
+│   │   ├── data_dictionary_dataset_bahan_baku_final.csv
+│   │   ├── data_dictionary_produk_jadi.csv
+│   │   ├── data_dictionary_transaksi_bahan_baku.csv
+│   │   └── data_dictionary_transaksi_produk.csv
+│   └── processed/
+│       ├── dataset_bahan_baku_final.csv
+│       ├── dataset_produk_jadi_final.csv
+│       ├── dataset_stok_rokkus_final.csv
+│       ├── hasil_klasifikasi_stok_rokkus.csv
+│       └── ringkasan_stok_rokkus.csv
+├── outputs/
+│   ├── dashboard_summary_rokkus.csv
+│   ├── grafik_distribusi_status.png
+│   ├── grafik_stok_masuk_keluar.png
+│   ├── grafik_stok_per_kategori.png
+│   ├── eda_perbandingan_stok_produk.png
+│   ├── eda_status_bahan_baku.png
+│   ├── eda_status_produk_jadi.png
+│   ├── eda_stok_akhir_bahan_baku.png
+│   ├── eda_stok_produk_per_kategori.png
+│   ├── hasil_pengujian_fungsional.csv
+│   └── hasil_pengujian_dataset_final.csv
+├── requirements.txt
+└── README.md
 ```
+
 
 ## 5. Notebook
 
-- `ROKKUS_Data_Preparation.ipynb`: penyusunan dan pengolahan dataset sintetis yang disiapkan untuk skenario project ROKKUS.
-- `ROKKUS_Data_Science.ipynb`: eksplorasi dataset inventori publik untuk latihan dan referensi analisis. Dataset publik ini bukan data operasional ROKKUS.
+- `ROKKUS_Data_Preparation.ipynb`: penyusunan dan pengolahan dataset sintetis untuk skenario pengelolaan stok produk jadi ROKKUS, termasuk pemeriksaan kualitas data, perhitungan stok, klasifikasi, visualisasi, dan pengujian fungsional.
+- `ROKKUS_Data_Science.ipynb`: eksplorasi dan analisis dataset inventori publik sebagai referensi pembelajaran dan pendukung analisis. Dataset publik bukan data operasional ROKKUS.
 
 ## 6. Dataset dan Batasan
 
-Master produk disusun dari daftar menu yang dibagikan untuk project. Data stok awal dan transaksi dibuat secara sintetis karena data operasional atau transaksi aktual tidak tersedia untuk pengolahan ini.
+Project ini menggunakan dataset sintetis untuk mendukung pengembangan dan pengujian sistem pengelolaan stok UMKM ROKKUS Mardani Raya.
 
-Dataset simulasi menggunakan periode 1–30 September 2026 dengan 300 transaksi buatan. Angka-angka tersebut tidak boleh ditafsirkan sebagai catatan atau pola penjualan aktual UMKM.
+Dataset yang digunakan mencakup:
 
-Cakupan stok pada simulasi ini adalah produk jadi. Data bahan baku tidak dimodelkan.
+- Dataset produk jadi yang disusun berdasarkan daftar menu untuk kebutuhan project.
+- Dataset bahan baku yang berisi informasi persediaan bahan baku untuk simulasi pemantauan stok.
+- Dataset transaksi produk yang digunakan untuk menggambarkan pergerakan stok produk jadi.
+
+Data stok awal dan transaksi dibuat secara sintetis karena data operasional atau transaksi aktual tidak tersedia untuk pengolahan ini.
+
+Dataset simulasi transaksi produk menggunakan periode 1–30 September 2026 dengan 300 transaksi buatan. Dataset produk jadi terdiri dari 29 produk, sedangkan dataset bahan baku terdiri dari 18 data bahan baku.
+
+Perhitungan stok bahan baku menggunakan asumsi dan pemetaan kebutuhan bahan baku (BOM) sintetis. Oleh karena itu, hasilnya tidak dapat dianggap sebagai catatan penggunaan bahan baku aktual UMKM.
+
+Seluruh angka stok, transaksi, ambang minimum, dan pemetaan BOM yang dibuat secara sintetis merupakan asumsi pengembangan. Data tersebut tidak merepresentasikan kondisi operasional atau penjualan aktual UMKM ROKKUS.
 
 ## 7. Tahapan Pengerjaan
 
 1. Penyusunan master data produk.
-2. Pembuatan dataset sintetis stok awal dan transaksi.
-3. Data understanding dan pemeriksaan kualitas data.
-4. Data preprocessing dan perhitungan stok.
-5. Exploratory Data Analysis (EDA).
-6. Klasifikasi status stok dengan pendekatan rule-based.
-7. Evaluasi hasil klasifikasi.
-8. Pembuatan visualisasi dan ringkasan dashboard.
-9. Pengujian fungsional.
+2. Penyusunan dataset bahan baku.
+3. Pembuatan dataset sintetis stok awal dan transaksi.
+4. Data understanding dan pemeriksaan kualitas data.
+5. Data preprocessing dan perhitungan stok.
+6. Exploratory Data Analysis (EDA).
+7. Klasifikasi status stok dengan pendekatan rule-based.
+8. Evaluasi hasil klasifikasi.
+9. Pembuatan visualisasi dan ringkasan dashboard.
+10. Pengujian fungsional dataset.
 
 ## 8. Aturan Klasifikasi Simulasi
+
+Klasifikasi status stok produk jadi menggunakan aturan berikut:
 
 | Status | Aturan |
 |---|---|
@@ -84,7 +112,7 @@ Klasifikasi saat ini berbasis aturan (rule-based), bukan model machine learning 
 
 ## 9. Ringkasan Hasil Dataset Sintetis
 
-Berdasarkan hasil pengolahan dan validasi dataset sintetis terbaru:
+Berdasarkan hasil pengolahan dan validasi dataset sintetis produk jadi:
 
 - Jumlah produk: 29
 - Jumlah transaksi: 300
@@ -109,30 +137,43 @@ Hasil ini hanya menggambarkan dataset sintetis dan tidak merepresentasikan kondi
 
 ## 10. Pengujian Fungsional
 
-Pengujian fungsional dilakukan menggunakan lima pemeriksaan otomatis:
+Pengujian fungsional dilakukan untuk memastikan proses pengolahan dataset berjalan sesuai dengan aturan yang telah ditentukan.
 
-1. Memastikan jumlah produk sesuai, yaitu 29 produk.
+Pengujian Data Preparation mencakup lima pemeriksaan:
+
+1. Memastikan dataset tidak kosong.
 2. Memastikan tidak terdapat stok akhir negatif.
 3. Memastikan perhitungan stok akhir sesuai dengan rumus stok.
 4. Memastikan seluruh produk memiliki klasifikasi status stok.
-5. Memastikan nilai total stok pada dashboard sesuai dengan ringkasan stok.
+5. Memastikan hasil klasifikasi sesuai dengan aturan yang ditentukan.
 
-Berdasarkan hasil pengujian terakhir yang dijalankan pada dataset sintetis, diperoleh hasil sebagai berikut:
+Berdasarkan hasil pengujian terakhir pada Data Preparation, diperoleh:
 
 - PASS: 5
 - FAIL: 0
 
-Pengujian perlu dijalankan kembali apabila dataset atau aturan klasifikasi diubah.
+Pengujian Data Science dilakukan secara terpisah menggunakan pemeriksaan dataset dan hasil analisis. Berdasarkan hasil pengujian terakhir yang dijalankan:
+
+- PASS: 12
+- FAIL: 0
+
+Pengujian perlu dijalankan kembali apabila dataset, proses preprocessing, atau aturan klasifikasi mengalami perubahan.
 
 ## 11. Output
 
-Folder `outputs/` berisi:
+Folder `outputs/` digunakan untuk menyimpan hasil pengolahan, visualisasi, dan pengujian, meliputi:
 
 - `dashboard_summary_rokkus.csv`: ringkasan jumlah produk, stok akhir, stok masuk, stok keluar, dan distribusi status stok.
 - `grafik_stok_per_kategori.png`: visualisasi total stok akhir berdasarkan kategori.
 - `grafik_stok_masuk_keluar.png`: visualisasi perbandingan stok masuk dan stok keluar berdasarkan kategori.
 - `grafik_distribusi_status.png`: visualisasi distribusi status stok produk.
-- `hasil_pengujian_fungsional.csv`: hasil pengujian fungsional dataset.
+- `eda_perbandingan_stok_produk.png`: visualisasi perbandingan stok produk.
+- `eda_status_bahan_baku.png`: visualisasi status stok bahan baku.
+- `eda_status_produk_jadi.png`: visualisasi status stok produk jadi.
+- `eda_stok_akhir_bahan_baku.png`: visualisasi stok akhir bahan baku.
+- `eda_stok_produk_per_kategori.png`: visualisasi stok produk berdasarkan kategori.
+- `hasil_pengujian_fungsional.csv`: hasil pengujian fungsional Data Preparation.
+- `hasil_pengujian_dataset_final.csv`: hasil pengujian dataset Data Science.
 
 Seluruh output merupakan hasil pengolahan dataset sintetis dan disiapkan sebagai bahan pendukung pengembangan serta diskusi integrasi dengan tim Full-stack dan Gen AI.
 
