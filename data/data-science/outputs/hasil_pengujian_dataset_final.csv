@@ -1,0 +1,13 @@
+Dataset,Pengujian,Hasil
+Bahan Baku,Dataset tidak kosong,PASS
+Bahan Baku,Kolom stok/status tersedia,PASS
+Bahan Baku,Tidak ada nilai kosong pada stok dan status,PASS
+Bahan Baku,Stok akhir tidak negatif,PASS
+Bahan Baku,Kesesuaian status stok,PASS
+Bahan Baku,Rumus stok akhir,PASS
+Produk Jadi,Dataset tidak kosong,PASS
+Produk Jadi,Kolom stok/status tersedia,PASS
+Produk Jadi,Tidak ada nilai kosong pada stok dan status,PASS
+Produk Jadi,Stok akhir tidak negatif,PASS
+Produk Jadi,Kesesuaian status stok,PASS
+Produk Jadi,Rumus stok akhir,PASS
