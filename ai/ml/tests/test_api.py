@@ -215,3 +215,123 @@ class TestPredictValidInput:
         assert resp.status_code == 200
         status = resp.json()["prediksi"][0]["status"]
         assert status in ("habis", "menipis")
+
+
+# ---------------------------------------------------------------------------
+# Tests: POST /ml/status (Rule-Based Endpoint Tanpa Model .joblib)
+# ---------------------------------------------------------------------------
+
+class TestStockStatusRuleBasedEndpoint:
+    def test_minimal_payload_success(self):
+        """Uji payload minimal: hanya stok_saat_ini dan batas_minimum."""
+        payload = {
+            "items": [
+                {"stok_saat_ini": 3.0, "batas_minimum": 5.0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["total_items"] == 1
+        res = data["hasil"][0]
+        assert res["status"] == "menipis"
+        assert res["is_menipis"] is True
+        assert res["is_habis"] is False
+        assert res["metode"] == "rule_based"
+
+    def test_stok_nol_adalah_habis(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 0, "batas_minimum": 10}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        res = resp.json()["hasil"][0]
+        assert res["status"] == "habis"
+        assert res["is_habis"] is True
+        assert res["is_menipis"] is False
+
+    def test_stok_sama_dengan_batas_adalah_menipis(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 5.0, "batas_minimum": 5.0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        res = resp.json()["hasil"][0]
+        assert res["status"] == "menipis"
+        assert res["is_menipis"] is True
+
+    def test_stok_di_atas_batas_adalah_aman(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 15.0, "batas_minimum": 5.0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        res = resp.json()["hasil"][0]
+        assert res["status"] == "aman"
+        assert res["is_menipis"] is False
+        assert res["is_habis"] is False
+
+    def test_stok_desimal(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 0.5, "batas_minimum": 1.0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        res = resp.json()["hasil"][0]
+        assert res["status"] == "menipis"
+
+    def test_batas_minimum_nol(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 0, "batas_minimum": 0},
+                {"stok_saat_ini": 5, "batas_minimum": 0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        hasil = resp.json()["hasil"]
+        assert hasil[0]["status"] == "habis"
+        assert hasil[1]["status"] == "aman"
+
+    def test_stok_negatif_returns_422(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": -1.0, "batas_minimum": 5.0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 422
+
+    def test_batas_minimum_negatif_returns_422(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 10.0, "batas_minimum": -5.0}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 422
+
+    def test_batch_items(self):
+        payload = {
+            "items": [
+                {"stok_saat_ini": 0, "batas_minimum": 5, "id_barang": "PR001"},
+                {"stok_saat_ini": 3, "batas_minimum": 5, "id_barang": "PR002"},
+                {"stok_saat_ini": 10, "batas_minimum": 5, "id_barang": "PR003"}
+            ]
+        }
+        resp = client.post("/ml/status", json=payload)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["total_items"] == 3
+        assert data["hasil"][0]["status"] == "habis"
+        assert data["hasil"][1]["status"] == "menipis"
+        assert data["hasil"][2]["status"] == "aman"
+

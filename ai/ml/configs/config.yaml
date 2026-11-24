@@ -16,16 +16,16 @@ data:
   # Mapping nama kolom di CSV → nama internal yang dipakai kode.
   # Jika CSV tim berbeda nama kolomnya, cukup ubah nilai di sini.
   kolom:
-    id_barang:          "id_barang"       # ID unik per SKU
-    nama_barang:        "nama_barang"     # Nama produk (mis. "Roti Kukus Coklat")
-    kategori:           "kategori"        # "roti_kukus" | "roti_bakar"
-    rasa:               "rasa"            # Varian rasa
-    tanggal:            "tanggal"         # Format: YYYY-MM-DD
-    stok_awal:          "stok_awal"       # Stok awal hari itu (unit)
-    barang_masuk:       "barang_masuk"    # Unit masuk (produksi/resupply)
-    barang_keluar:      "barang_keluar"   # Unit terjual/keluar
-    stok_akhir:         "stok_akhir"      # Stok akhir hari itu (unit)
-    batas_minimum:      "batas_minimum"   # Ambang minimum per SKU (unit)
+    id_barang: "id_barang" # ID unik per SKU
+    nama_barang: "nama_barang" # Nama produk (mis. "Roti Kukus Coklat")
+    kategori: "kategori" # "roti_kukus" | "roti_bakar"
+    rasa: "rasa" # Varian rasa
+    tanggal: "tanggal" # Format: YYYY-MM-DD
+    stok_awal: "stok_awal" # Stok awal hari itu (unit)
+    barang_masuk: "barang_masuk" # Unit masuk (produksi/resupply)
+    barang_keluar: "barang_keluar" # Unit terjual/keluar
+    stok_akhir: "stok_akhir" # Stok akhir hari itu (unit)
+    batas_minimum: "batas_minimum" # Ambang minimum per SKU (unit)
 
 # ----------------------------------------------------------
 # ATURAN LABEL (STATUS STOK)
@@ -44,13 +44,13 @@ data:
 #   Lihat laporan reports/model_comparison.md § Keterbatasan.
 # ----------------------------------------------------------
 label_rules:
-  kolom_target:   "status_stok"     # Nama kolom label di output
+  kolom_target: "status_stok" # Nama kolom label di output
 
   # "habis": stok_akhir == 0
   habis_threshold: 0
 
   # "menipis": stok_akhir > 0 DAN (stok_akhir <= batas_minimum ATAU days_of_cover < days_of_cover_threshold)
-  days_of_cover_threshold: 2.0      # Jika sisa stok cukup untuk < N hari, dianggap menipis
+  days_of_cover_threshold: 2.0 # Jika sisa stok cukup untuk < N hari, dianggap menipis
 
   # "aman": semua kondisi lain
   # Urutan kelas untuk encoding: 0=aman, 1=menipis, 2=habis
@@ -68,15 +68,15 @@ features:
 
   # Fitur numerik yang masuk ke model (setelah engineering)
   numerik:
-    - "stok_saat_ini"       # = stok_akhir hari itu
+    - "stok_saat_ini"
     - "batas_minimum"
     - "barang_masuk"
     - "barang_keluar"
-    - "avg_keluar_7h"       # rolling mean 7 hari barang_keluar per SKU
-    - "days_of_cover"       # stok_saat_ini / avg_keluar_7h (clipped)
-    - "rasio_stok"          # stok_saat_ini / batas_minimum
-    - "total_masuk_7h"      # rolling sum 7 hari barang_masuk per SKU
-    - "total_keluar_7h"     # rolling sum 7 hari barang_keluar per SKU
+    - "avg_keluar_7h" # rolling mean 7 hari barang_keluar per SKU
+    - "days_of_cover" # stok_saat_ini / avg_keluar_7h (clipped)
+    - "rasio_stok" # stok_saat_ini / batas_minimum
+    - "total_masuk_7h" # rolling sum 7 hari barang_masuk per SKU
+    - "total_keluar_7h" # rolling sum 7 hari barang_keluar per SKU
 
   # Fitur kategorik yang di-encode (OrdinalEncoder di dalam Pipeline)
   kategorik:
@@ -84,15 +84,15 @@ features:
     - "rasa"
 
   # Fitur untuk days_of_cover: hindari division by zero
-  days_of_cover_min_avg: 0.5   # Jika avg_keluar_7h < 0.5, gunakan 0.5 sebagai divisor
+  days_of_cover_min_avg: 0.5 # Jika avg_keluar_7h < 0.5, gunakan 0.5 sebagai divisor
 
 # ----------------------------------------------------------
 # SPLIT DATA (berbasis waktu – lebih jujur untuk time series)
 # ----------------------------------------------------------
 split:
-  strategi: "time"            # "time" = train awal, test akhir; "random" = acak
-  test_size: 0.2              # 20% data terakhir jadi test
-  tanggal_split: null         # Jika diisi (mis. "2025-05-01"), pakai tanggal ini sebagai cutoff
+  strategi: "time" # "time" = train awal, test akhir; "random" = acak
+  test_size: 0.2 # 20% data terakhir jadi test
+  tanggal_split: null # Jika diisi (mis. "2025-05-01"), pakai tanggal ini sebagai cutoff
 
 # ----------------------------------------------------------
 # MODEL
@@ -144,8 +144,8 @@ models:
 # OUTPUT
 # ----------------------------------------------------------
 output:
-  model_dir:    "models/"
-  model_file:   "best_model.joblib"
+  model_dir: "models/"
+  model_file: "best_model.joblib"
   metadata_file: "models/metadata.json"
-  report_dir:   "reports/"
-  figures_dir:  "reports/figures/"
+  report_dir: "reports/"
+  figures_dir: "reports/figures/"

@@ -7,15 +7,28 @@ Use Case: Aplikasi pengelolaan dan pemantauan stok harian UMKM ROKKUS Mardani Ra
 
 ## Deskripsi
 
-Modul Machine Learning (non-Generative AI) untuk mengklasifikasikan status stok per SKU produk ROKKUS menjadi tiga kelas:
+Modul ini menyediakan layanan pemantauan dan klasifikasi status stok per SKU produk ROKKUS menjadi tiga status operasional:
+- **`habis`** : `stok_saat_ini <= 0`
+- **`menipis`**: `stok_saat_ini > 0` dan `stok_saat_ini <= batas_minimum`
+- **`aman`**   : `stok_saat_ini > batas_minimum`
 
-| Label | Kondisi |
-|---|---|
-| **aman** | Stok > batas_minimum DAN days_of_cover ≥ 2 hari |
-| **menipis** | Stok > 0 DAN (stok ≤ batas_minimum ATAU days_of_cover < 2 hari) |
-| **habis** | Stok = 0 unit |
+### Catatan Arsitektur: Rule-Based vs Machine Learning
+1. **Klasifikasi Status Stok Aktual (Rule-Based - Disarankan untuk Operasional):**
+   Status stok fisik harian bersifat deterministik sesuai kesepakatan bisnis di atas. Evaluasi status aktual dan penanda stok menipis dijalankan menggunakan fungsi `classify_stock_status()` dan `flag_stok_menipis()` di `src/predict.py` serta endpoint `POST /ml/status`. Pendekatan ini instan, akurat 100%, dan **tidak memerlukan file model `.joblib`**.
+2. **Inferensi Model Machine Learning (`POST /ml/predict-status` - Eksperimen/Legacy):**
+   Model Random Forest/Gradient Boosting yang telah dilatih tersimpan di `models/best_model.joblib`. Endpoint ini tetap dipertahankan untuk backward-compatibility eksperimen komparasi model. Prediksi stok masa depan ditunda ke fase berikutnya.
 
-Model terbaik tersimpan di `models/best_model.joblib` dan dapat dipanggil via fungsi Python maupun endpoint FastAPI.
+---
+
+## Formula Klasifikasi Status Stok Aktual
+
+$$\text{Status}(i) = \begin{cases} 
+\mathbf{habis}, & \text{jika } \text{stok\_saat\_ini} \le 0 \\
+\mathbf{menipis}, & \text{jika } \text{stok\_saat\_ini} > 0 \;\land\; \text{stok\_saat\_ini} \le \text{batas\_minimum} \\
+\mathbf{aman}, & \text{jika } \text{stok\_saat\_ini} > \text{batas\_minimum}
+\end{cases}$$
+
+*Catatan: Pada tahap ini, metrik `days_of_cover` tidak mengubah status aktual, namun tetap dapat disertakan sebagai indikator peringatan tambahan.*
 
 ---
 
@@ -166,7 +179,48 @@ uvicorn src.api:app --reload --port 8001
 # http://localhost:8001/ml/docs
 ```
 
-**Contoh request:**
+#### A. Endpoint Utama: Klasifikasi Status Stok Aktual (`POST /ml/status`) — Rule-Based
+Endpoint ini **tidak membutuhkan file model `.joblib`** dan menerima payload minimal.
+
+**Request:**
+```bash
+curl -X POST http://localhost:8001/ml/status \
+  -H "Content-Type: application/json" \
+  -d '{
+    "items": [
+      {
+        "stok_saat_ini": 3.0,
+        "batas_minimum": 5.0,
+        "id_barang": "PR001",
+        "nama_barang": "Lotus Biscoff"
+      }
+    ]
+  }'
+```
+
+**Response:**
+```json
+{
+  "total_items": 1,
+  "hasil": [
+    {
+      "id_barang": "PR001",
+      "nama_barang": "Lotus Biscoff",
+      "status": "menipis",
+      "is_menipis": true,
+      "is_habis": false,
+      "alasan": "Stok (3.00 unit) berada di bawah atau sama dengan batas minimum (5.00 unit).",
+      "saran": "Pertimbangkan resupply segera untuk mencegah stok habis.",
+      "metode": "rule_based"
+    }
+  ]
+}
+```
+
+#### B. Endpoint Inferensi Model ML (`POST /ml/predict-status`) — Legacy/Model
+Memerlukan file model `models/best_model.joblib` dan 11 fitur input lengkap.
+
+**Request:**
 ```bash
 curl -X POST http://localhost:8001/ml/predict-status \
   -H "Content-Type: application/json" \

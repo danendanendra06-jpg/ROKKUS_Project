@@ -22,7 +22,7 @@ import yaml
 SRC_DIR = Path(__file__).parent.parent / "src"
 sys.path.insert(0, str(SRC_DIR))
 
-from predict import PredictInputError, flag_stok_menipis, predict_status
+from predict import PredictInputError, classify_stock_status, flag_stok_menipis, predict_status
 
 CONFIG_PATH = Path(__file__).parent.parent / "configs" / "config.yaml"
 MODEL_PATH  = Path(__file__).parent.parent / "models" / "best_model.joblib"
@@ -121,6 +121,77 @@ class TestFlagStokMenipis:
         assert "is_habis"   in result
         assert "alasan"     in result
         assert "saran"      in result
+
+
+# ---------------------------------------------------------------------------
+# Tests: classify_stock_status (Rule-Based, tanpa model .joblib)
+# ---------------------------------------------------------------------------
+
+class TestClassifyStockStatus:
+    def test_stok_nol_adalah_habis(self):
+        res = classify_stock_status(stok_saat_ini=0, batas_minimum=5)
+        assert res["status"] == "habis"
+        assert res["is_habis"] is True
+        assert res["is_menipis"] is False
+        assert res["metode"] == "rule_based"
+
+    def test_stok_negatif_ditolak(self):
+        with pytest.raises(PredictInputError, match="negatif"):
+            classify_stock_status(stok_saat_ini=-2.5, batas_minimum=5)
+
+    def test_stok_tepat_sama_dengan_batas_minimum_adalah_menipis(self):
+        res = classify_stock_status(stok_saat_ini=5.0, batas_minimum=5.0)
+        assert res["status"] == "menipis"
+        assert res["is_menipis"] is True
+        assert res["is_habis"] is False
+
+    def test_stok_di_bawah_batas_minimum_adalah_menipis(self):
+        res = classify_stock_status(stok_saat_ini=3.0, batas_minimum=5.0)
+        assert res["status"] == "menipis"
+        assert res["is_menipis"] is True
+        assert res["is_habis"] is False
+
+    def test_stok_di_atas_batas_minimum_adalah_aman(self):
+        res = classify_stock_status(stok_saat_ini=10.0, batas_minimum=5.0)
+        assert res["status"] == "aman"
+        assert res["is_menipis"] is False
+        assert res["is_habis"] is False
+
+    def test_batas_minimum_nol(self):
+        # Stok 0, batas 0 -> habis
+        res0 = classify_stock_status(stok_saat_ini=0, batas_minimum=0)
+        assert res0["status"] == "habis"
+
+        # Stok 2, batas 0 -> aman
+        res2 = classify_stock_status(stok_saat_ini=2, batas_minimum=0)
+        assert res2["status"] == "aman"
+
+    def test_stok_desimal(self):
+        # Nilai pecahan 0.5 kg adonan dengan batas 1.0 kg -> menipis
+        res = classify_stock_status(stok_saat_ini=0.5, batas_minimum=1.0)
+        assert res["status"] == "menipis"
+        assert res["is_menipis"] is True
+
+        # Nilai pecahan 1.5 kg adonan dengan batas 1.0 kg -> aman
+        res_aman = classify_stock_status(stok_saat_ini=1.5, batas_minimum=1.0)
+        assert res_aman["status"] == "aman"
+
+    def test_konsistensi_output_status_dan_flag(self):
+        # Periksa konsistensi antara status string dan boolean flag
+        for s, b in [(0, 5), (3, 5), (5, 5), (10, 5)]:
+            res = classify_stock_status(stok_saat_ini=s, batas_minimum=b)
+            if res["status"] == "habis":
+                assert res["is_habis"] is True and res["is_menipis"] is False
+            elif res["status"] == "menipis":
+                assert res["is_menipis"] is True and res["is_habis"] is False
+            else:
+                assert res["is_habis"] is False and res["is_menipis"] is False
+
+    def test_days_of_cover_sebagai_indikator_tambahan(self):
+        res = classify_stock_status(stok_saat_ini=10, batas_minimum=5, days_of_cover=1.2)
+        assert res["status"] == "aman"
+        assert "Days of cover" in res["alasan"]
+
 
 
 # ---------------------------------------------------------------------------

@@ -88,7 +88,7 @@ class StokItemInput(BaseModel):
 
 
 class PredictRequest(BaseModel):
-    """Body request untuk POST /ml/predict-status."""
+    """Body request untuk POST /ml/predict-status (Model ML legacy)."""
     items: List[StokItemInput] = Field(
         ...,
         min_length=1,
@@ -97,19 +97,113 @@ class PredictRequest(BaseModel):
 
 
 class PrediksiItem(BaseModel):
-    """Hasil prediksi untuk satu item."""
+    """Hasil prediksi untuk satu item (Model ML legacy)."""
     status:       str              = Field(..., description="'aman' | 'menipis' | 'habis'")
     probabilitas: Dict[str, float] = Field(..., description="Probabilitas per kelas")
     versi_model:  str              = Field(..., description="Versi model yang digunakan")
 
 
 class PredictResponse(BaseModel):
-    """Response POST /ml/predict-status."""
+    """Response POST /ml/predict-status (Model ML legacy)."""
     total_items: int                = Field(..., description="Jumlah item yang diprediksi")
     prediksi:    List[PrediksiItem] = Field(..., description="Hasil prediksi per item")
 
 
+# --- Schema untuk Rule-Based Stock Status Classification ---
+
+class StockStatusItemInput(BaseModel):
+    """Schema input minimal untuk klasifikasi status stok aktual per barang."""
+    stok_saat_ini: float = Field(..., ge=0, description="Stok fisik saat ini (unit), ≥ 0")
+    batas_minimum: float = Field(..., ge=0, description="Batas stok minimum SKU, ≥ 0")
+    days_of_cover: Optional[float] = Field(None, ge=0, description="Estimasi sisa hari stok (opsional), ≥ 0")
+    id_barang:     Optional[str]   = Field(None, description="ID produk/SKU (opsional)")
+    nama_barang:   Optional[str]   = Field(None, description="Nama produk/SKU (opsional)")
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "stok_saat_ini": 4.0,
+                "batas_minimum": 5.0,
+                "days_of_cover": 0.8,
+                "id_barang":     "PR001",
+                "nama_barang":   "Lotus Biscoff"
+            }
+        }
+    }
+
+
+class StockStatusRequest(BaseModel):
+    """Body request untuk POST /ml/status (Rule-Based)."""
+    items: List[StockStatusItemInput] = Field(
+        ...,
+        min_length=1,
+        description="Daftar item stok yang ingin dicek statusnya (minimal 1)."
+    )
+
+
+class StockStatusResultItem(BaseModel):
+    """Hasil klasifikasi status stok aktual untuk satu item."""
+    id_barang:   Optional[str] = Field(None, description="ID produk (jika diberikan)")
+    nama_barang: Optional[str] = Field(None, description="Nama produk (jika diberikan)")
+    status:      str           = Field(..., description="'aman' | 'menipis' | 'habis'")
+    is_menipis:  bool          = Field(..., description="True jika stok menipis")
+    is_habis:    bool          = Field(..., description="True jika stok habis (0)")
+    alasan:      str           = Field(..., description="Penjelasan teknis status")
+    saran:       str           = Field(..., description="Rekomendasi tindakan operasional")
+    metode:      str           = Field("rule_based", description="Metode evaluasi ('rule_based')")
+
+
+class StockStatusResponse(BaseModel):
+    """Response POST /ml/status (Rule-Based)."""
+    total_items: int                        = Field(..., description="Jumlah item yang dievaluasi")
+    hasil:       List[StockStatusResultItem] = Field(..., description="Daftar hasil evaluasi status stok")
+
+
+
 class HealthResponse(BaseModel):
+    """Response GET /ml/health."""
+    status:      str   = Field(..., description='"ok" atau "degraded"')
+    model_ready: bool  = Field(..., description='True jika model terdapat dan bisa dimuat')
+    versi_model: Optional[str] = Field(None, description='Versi model (jika tersedia)')
+    keterangan:  str   = Field(..., description='Pesan singkat')
+
+# ---------------------------------------------------------------------------
+# Forecasting schemas (new)
+# ---------------------------------------------------------------------------
+
+class ForecastItemInput(BaseModel):
+    """Input schema for a single SKU to be forecasted."""
+    id_barang:      str   = Field(..., description='SKU identifier')
+    nama_barang:    Optional[str] = Field(None, description='Nama produk (opsional)')
+    batas_minimum:  float = Field(..., ge=0, description='Batas minimum stok')
+    # Required numeric & categorical features (same as classification but without leaking ones)
+    stok_saat_ini:  float = Field(..., ge=0, description='Stok akhir saat ini')
+    barang_masuk:   float = Field(..., ge=0, description='Jumlah barang masuk')
+    barang_keluar:  float = Field(..., ge=0, description='Jumlah barang keluar')
+    avg_keluar_7h:  float = Field(..., ge=0, description='Rata-rata keluar 7 hari terakhir')
+    total_masuk_7h: float = Field(..., ge=0, description='Total masuk 7 hari terakhir')
+    total_keluar_7h:float = Field(..., ge=0, description='Total keluar 7 hari terakhir')
+    kategori:       str   = Field(..., min_length=1, description='Kategori produk')
+    rasa:           str   = Field(..., min_length=1, description='Varian rasa')
+
+class ForecastRequest(BaseModel):
+    """Batch request for stock forecasting."""
+    items: List[ForecastItemInput] = Field(..., min_length=1, description='Daftar SKU untuk diprediksi')
+    horizon_days: int = Field(7, ge=1, le=30, description='Horizon prediksi (hari)')
+
+class ForecastResultItem(BaseModel):
+    id_barang:        str   = Field(..., description='SKU identifier')
+    nama_barang:      Optional[str] = Field(None, description='Nama produk')
+    horizon_days:     int   = Field(..., description='Horizon yang diprediksi (hari)')
+    predicted_stock:  float = Field(..., description='Jumlah stok yang diprediksi')
+    predicted_status: str   = Field(..., description='"aman" | "menipis" | "habis"')
+    batas_minimum:    float = Field(..., description='Batas minimum stok')
+    model_version:    str   = Field(..., description='Versi model forecasting')
+    notes:            Optional[str] = Field(None, description='Catatan (mis. data tidak cukup)')
+
+class ForecastResponse(BaseModel):
+    total_items: int = Field(..., description='Jumlah item yang diprediksi')
+    results: List[ForecastResultItem] = Field(..., description='Daftar hasil prediksi')
     """Response GET /ml/health."""
     status:      str           = Field(..., description="'ok' atau 'degraded'")
     model_ready: bool          = Field(..., description="True jika model terdapat dan bisa dimuat")
@@ -231,6 +325,233 @@ async def predict_status_endpoint(request: PredictRequest) -> PredictResponse:
         prediksi    = prediksi,
     )
 
+
+@router.post(
+    "/status",
+    response_model=StockStatusResponse,
+    summary="Klasifikasi Status Stok Aktual (Rule-Based)",
+    description=(
+        "Klasifikasi status stok aktual per barang ('aman', 'menipis', 'habis') "
+        "berdasarkan aturan bisnis deterministik tanpa memerlukan model Machine Learning (.joblib). "
+        "Input minimal hanya memerlukan 'stok_saat_ini' dan 'batas_minimum'."
+    ),
+    responses={
+        200: {"description": "Evaluasi status stok berhasil"},
+        400: {"description": "Input tidak valid (stok negatif, dll.)"},
+        422: {"description": "Validasi Pydantic gagal (tipe data salah/field hilang)"},
+    },
+)
+async def stock_status_endpoint(request: StockStatusRequest) -> StockStatusResponse:
+    try:
+        from predict import classify_stock_status, PredictInputError
+    except ImportError:
+        from src.predict import classify_stock_status, PredictInputError
+
+    hasil_items: List[StockStatusResultItem] = []
+
+    for item in request.items:
+        try:
+            res = classify_stock_status(
+                stok_saat_ini=item.stok_saat_ini,
+                batas_minimum=item.batas_minimum,
+                days_of_cover=item.days_of_cover,
+                config_path=_CONFIG_PATH,
+            )
+            hasil_items.append(
+                StockStatusResultItem(
+                    id_barang=item.id_barang,
+                    nama_barang=item.nama_barang,
+                    status=res["status"],
+                    is_menipis=res["is_menipis"],
+                    is_habis=res["is_habis"],
+                    alasan=res["alasan"],
+                    saran=res["saran"],
+                    metode=res["metode"],
+                )
+            )
+        except PredictInputError as e:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "invalid_input", "pesan": str(e)},
+            )
+        except Exception as e:
+            logger.exception("Unexpected error saat classify_stock_status")
+            raise HTTPException(
+                status_code=500,
+                detail={"error": "internal_error", "pesan": str(e)},
+            )
+
+    return StockStatusResponse(
+        total_items=len(hasil_items),
+        hasil=hasil_items,
+    )
+
+
+
+# ---------------------------------------------------------------------------
+# Forecasting endpoint (new)
+# ---------------------------------------------------------------------------
+
+@router.post(
+    "/forecast-stock",
+    response_model=ForecastResponse,
+    summary="Forecast Stock Levels",
+    description=(
+        "Prediksi jumlah stok di masa mendatang untuk satu atau beberapa SKU. "
+        "Horizon dapat diatur hingga 30 hari, namun saat ini hanya horizon_days=7 didukung. "
+        "Fitur yang digunakan tidak mengandung kebocoran data – semua dihitung hanya dari data historis yang tersedia."
+    ),
+    responses={
+        200: {"description": "Forecast berhasil"},
+        400: {"description": "Input tidak valid atau horizon tidak didukung"},
+        503: {"description": "Model forecasting belum tersedia"},
+        500: {"description": "Kesalahan internal server"},
+    },
+)
+async def forecast_stock_endpoint(request: ForecastRequest) -> ForecastResponse:
+    # Validate horizon (currently only 7‑day horizon is trained)
+    if request.horizon_days != 7:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "unsupported_horizon", "pesan": "Only horizon_days=7 is supported"},
+        )
+
+    # Load config
+    import yaml
+    from src import forecast as forecast_mod
+    try:
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={"error": "config_error", "pesan": str(e)})
+
+    # Load or train forecasting model
+    try:
+        model = forecast_mod.load_forecast_model()
+    except Exception as e:
+        raise HTTPException(status_code=503, detail={"error": "model_not_found", "pesan": str(e)})
+
+    results: List[ForecastResultItem] = []
+    for item in request.items:
+        try:
+            pred = forecast_mod.predict_future_stock(
+                item=item.model_dump(),
+                horizon=request.horizon_days,
+                model=model,
+                cfg=cfg,
+            )
+        except Exception as e:
+            # Insufficient history or other error – return a note but keep processing
+            results.append(ForecastResultItem(
+                id_barang=item.id_barang,
+                nama_barang=item.nama_barang,
+                horizon_days=request.horizon_days,
+                predicted_stock=0.0,
+                predicted_status="menipis",
+                batas_minimum=item.batas_minimum,
+                model_version="na",
+                notes=str(e),
+            ))
+            continue
+        results.append(ForecastResultItem(
+            id_barang=item.id_barang,
+            nama_barang=item.nama_barang,
+            horizon_days=request.horizon_days,
+            predicted_stock=pred["predicted_stock"],
+            predicted_status=pred["predicted_status"],
+            batas_minimum=item.batas_minimum,
+            model_version="forecast_v1",
+            notes=None,
+        ))
+    return ForecastResponse(
+        total_items=len(results),
+        results=results,
+        status="ok",
+        model_ready=True,
+        versi_model="forecast_v1",
+        keterangan="Forecast berhasil"
+    )
+
+# ---------------------------------------------------------------------------
+
+@router.post(
+    "/forecast-stock",
+    response_model=ForecastResponse,
+    summary="Forecast Stock Levels",
+    description=(
+        "Prediksi jumlah stok di masa mendatang untuk satu atau beberapa SKU. "
+        "Horizon dapat diatur hingga 30 hari. "
+        "Fitur yang digunakan tidak mengandung kebocoran data – semua dihitung hanya dari data historis yang tersedia."
+    ),
+    responses={
+        200: {"description": "Forecast berhasil"},
+        400: {"description": "Input tidak valid atau data historis tidak cukup"},
+        503: {"description": "Model forecasting belum tersedia"},
+        500: {"description": "Kesalahan internal server"},
+    },
+)
+async def forecast_stock_endpoint(request: ForecastRequest) -> ForecastResponse:
+    # Load config
+    import yaml
+    from src import forecast as forecast_mod
+    try:
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={"error": "config_error", "pesan": str(e)})
+
+    # Load or train forecasting model
+    try:
+        model = forecast_mod.load_forecast_model()
+    except Exception as e:
+        raise HTTPException(status_code=503, detail={"error": "model_not_found", "pesan": str(e)})
+
+    results: List[ForecastResultItem] = []
+    for item in request.items:
+        try:
+            pred = forecast_mod.predict_future_stock(
+                item=item.model_dump(),
+                horizon=request.horizon_days,
+                model=model,
+                cfg=cfg,
+            )
+        except Exception as e:
+            # If we cannot compute because of insufficient history, return note but continue
+            results.append(ForecastResultItem(
+                id_barang=item.id_barang,
+                nama_barang=item.nama_barang,
+                horizon_days=request.horizon_days,
+                predicted_stock=0.0,
+                predicted_status="menipis",
+                batas_minimum=item.batas_minimum,
+                model_version="na",
+                notes=str(e),
+            ))
+            continue
+        results.append(ForecastResultItem(
+            id_barang=item.id_barang,
+            nama_barang=item.nama_barang,
+            horizon_days=request.horizon_days,
+            predicted_stock=pred["predicted_stock"],
+            predicted_status=pred["predicted_status"],
+            batas_minimum=item.batas_minimum,
+            model_version="forecast_v1",
+            notes=None,
+        ))
+    # Enforce supported horizons (only 7 days for now)
+    if request.horizon_days != 7:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "unsupported_horizon", "pesan": "Only horizon_days=7 is supported"},
+        )
+    return ForecastResponse(
+        total_items=len(results),
+        results=results,
+        status="ok",
+        model_ready=True,
+        versi_model="forecast_v1",
+        keterangan="Forecast berhasil"
+    )
 
 # ---------------------------------------------------------------------------
 # Standalone app (jalankan langsung: uvicorn src.api:app)

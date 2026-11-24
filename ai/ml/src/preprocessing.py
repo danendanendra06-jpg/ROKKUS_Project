@@ -70,7 +70,7 @@ def load_data(config_path: str | Path) -> Tuple[pd.DataFrame, dict]:
             "atau ubah path_data di configs/config.yaml ke dataset asli."
         )
 
-    df = pd.read_csv(csv_path, parse_dates=[cfg["data"]["kolom"]["tanggal"]])
+    df = pd.read_csv(csv_path, parse_dates=[cfg["data"]["kolom"]["tanggal"]], encoding="utf-8")
 
     # Validasi kolom wajib
     kolom = cfg["data"]["kolom"]

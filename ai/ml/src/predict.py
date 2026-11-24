@@ -259,6 +259,9 @@ def flag_stok_menipis(
     is_habis = stok == 0
 
     cond_batas = stok <= bmin and stok > 0
+    # Catatan: days_of_cover hanya sebagai indikator peringatan tambahan, 
+    # namun status menipis standar bisnis ditentukan oleh stok <= batas_minimum.
+    # cond_doc dipertahankan untuk backward-compatibility peringatan.
     cond_doc   = (days_of_cover is not None) and (days_of_cover < doc_thr) and (stok > 0)
     is_menipis = (not is_habis) and (cond_batas or cond_doc)
 
@@ -283,6 +286,86 @@ def flag_stok_menipis(
         "is_habis":   is_habis,
         "alasan":     alasan,
         "saran":      saran,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Fungsi baru: classify_stock_status (Rule-Based Murni)
+# ---------------------------------------------------------------------------
+
+def classify_stock_status(
+    stok_saat_ini: float,
+    batas_minimum: float,
+    days_of_cover: Optional[float] = None,
+    config_path: Optional[Path] = None,
+) -> dict:
+    """
+    Klasifikasi status stok aktual per barang menggunakan aturan bisnis deterministik:
+      - 'habis'   : stok_saat_ini <= 0
+      - 'menipis' : stok_saat_ini > 0 dan stok_saat_ini <= batas_minimum
+      - 'aman'    : stok_saat_ini > batas_minimum
+
+    Days of cover tidak mengubah status aktual, namun jika disertakan akan dicatat
+    sebagai indikator tambahan di bagian 'alasan'/'saran'.
+
+    Tidak menggunakan model Machine Learning (.joblib).
+
+    Returns
+    -------
+    {
+      "status":     str   ("aman" | "menipis" | "habis"),
+      "is_menipis": bool,
+      "is_habis":   bool,
+      "alasan":     str,
+      "saran":      str,
+      "metode":     "rule_based",
+    }
+    """
+    # Validasi input numerik & non-negatif
+    for name, val in [("stok_saat_ini", stok_saat_ini), ("batas_minimum", batas_minimum)]:
+        if not isinstance(val, (int, float)):
+            raise PredictInputError(f"'{name}' harus numerik, bukan {type(val).__name__}.")
+        if val < 0:
+            raise PredictInputError(f"'{name}' tidak boleh negatif (nilai: {val}).")
+
+    stok = float(stok_saat_ini)
+    bmin = float(batas_minimum)
+
+    # Aturan klasifikasi aktual
+    if stok <= 0:
+        status = "habis"
+        is_habis = True
+        is_menipis = False
+        alasan = "Stok mencapai 0 unit (stok habis)."
+        saran = "Segera lakukan resupply atau produksi ulang."
+    elif stok <= bmin:
+        status = "menipis"
+        is_habis = False
+        is_menipis = True
+        alasan = f"Stok ({stok:.2f} unit) berada di bawah atau sama dengan batas minimum ({bmin:.2f} unit)."
+        saran = "Pertimbangkan resupply segera untuk mencegah stok habis."
+    else:
+        status = "aman"
+        is_habis = False
+        is_menipis = False
+        alasan = f"Stok ({stok:.2f} unit) aman di atas batas minimum ({bmin:.2f} unit)."
+        saran = "Stok aman untuk operasional."
+
+    # Tambahan indikator days_of_cover jika ada
+    if days_of_cover is not None:
+        if not isinstance(days_of_cover, (int, float)) or days_of_cover < 0:
+            raise PredictInputError("days_of_cover harus berupa angka non-negatif.")
+        if status == "aman" and days_of_cover < 2.0:
+            alasan += f" Catatan: Days of cover ({days_of_cover:.1f} hari) mendekati batas ambang perputaran."
+            saran = f"Pantau laju penjualan. Estimasi sisa stok untuk ≈{days_of_cover:.1f} hari."
+
+    return {
+        "status":     status,
+        "is_menipis": is_menipis,
+        "is_habis":   is_habis,
+        "alasan":     alasan,
+        "saran":      saran,
+        "metode":     "rule_based",
     }
 
 
