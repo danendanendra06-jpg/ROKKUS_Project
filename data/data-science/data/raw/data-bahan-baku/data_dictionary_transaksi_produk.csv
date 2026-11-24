@@ -1,0 +1,6 @@
+Nama Kolom,Tipe Data,Keterangan,Contoh
+transaction_id,string,Kode unik transaksi produk jadi.,TRX0001
+product_id,string,Kode produk jadi yang mengalami pergerakan stok.,PR007
+tanggal,datetime,Tanggal dan waktu transaksi produk jadi.,2026-09-01 00:00:00
+jenis_transaksi,string,Jenis pergerakan stok produk jadi: MASUK atau KELUAR.,KELUAR
+jumlah,integer,Jumlah unit produk jadi yang masuk atau keluar.,6

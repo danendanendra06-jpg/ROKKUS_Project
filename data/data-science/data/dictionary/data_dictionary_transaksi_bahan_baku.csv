@@ -1,0 +1,11 @@
+Nama Kolom,Tipe Data,Keterangan,Contoh
+transaction_id,string,Kode unik transaksi bahan baku.,BBM00001
+material_id,string,Kode bahan baku yang mengalami pergerakan stok.,BB001
+tanggal,datetime,Tanggal transaksi bahan baku.,2026-09-01
+jenis_transaksi,string,Jenis pergerakan stok: MASUK atau KELUAR.,MASUK
+sumber_tujuan,string,Asal bahan untuk transaksi masuk atau tujuan/pemakaian untuk transaksi keluar.,Supplier
+jumlah,integer,Jumlah bahan baku yang masuk atau keluar.,25
+unit,string,Satuan jumlah bahan baku.,gram
+referensi_produk,string,ID produk jadi terkait untuk transaksi pemakaian; dapat kosong untuk pembelian.,PR001
+data_basis,string,Penanda sumber data atau asumsi sintetis.,Asumsi sintetis untuk simulasi
+referensi_transaksi_produk,string,ID transaksi produk jadi yang menjadi dasar penghitungan bahan keluar.,TRX0001
