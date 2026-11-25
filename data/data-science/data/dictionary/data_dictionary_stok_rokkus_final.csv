@@ -1,0 +1,11 @@
+Nama Kolom,Tipe Data,Keterangan,Contoh
+product_id,string,Kode unik produk jadi atau item tambahan.,PR001
+product_name,string,Nama produk jadi.,Lotus Biscoff
+category,string,"Kategori produk: Roti Manis, Roti Asin, atau Tambahan.",Roti Manis
+price,integer,Harga jual per unit dalam rupiah.,18000
+tanggal_stok,date,Tanggal acuan stok awal.,2026-09-01
+stok_awal,integer,Jumlah stok awal produk (data sintetis).,16
+total_masuk,integer,Total unit masuk selama 1-30 September 2026 (sintetis).,35
+total_keluar,integer,Total unit keluar selama 1-30 September 2026 (sintetis).,39
+stok_akhir,integer,stok_awal + total_masuk - total_keluar.,12
+status_stok,string,"Status rule-based: Empty jika stok_akhir = 0, Low jika 1-5, Safe jika > 5. Batas 5 adalah asumsi simulasi.",Safe

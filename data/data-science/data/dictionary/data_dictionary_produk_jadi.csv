@@ -9,4 +9,4 @@ total_masuk,integer,Total produk jadi yang masuk selama periode.,35
 total_keluar,integer,Total produk jadi yang keluar selama periode.,39
 stok_akhir,integer,Sisa produk jadi = stok awal + total masuk - total keluar.,12
 min_stock,integer,Batas minimum stok produk; asumsi simulasi berdasarkan tiga hari rata-rata pengeluaran.,4
-stock_status,string,"Status stok: Aman, Menipis, atau Habis.",Aman
+stock_status,string,"Status stok berbasis min_stock per produk: Habis jika stok_akhir = 0, Menipis jika stok_akhir <= min_stock, Aman jika di atas min_stock. Berbeda dengan status_stok (Safe/Low/Empty, batas tetap 5) pada dataset_stok_rokkus_final.csv.",Aman

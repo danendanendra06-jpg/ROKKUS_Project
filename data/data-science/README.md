@@ -35,7 +35,7 @@ Data-Science/
 │   ├── dictionary/
 │   │   ├── data_dictionary_dataset_bahan_baku_final.csv
 │   │   ├── data_dictionary_produk_jadi.csv
-│   │   ├── data_dictionary_transaksi_bahan_baku.csv
+│   │   ├── data_dictionary_stok_rokkus_final.csv
 │   │   └── data_dictionary_transaksi_produk.csv
 │   └── processed/
 │       ├── dataset_bahan_baku_final.csv
@@ -109,6 +109,25 @@ Klasifikasi status stok produk jadi menggunakan aturan berikut:
 Batas 5 unit merupakan asumsi untuk simulasi, bukan batas minimum resmi dari UMKM. Aturan perlu dikonfirmasi dengan pihak UMKM sebelum digunakan sebagai aturan operasional.
 
 Klasifikasi saat ini berbasis aturan (rule-based), bukan model machine learning atau prediksi permintaan.
+
+## 8A. Dua Skema Status Stok Produk Jadi
+
+Project ini memakai dua skema status untuk produk jadi dengan tujuan berbeda. Keduanya dihitung dari stok akhir yang sama (total 332 unit).
+
+| Skema | File | Aturan | Hasil |
+|---|---|---|---|
+| Batas tetap (utama, untuk integrasi aplikasi) | `dataset_stok_rokkus_final.csv`, `hasil_klasifikasi_stok_rokkus.csv`, `dashboard_summary_rokkus.csv` | Empty = 0, Low = 1-5, Safe > 5 | Safe 16, Low 8, Empty 5 |
+| Batas per produk (`min_stock`) | `dataset_produk_jadi_final.csv`, notebook `ROKKUS_Data_Science.ipynb` | Habis = 0, Menipis <= min_stock, Aman > min_stock | Aman 20, Menipis 4, Habis 5 |
+
+Pemetaan antar skema:
+
+| Batas tetap | Batas per produk | Keterangan |
+|---|---|---|
+| Empty (5) | Habis (5) | Sama |
+| Safe (16) | Aman (16) | Sama |
+| Low (8) | Menipis (4) + Aman (4) | Selisih 4 produk (PR009, PR018, PR023, AD002) yang stok akhirnya 4-5 unit, di bawah batas tetap 5 tetapi masih di atas `min_stock` produknya |
+
+Untuk integrasi dengan tim Full-stack dan Gen AI, gunakan skema batas tetap (Safe/Low/Empty). Skema `min_stock` dipakai untuk EDA dan simulasi batas minimum per produk. Kedua batas merupakan asumsi dan perlu dikonfirmasi dengan pihak UMKM.
 
 ## 9. Ringkasan Hasil Dataset Sintetis
 
