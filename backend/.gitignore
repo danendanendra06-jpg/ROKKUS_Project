@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment variables (password DB, JWT secret, API key)
+.env
+.env.local
+.env.*.local
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+
+# File bawaan OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Konfigurasi lokal editor (opsional)
+.vscode/
+.idea/
