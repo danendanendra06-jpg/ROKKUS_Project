@@ -1,21 +1,23 @@
 Dataset,Jenis Pemeriksaan,Jumlah Temuan,Status
 Master Produk,Missing Values,0,Lolos
-Stok Awal,Missing Values,0,Lolos
-Transaksi Stok,Missing Values,0,Lolos
 Master Produk,Duplikasi Baris,0,Lolos
+Stok Awal,Missing Values,0,Lolos
 Stok Awal,Duplikasi Baris,0,Lolos
+Transaksi Stok,Missing Values,0,Lolos
 Transaksi Stok,Duplikasi Baris,0,Lolos
-Master Produk,Duplikasi ID,0,Lolos
-Stok Awal,Duplikasi ID,0,Lolos
-Transaksi Stok,Duplikasi ID,0,Lolos
-Relasi Dataset,ID Produk Tidak Terdaftar,0,Lolos
-Relasi Dataset,Produk Tanpa Stok Awal,0,Lolos
-Stok Awal,Tanggal Tidak Valid,0,Lolos
-Transaksi Stok,Tanggal Tidak Valid,0,Lolos
-Master Produk,Harga Negatif,0,Lolos
-Stok Awal,Stok Negatif,0,Lolos
-Transaksi Stok,Jumlah Negatif,0,Lolos
-Relasi Dataset,Nama Produk Berbeda,0,Lolos
-Relasi Dataset,Kategori Berbeda,0,Lolos
-Transaksi Stok,Jenis Transaksi Tidak Valid,0,Lolos
-Transaksi Stok,Jumlah Transaksi Nol,0,Lolos
+Master Produk,Duplikasi product_id,0,Lolos
+Stok Awal,Duplikasi product_id,0,Lolos
+Transaksi Stok,Duplikasi transaction_id,0,Lolos
+Relasi Dataset,ID stok tidak terdaftar di master,0,Lolos
+Relasi Dataset,ID transaksi tidak terdaftar di master,0,Lolos
+Relasi Dataset,Produk tanpa stok awal,0,Lolos
+Relasi Dataset,Nama produk berbeda,0,Lolos
+Relasi Dataset,Kategori berbeda,0,Lolos
+Stok Awal,Tanggal tidak valid,0,Lolos
+Transaksi Stok,Tanggal tidak valid,0,Lolos
+Master Produk,Harga negatif,0,Lolos
+Stok Awal,Stok awal negatif,0,Lolos
+Transaksi Stok,Jumlah transaksi negatif,0,Lolos
+Transaksi Stok,Jumlah transaksi nol,0,Lolos
+Transaksi Stok,Jenis transaksi tidak valid,0,Lolos
+Validasi Stok,Transaksi menyebabkan stok negatif,0,Lolos
