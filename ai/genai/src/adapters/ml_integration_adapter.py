@@ -13,6 +13,10 @@ import logging
 from typing import Dict, List, Optional, Tuple
 
 from ..schemas.ml_integration import (
+    MLForecastItemInput,
+    MLForecastRequest,
+    MLForecastResponse,
+    MLForecastResultItem,
     MLItemFeatureInput,
     MLItemRiskEnrichment,
     MLPredictRequest,
@@ -104,6 +108,75 @@ class MLServiceClient:
         return MLPredictResponse(
             total_items=len(predictions),
             prediksi=predictions,
+        )
+
+    def forecast_stock(self, request: MLForecastRequest) -> MLForecastResponse:
+        """Memanggil endpoint POST /ml/forecast-stock atau menghasilkan mock response.
+
+        Catatan: Kontrak model forecasting Husain saat ini mewajibkan horizon_days=7.
+        """
+        if self.mock_mode:
+            if self.mock_response_generator:
+                return self.mock_response_generator(request)
+            return self._default_mock_forecast(request)
+
+        # Mode live HTTP client
+        try:
+            import httpx
+            with httpx.Client(timeout=self.timeout) as client:
+                res = client.post(
+                    f"{self.base_url}/ml/forecast-stock",
+                    json=request.model_dump(),
+                )
+                if res.status_code == 200:
+                    return MLForecastResponse(**res.json())
+                elif res.status_code == 400:
+                    raise ValueError(f"ML Forecast Bad Request (400): {res.text}")
+                elif res.status_code == 503:
+                    raise RuntimeError("ML Forecast Service Unavailable (503): Model belum siap.")
+                else:
+                    raise RuntimeError(f"ML Forecast HTTP Error {res.status_code}: {res.text}")
+        except Exception as e:
+            logger.warning(f"[MLServiceClient] Gagal memanggil ML Forecast Service: {e}")
+            raise
+
+    def _default_mock_forecast(self, request: MLForecastRequest) -> MLForecastResponse:
+        """Mock inferensi forecasting deterministik untuk horizon 7 hari."""
+        results: List[MLForecastResultItem] = []
+        for item in request.items:
+            # Estimasi stok masa depan T+7: stok_saat_ini + (barang_masuk/7 * 7) - (avg_keluar_7h * 7)
+            current = item.stok_saat_ini
+            avg_out = item.avg_keluar_7h
+            bmin = item.batas_minimum
+            projected = max(0.0, round(current - (avg_out * request.horizon_days) + (item.barang_masuk), 1))
+
+            if projected <= 0:
+                pred_status = "habis"
+            elif projected <= bmin:
+                pred_status = "menipis"
+            else:
+                pred_status = "aman"
+
+            results.append(
+                MLForecastResultItem(
+                    id_barang=item.id_barang,
+                    nama_barang=item.nama_barang or item.rasa,
+                    horizon_days=request.horizon_days,
+                    predicted_stock=projected,
+                    predicted_status=pred_status,
+                    batas_minimum=bmin,
+                    model_version="forecast_v1_mock",
+                    notes=None,
+                )
+            )
+
+        return MLForecastResponse(
+            total_items=len(results),
+            results=results,
+            status="ok",
+            model_ready=True,
+            versi_model="forecast_v1_mock",
+            keterangan="Forecast mock berhasil",
         )
 
 

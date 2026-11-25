@@ -69,3 +69,83 @@ class MLItemRiskEnrichment(BaseModel):
     probabilities: Dict[str, float] = Field(default_factory=dict)
     model_version: str = Field(default="unknown")
     source: str = Field(default="ml_predict_status", description="Penanda asal prediksi")
+
+
+# ===========================================================================
+# Schemas untuk Endpoint Forecasting ML (POST /ml/forecast-stock) - Tahap 7B
+# ===========================================================================
+
+class MLForecastItemInput(BaseModel):
+    """Schema input untuk peramalan stok satu SKU (POST /ml/forecast-stock).
+
+    Mengacu langsung ke ForecastItemInput pada ai/ml/src/api.py.
+    """
+    id_barang: str = Field(..., description="SKU identifier")
+    nama_barang: Optional[str] = Field(None, description="Nama produk (opsional)")
+    batas_minimum: float = Field(..., ge=0, description="Batas minimum stok")
+    stok_saat_ini: float = Field(..., ge=0, description="Stok akhir saat ini")
+    barang_masuk: float = Field(..., ge=0, description="Jumlah barang masuk")
+    barang_keluar: float = Field(..., ge=0, description="Jumlah barang keluar")
+    avg_keluar_7h: float = Field(..., ge=0, description="Rata-rata keluar 7 hari terakhir")
+    total_masuk_7h: float = Field(..., ge=0, description="Total masuk 7 hari terakhir")
+    total_keluar_7h: float = Field(..., ge=0, description="Total keluar 7 hari terakhir")
+    kategori: str = Field(..., min_length=1, description="Kategori produk")
+    rasa: str = Field(..., min_length=1, description="Varian rasa")
+
+    @field_validator("id_barang", "kategori", "rasa")
+    @classmethod
+    def tidak_boleh_kosong(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("Nilai tidak boleh berupa string kosong atau spasi saja.")
+        return v.strip()
+
+
+class MLForecastRequest(BaseModel):
+    """Batch request untuk peramalan stok (POST /ml/forecast-stock).
+
+    Catatan Kontrak ML Husain:
+    Meskipun skema Pydantic ML mendefinisikan ge=1, le=30, implementasi endpoint
+    aktual di ai/ml/src/api.py secara ketat mewajibkan horizon_days == 7
+    (HTTP 400: 'Only horizon_days=7 is supported').
+    """
+    items: List[MLForecastItemInput] = Field(
+        ...,
+        min_length=1,
+        description="Daftar SKU untuk diprediksi"
+    )
+    horizon_days: int = Field(
+        7,
+        description="Horizon prediksi dalam hari (hanya horizon 7 hari yang didukung oleh model ML Husain)"
+    )
+
+    @field_validator("horizon_days")
+    @classmethod
+    def validate_horizon_supported(cls, v: int) -> int:
+        if v != 7:
+            raise ValueError(
+                f"Horizon {v} hari tidak didukung. Model ML Husain saat ini hanya mendukung horizon_days=7."
+            )
+        return v
+
+
+class MLForecastResultItem(BaseModel):
+    """Hasil prediksi stok untuk satu SKU dari model forecasting."""
+    id_barang: str = Field(..., description="SKU identifier")
+    nama_barang: Optional[str] = Field(None, description="Nama produk")
+    horizon_days: int = Field(..., description="Horizon yang diprediksi (hari)")
+    predicted_stock: float = Field(..., description="Jumlah stok yang diprediksi")
+    predicted_status: str = Field(..., description="'aman' | 'menipis' | 'habis'")
+    batas_minimum: float = Field(..., description="Batas minimum stok")
+    model_version: str = Field(..., description="Versi model forecasting")
+    notes: Optional[str] = Field(None, description="Catatan teknis (mis. data tidak cukup)")
+
+
+class MLForecastResponse(BaseModel):
+    """Response dari POST /ml/forecast-stock."""
+    total_items: int = Field(..., description="Jumlah item yang diprediksi")
+    results: List[MLForecastResultItem] = Field(..., description="Daftar hasil prediksi")
+    status: Optional[str] = Field(None, description="Status eksekusi API ML")
+    model_ready: Optional[bool] = Field(None, description="Status kesiapan model")
+    versi_model: Optional[str] = Field(None, description="Versi model")
+    keterangan: Optional[str] = Field(None, description="Keterangan singkat respons")
+

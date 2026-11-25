@@ -35,15 +35,14 @@ from typing import List, Optional
 from ..schemas.summary import DailyStockItemInput, DailyStockSummaryRequest
 
 # Path default: data-science/data/processed/dataset_stok_rokkus_final.csv
+# atau data/data-science/data/processed/dataset_stok_rokkus_final.csv (reorganisasi origin/main)
 # relatif terhadap root repository (dua level di atas ai/genai/)
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
-_DEFAULT_DS_CSV = (
-    _REPO_ROOT
-    / "data-science"
-    / "data"
-    / "processed"
-    / "dataset_stok_rokkus_final.csv"
-)
+_DEFAULT_DS_CSV_CANDIDATES = [
+    _REPO_ROOT / "data" / "data-science" / "data" / "processed" / "dataset_stok_rokkus_final.csv",
+    _REPO_ROOT / "data-science" / "data" / "processed" / "dataset_stok_rokkus_final.csv",
+]
+_DEFAULT_DS_CSV = _DEFAULT_DS_CSV_CANDIDATES[0]
 
 # Nilai default yang disisipkan adapter karena tidak ada di CSV tim DS
 DEFAULT_MINIMUM_STOCK: float = 5.0
@@ -100,25 +99,37 @@ class DSDatasetAdapter:
         Memungkinkan pembacaan dataset Data Science secara read-only langsung dari
         origin/main jika menggunakan path default dan branch belum di-merge.
         """
+        # Cek path yang diset
         if self.csv_path.exists():
             return self.csv_path.read_text(encoding="utf-8")
+
+        # Jika path default tidak ditemukan di disk, coba kandidat path lokal lain
+        if not self._is_custom_path:
+            for cand in _DEFAULT_DS_CSV_CANDIDATES:
+                if cand.exists():
+                    self.csv_path = cand
+                    return cand.read_text(encoding="utf-8")
 
         # Fallback ke git show origin/main HANYA jika menggunakan path default
         if not self._is_custom_path:
             import subprocess
-            git_ref = "origin/main:data-science/data/processed/dataset_stok_rokkus_final.csv"
-            try:
-                res = subprocess.run(
-                    ["git", "show", git_ref],
-                    capture_output=True,
-                    text=True,
-                    encoding="utf-8",
-                    check=False,
-                )
-                if res.returncode == 0 and res.stdout.strip():
-                    return res.stdout
-            except Exception:
-                pass
+            git_refs = [
+                "origin/main:data/data-science/data/processed/dataset_stok_rokkus_final.csv",
+                "origin/main:data-science/data/processed/dataset_stok_rokkus_final.csv",
+            ]
+            for git_ref in git_refs:
+                try:
+                    res = subprocess.run(
+                        ["git", "show", git_ref],
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        check=False,
+                    )
+                    if res.returncode == 0 and res.stdout.strip():
+                        return res.stdout
+                except Exception:
+                    pass
 
         raise FileNotFoundError(
             f"[DSDatasetAdapter] File CSV dataset Data Science tidak ditemukan di disk: "

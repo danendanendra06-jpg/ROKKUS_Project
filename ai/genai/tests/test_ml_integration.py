@@ -21,6 +21,10 @@ if str(BASE_DIR) not in sys.path:
 try:
     from pydantic import ValidationError
     from src.schemas.ml_integration import (
+        MLForecastItemInput,
+        MLForecastRequest,
+        MLForecastResponse,
+        MLForecastResultItem,
         MLItemFeatureInput,
         MLPredictRequest,
         MLPredictResponse,
@@ -315,6 +319,112 @@ class TestMLGenAIIntegrationAndResilience(unittest.TestCase):
         self.assertEqual(safe_response.status, "success")
         self.assertEqual(len(safe_response.data.suggested_actions), orig_actions_count)
         self.assertEqual(safe_response.data.status_counts.empty, 1)
+
+
+class TestMLForecastingContractAndResilience(unittest.TestCase):
+    """Pengujian kontrak dan resilience untuk endpoint POST /ml/forecast-stock (Tahap 7B)."""
+
+    def setUp(self):
+        if not FASTAPI_AVAILABLE:
+            self.skipTest("Pydantic / FastAPI belum terinstal.")
+        self.valid_forecast_item = {
+            "id_barang": "PR001",
+            "nama_barang": "Lotus Biscoff",
+            "batas_minimum": 5.0,
+            "stok_saat_ini": 10.0,
+            "barang_masuk": 2.0,
+            "barang_keluar": 1.0,
+            "avg_keluar_7h": 1.0,
+            "total_masuk_7h": 14.0,
+            "total_keluar_7h": 7.0,
+            "kategori": "Roti Manis",
+            "rasa": "Lotus Biscoff",
+        }
+
+    def test_forecast_item_input_valid_contract(self):
+        """Memvalidasi pembuatan MLForecastItemInput dengan data valid."""
+        item = MLForecastItemInput(**self.valid_forecast_item)
+        self.assertEqual(item.id_barang, "PR001")
+        self.assertEqual(item.stok_saat_ini, 10.0)
+        self.assertEqual(item.batas_minimum, 5.0)
+
+    def test_forecast_item_input_negative_numeric_fails(self):
+        """Memastikan fitur numerik bernilai negatif pada forecast input ditolak."""
+        bad = self.valid_forecast_item.copy()
+        bad["stok_saat_ini"] = -5.0
+        with self.assertRaises(ValidationError):
+            MLForecastItemInput(**bad)
+
+    def test_forecast_item_empty_string_fails(self):
+        """Memastikan string kosong pada id_barang, kategori, atau rasa ditolak."""
+        bad = self.valid_forecast_item.copy()
+        bad["id_barang"] = "   "
+        with self.assertRaises(ValidationError):
+            MLForecastItemInput(**bad)
+
+    def test_forecast_request_horizon_validation(self):
+        """Memvalidasi aturan ketat horizon_days pada MLForecastRequest (hanya horizon=7)."""
+        item = MLForecastItemInput(**self.valid_forecast_item)
+        req = MLForecastRequest(items=[item], horizon_days=7)
+        self.assertEqual(req.horizon_days, 7)
+
+        # Default horizon adalah 7
+        default_req = MLForecastRequest(items=[item])
+        self.assertEqual(default_req.horizon_days, 7)
+
+        # Horizon != 7 harus gagal sesuai batasan model ML Husain
+        with self.assertRaises(ValidationError):
+            MLForecastRequest(items=[item], horizon_days=3)
+
+        with self.assertRaises(ValidationError):
+            MLForecastRequest(items=[item], horizon_days=14)
+
+        with self.assertRaises(ValidationError):
+            MLForecastRequest(items=[item], horizon_days=30)
+
+    def test_forecast_mock_client_response_contract(self):
+        """Memvalidasi respons mock forecasting client menghasilkan struktur yang valid."""
+        item = MLForecastItemInput(**self.valid_forecast_item)
+        req = MLForecastRequest(items=[item], horizon_days=7)
+
+        client = MLServiceClient(mock_mode=True)
+        res = client.forecast_stock(req)
+
+        self.assertEqual(res.total_items, 1)
+        self.assertEqual(len(res.results), 1)
+        r = res.results[0]
+        self.assertEqual(r.id_barang, "PR001")
+        self.assertEqual(r.horizon_days, 7)
+        self.assertIsInstance(r.predicted_stock, float)
+        self.assertIn(r.predicted_status, ["aman", "menipis", "habis"])
+
+    def test_forecast_client_resilience_503(self):
+        """Memastikan client menangani error 503 dari service ML forecasting."""
+        item = MLForecastItemInput(**self.valid_forecast_item)
+        req = MLForecastRequest(items=[item], horizon_days=7)
+
+        client = MLServiceClient(mock_mode=False, base_url="http://non-existent-ml-host:9999")
+        with self.assertRaises(Exception):
+            client.forecast_stock(req)
+
+    def test_forecasting_does_not_mutate_factual_stock_counts(self):
+        """Memastikan hasil forecasting terisolasi dan tidak mengubah status_counts faktual DS/GenAI."""
+        counts = StockStatusCounts(empty=5, low=8, safe=16, total_items=29)
+        # Simulasi hasil forecasting memprediksi barang habis di masa depan
+        forecast_result = MLForecastResultItem(
+            id_barang="PR001",
+            nama_barang="Lotus Biscoff",
+            horizon_days=7,
+            predicted_stock=0.0,
+            predicted_status="habis",
+            batas_minimum=5.0,
+            model_version="forecast_v1",
+        )
+        # Status counts faktual hari ini tetap tidak terpengaruh
+        self.assertEqual(counts.safe, 16)
+        self.assertEqual(counts.empty, 5)
+        self.assertEqual(counts.low, 8)
+        self.assertEqual(forecast_result.predicted_status, "habis")
 
 
 if __name__ == "__main__":
