@@ -7,12 +7,13 @@ Use Case: Aplikasi pengelolaan dan pemantauan stok harian UMKM ROKKUS Mardani Ra
 
 ## Deskripsi
 
-Layanan backend berbasis **Express.js** dan **PostgreSQL** yang mengelola autentikasi pengguna, data stok barang, pencatatan transaksi masuk/keluar otomatis.
+Layanan backend berbasis **Express.js** dan **PostgreSQL** yang mengelola autentikasi pengguna, data stok barang, pencatatan transaksi masuk/keluar otomatis, serta integrasi ke layanan Machine Learning dan Generative AI.
 
 ### Fitur Utama
 - **Autentikasi & RBAC (JWT):** Membedakan hak akses antara `pengelola_stok` (CRUD & transaksi) dan `pemilik` (*read-only* dashboard & riwayat).
 - **CRUD Stok Barang:** Pengelolaan barang beserta penanda status dasar (`habis`: stok = 0, `menipis`: stok ≤ batas minimum, `aman`: stok > batas minimum).
 - **Transaksi Stok Otomatis:** Menggunakan PostgreSQL transaction (`BEGIN`/`COMMIT`/`ROLLBACK`) untuk memperbarui stok secara atomik dan menolak transaksi keluar jika stok tidak mencukupi.
+- **Integrasi ML & GenAI dengan Fallback:** Memanggil layanan klasifikasi stok (ML) dan ringkasan harian (GenAI) secara paralel dari sisi backend, menyimpan hasil ringkasan ke tabel `ai_summaries`, serta tetap menampilkan data dashboard jika layanan AI tidak aktif.
 
 ---
 
@@ -25,7 +26,7 @@ backend/
 ├── .gitignore
 ├── package.json
 ├── database/
-│   ├── schema.sql               ← Skema tabel PostgreSQL 
+│   ├── schema.sql               ← Skema tabel PostgreSQL (users, items, stock_transactions, ai_summaries)
 │   └── seedUsers.js             ← Seeder akun demo (pengelola & pemilik)
 └── src/
     ├── index.js                 ← Entry point Express & registrasi routes
@@ -75,6 +76,8 @@ DB_USER=postgres
 DB_PASSWORD=isi_password_postgres_anda
 DB_NAME=rokkus_db
 JWT_SECRET=isi_secret_key_anda
+GENAI_API_URL=http://localhost:8000
+ML_API_URL=http://localhost:8001
 ```
 
 > Untuk deployment cloud (Neon/Render), cukup set `DATABASE_URL` menggantikan variabel `DB_*`.
@@ -130,7 +133,7 @@ Authorization: Bearer <jwt_token>
 | `DELETE` | `/api/v1/stocks/:id` | Pengelola Stok | Hapus barang |
 | `GET` | `/api/v1/transactions` | Pengelola & Pemilik | Riwayat transaksi (dukung `?item_id=&tipe_transaksi=`) |
 | `POST` | `/api/v1/transactions` | Pengelola Stok | Catat barang masuk/keluar & update stok otomatis |
-| `GET` | `/api/v1/dashboard` | Pengelola & Pemilik | Ringkasan stok, 10 transaksi terakhir |
+| `GET` | `/api/v1/dashboard` | Pengelola & Pemilik | Ringkasan stok, 10 transaksi terakhir, klasifikasi ML, serta ringkasan & saran aksi GenAI |
 
 ### Contoh Request Singkat
 
@@ -163,6 +166,20 @@ Authorization: Bearer <jwt_token>
 | `404` | Data barang atau endpoint tidak ditemukan |
 | `500` | Kesalahan internal server |
 
+---
+
+## Integrasi Layanan AI (ML & GenAI)
+
+Endpoint `GET /api/v1/dashboard` memanggil layanan **Machine Learning** dan **Generative AI** secara paralel menggunakan `Promise.allSettled`:
+
+| Layanan | Env Variable | Endpoint | Payload & Keterangan |
+|---|---|---|---|
+| **Machine Learning** | `ML_API_URL` (`http://localhost:8001`) | `POST /ml/predict-status` | Mengirim array `items` berisi 11 fitur sesuai skema `StokItemInput` (`stok_saat_ini`, `batas_minimum`, `barang_masuk`, `barang_keluar`, `avg_keluar_7h`, `days_of_cover`, `rasio_stok`, `total_masuk_7h`, `total_keluar_7h`, `kategori`, `rasa`). Hasil prediksi dipetakan kembali dengan `item_id` dan `nama_barang`. |
+| **Generative AI** | `GENAI_API_URL` (`http://localhost:8000`) | `POST /api/v1/summary/daily` | Mengirim `date` (`YYYY-MM-DD`, WIB), `store_name`, dan array `items` (`id`, `name`, `current_stock`, `minimum_stock`, `unit`, `category`) sesuai skema `DailyStockSummaryRequest`. Field `data.summary` disimpan ke tabel `ai_summaries`, sedangkan `data.suggested_actions` (`saran_aksi`) dan `data.meta` (`meta_genai`) diteruskan ke respons dashboard. |
+
+**Mekanisme Fallback:** Jika salah satu atau kedua layanan AI belum aktif atau mengalami *timeout*, `GET /api/v1/dashboard` tetap mengembalikan status `200 OK` berisi data stok dan transaksi terbaru dengan `ai.status` bernilai `"available"`, `"partial"`, atau `"unavailable"`.
+
+---
 
 ## Catatan Penting
 

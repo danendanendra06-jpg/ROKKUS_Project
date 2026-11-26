@@ -1,8 +1,28 @@
 const axios = require('axios');
 const pool = require('../config/db');
 
-// Helper pembulatan 2 angka desimal agar payload rapi & bebas NaN/Infinity
-const round2 = (num) => Math.round((Number(num) || 0) * 100) / 100;
+const toFiniteNonNegative = (num) => {
+  const parsed = Number(num);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+};
+
+const round2 = (num) => Math.round(toFiniteNonNegative(num) * 100) / 100;
+
+// Tanggal hari ini format YYYY-MM-DD sesuai zona waktu WIB (Asia/Jakarta)
+const getTodayDateWIB = () => {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Jakarta',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+
+  const year = parts.find((p) => p.type === 'year').value;
+  const month = parts.find((p) => p.type === 'month').value;
+  const day = parts.find((p) => p.type === 'day').value;
+
+  return `${year}-${month}-${day}`;
+};
 
 const getDashboardData = async (req, res) => {
   try {
@@ -66,12 +86,12 @@ const getDashboardData = async (req, res) => {
     };
 
     const mlPayloadItems = rawItems.map((row) => {
-      const stokSaatIni = Math.max(0, Number(row.stok_terkini) || 0);
-      const batasMinimum = Math.max(0, Number(row.batas_minimum) || 0);
-      const barangMasuk = Math.max(0, Number(row.barang_masuk_hari_ini) || 0);
-      const barangKeluar = Math.max(0, Number(row.barang_keluar_hari_ini) || 0);
-      const totalMasuk7h = Math.max(0, Number(row.total_masuk_7h) || 0);
-      const totalKeluar7h = Math.max(0, Number(row.total_keluar_7h) || 0);
+      const stokSaatIni = toFiniteNonNegative(row.stok_terkini);
+      const batasMinimum = toFiniteNonNegative(row.batas_minimum);
+      const barangMasuk = toFiniteNonNegative(row.barang_masuk_hari_ini);
+      const barangKeluar = toFiniteNonNegative(row.barang_keluar_hari_ini);
+      const totalMasuk7h = toFiniteNonNegative(row.total_masuk_7h);
+      const totalKeluar7h = toFiniteNonNegative(row.total_keluar_7h);
       const avgKeluar7h = round2(totalKeluar7h / 7);
 
       let daysOfCover = 0;
@@ -96,13 +116,30 @@ const getDashboardData = async (req, res) => {
         rasio_stok: rasioStok,
         total_masuk_7h: totalMasuk7h,
         total_keluar_7h: totalKeluar7h,
-        kategori: row.kategori && row.kategori.trim() ? row.kategori.trim() : 'roti_kukus',
-        rasa: row.nama_barang && row.nama_barang.trim() ? row.nama_barang.trim() : 'original',
+        kategori: row.kategori && String(row.kategori).trim() ? String(row.kategori).trim() : 'roti_kukus',
+        rasa: row.nama_barang && String(row.nama_barang).trim() ? String(row.nama_barang).trim() : 'original',
       };
     });
 
+    const genAiPayloadItems = rawItems.map((row) => ({
+      id: row.id !== null && row.id !== undefined ? String(row.id) : null,
+      name: row.nama_barang && String(row.nama_barang).trim() ? String(row.nama_barang).trim() : 'Tanpa Nama',
+      current_stock: toFiniteNonNegative(row.stok_terkini),
+      minimum_stock: toFiniteNonNegative(row.batas_minimum),
+      unit: row.satuan && String(row.satuan).trim() ? String(row.satuan).trim() : 'pcs',
+      category: row.kategori && String(row.kategori).trim() ? String(row.kategori).trim() : 'umum',
+    }));
+
+    const genAiPayload = {
+      date: getTodayDateWIB(),
+      store_name: 'UMKM ROKKUS Mardani Raya',
+      items: genAiPayloadItems,
+    };
+
     let aiClassification = null;
     let aiSummary = null;
+    let aiSuggestedActions = [];
+    let aiGenMeta = null;
     let mlAvailable = false;
     let genAiAvailable = false;
 
@@ -124,17 +161,20 @@ const getDashboardData = async (req, res) => {
             )
           );
 
-    const genAiPromise = genAiApiUrl
-      ? axios.post(
-          `${genAiApiUrl}/api/v1/summary/daily`,
-          {
-            items,
-            recent_transactions: recentTransactions,
-            ringkasan_stok: ringkasanStok,
-          },
-          { timeout: 8000 }
-        )
-      : Promise.reject(new Error('GENAI_API_URL belum dikonfigurasi'));
+    const genAiPromise =
+      genAiApiUrl && genAiPayloadItems.length > 0
+        ? axios.post(
+            `${genAiApiUrl}/api/v1/summary/daily`,
+            genAiPayload,
+            { timeout: 15000 }
+          )
+        : Promise.reject(
+            new Error(
+              !genAiApiUrl
+                ? 'GENAI_API_URL belum dikonfigurasi'
+                : 'Belum ada data barang untuk diringkas'
+            )
+          );
 
     const [mlResult, genAiResult] = await Promise.allSettled([mlPromise, genAiPromise]);
 
@@ -166,13 +206,19 @@ const getDashboardData = async (req, res) => {
     if (genAiResult.status === 'fulfilled') {
       genAiAvailable = true;
       const genData = genAiResult.value.data;
-      aiSummary =
+      const summaryData = genData?.data;
+
+      const extractedSummary =
+        summaryData?.summary ||
         genData?.summary ||
         genData?.ringkasan ||
-        genData?.daily_summary ||
-        genData?.data?.summary ||
-        genData?.data?.ringkasan ||
-        (typeof genData === 'string' ? genData : null);
+        null;
+
+      aiSummary = typeof extractedSummary === 'string' ? extractedSummary : null;
+      aiSuggestedActions = Array.isArray(summaryData?.suggested_actions)
+        ? summaryData.suggested_actions
+        : [];
+      aiGenMeta = summaryData?.meta || null;
 
       if (aiSummary) {
         await pool.query(
@@ -180,7 +226,7 @@ const getDashboardData = async (req, res) => {
           [aiSummary, 'generative_ai']
         );
       }
-    } else if (genAiApiUrl) {
+    } else if (genAiApiUrl && genAiPayloadItems.length > 0) {
       console.warn(
         'Layanan GenAI tidak dapat diakses:',
         genAiResult.reason?.response?.data || genAiResult.reason?.message
@@ -217,6 +263,8 @@ const getDashboardData = async (req, res) => {
           message: aiMessage,
           klasifikasi_status: aiClassification,
           ringkasan_harian: aiSummary,
+          saran_aksi: aiSuggestedActions,
+          meta_genai: aiGenMeta,
           riwayat_ringkasan: savedSummaries.rows,
         },
       },
