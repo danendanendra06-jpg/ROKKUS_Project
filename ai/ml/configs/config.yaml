@@ -1,0 +1,151 @@
+# ============================================================
+# ROKKUS ML – Konfigurasi Utama
+# Capstone Asah 2026 | Tim A26-CS159
+# ============================================================
+
+# ----------------------------------------------------------
+# PATH DATA
+# Ganti path_data ke file CSV nyata dari tim data,
+# lalu sesuaikan kolom_* dan label_rules di bawah.
+# ----------------------------------------------------------
+data:
+  # Path ke dataset stok/transaksi harian.
+  # Gunakan path absolut atau relatif terhadap ai/ml/.
+  path_data: "sample_data/stok_harian.csv"
+
+  # Mapping nama kolom di CSV → nama internal yang dipakai kode.
+  # Jika CSV tim berbeda nama kolomnya, cukup ubah nilai di sini.
+  kolom:
+    id_barang: "id_barang" # ID unik per SKU
+    nama_barang: "nama_barang" # Nama produk (mis. "Roti Kukus Coklat")
+    kategori: "kategori" # "roti_kukus" | "roti_bakar"
+    rasa: "rasa" # Varian rasa
+    tanggal: "tanggal" # Format: YYYY-MM-DD
+    stok_awal: "stok_awal" # Stok awal hari itu (unit)
+    barang_masuk: "barang_masuk" # Unit masuk (produksi/resupply)
+    barang_keluar: "barang_keluar" # Unit terjual/keluar
+    stok_akhir: "stok_akhir" # Stok akhir hari itu (unit)
+    batas_minimum: "batas_minimum" # Ambang minimum per SKU (unit)
+
+# ----------------------------------------------------------
+# ATURAN LABEL (STATUS STOK)
+# Didefinisikan eksplisit agar tidak ambigu.
+# Urutan pengecekan: habis → menipis → aman
+#
+# CATATAN LEAKAGE:
+#   Label dibuat dari aturan berbasis stok_akhir dan batas_minimum,
+#   sehingga jika kedua kolom itu dimasukkan sebagai fitur mentah,
+#   model bisa "mencontek" label secara trivial.
+#   Oleh karena itu preprocessing.py TIDAK memasukkan stok_akhir
+#   sebagai fitur langsung; sebagai gantinya digunakan:
+#     - days_of_cover (stok_akhir / avg_keluar_7h)
+#     - rasio_stok (stok_akhir / batas_minimum)
+#   serta fitur agregat yang lebih informatif secara bisnis.
+#   Lihat laporan reports/model_comparison.md § Keterbatasan.
+# ----------------------------------------------------------
+label_rules:
+  kolom_target: "status_stok" # Nama kolom label di output
+
+  # "habis": stok_akhir == 0
+  habis_threshold: 0
+
+  # "menipis": stok_akhir > 0 DAN (stok_akhir <= batas_minimum ATAU days_of_cover < days_of_cover_threshold)
+  days_of_cover_threshold: 2.0 # Jika sisa stok cukup untuk < N hari, dianggap menipis
+
+  # "aman": semua kondisi lain
+  # Urutan kelas untuk encoding: 0=aman, 1=menipis, 2=habis
+  kelas:
+    - "aman"
+    - "menipis"
+    - "habis"
+
+# ----------------------------------------------------------
+# FEATURE ENGINEERING
+# ----------------------------------------------------------
+features:
+  # Window rolling rata-rata keluar harian (hari)
+  rolling_window_days: 7
+
+  # Fitur numerik yang masuk ke model (setelah engineering)
+  numerik:
+    - "stok_saat_ini"
+    - "batas_minimum"
+    - "barang_masuk"
+    - "barang_keluar"
+    - "avg_keluar_7h" # rolling mean 7 hari barang_keluar per SKU
+    - "days_of_cover" # stok_saat_ini / avg_keluar_7h (clipped)
+    - "rasio_stok" # stok_saat_ini / batas_minimum
+    - "total_masuk_7h" # rolling sum 7 hari barang_masuk per SKU
+    - "total_keluar_7h" # rolling sum 7 hari barang_keluar per SKU
+
+  # Fitur kategorik yang di-encode (OrdinalEncoder di dalam Pipeline)
+  kategorik:
+    - "kategori"
+    - "rasa"
+
+  # Fitur untuk days_of_cover: hindari division by zero
+  days_of_cover_min_avg: 0.5 # Jika avg_keluar_7h < 0.5, gunakan 0.5 sebagai divisor
+
+# ----------------------------------------------------------
+# SPLIT DATA (berbasis waktu – lebih jujur untuk time series)
+# ----------------------------------------------------------
+split:
+  strategi: "time" # "time" = train awal, test akhir; "random" = acak
+  test_size: 0.2 # 20% data terakhir jadi test
+  tanggal_split: null # Jika diisi (mis. "2025-05-01"), pakai tanggal ini sebagai cutoff
+
+# ----------------------------------------------------------
+# MODEL
+# ----------------------------------------------------------
+models:
+  random_state: 42
+
+  daftar:
+    - nama: "LogisticRegression"
+      kelas: "sklearn.linear_model.LogisticRegression"
+      params:
+        max_iter: 1000
+        C: 1.0
+        class_weight: "balanced"
+        random_state: 42
+
+    - nama: "RandomForest"
+      kelas: "sklearn.ensemble.RandomForestClassifier"
+      params:
+        n_estimators: 200
+        max_depth: 10
+        min_samples_leaf: 2
+        class_weight: "balanced"
+        random_state: 42
+
+    - nama: "GradientBoosting"
+      kelas: "sklearn.ensemble.GradientBoostingClassifier"
+      params:
+        n_estimators: 150
+        learning_rate: 0.1
+        max_depth: 4
+        subsample: 0.8
+        random_state: 42
+
+  # GridSearchCV ringan (opsional, aktifkan dengan --tune di train.py)
+  tuning:
+    aktif: false
+    cv_folds: 3
+    scoring: "f1_macro"
+    param_grid:
+      RandomForest:
+        n_estimators: [100, 200]
+        max_depth: [5, 10]
+      GradientBoosting:
+        learning_rate: [0.05, 0.1]
+        max_depth: [3, 4]
+
+# ----------------------------------------------------------
+# OUTPUT
+# ----------------------------------------------------------
+output:
+  model_dir: "models/"
+  model_file: "best_model.joblib"
+  metadata_file: "models/metadata.json"
+  report_dir: "reports/"
+  figures_dir: "reports/figures/"

@@ -1,0 +1,4 @@
+Model,Accuracy,Precision_macro,Recall_macro,F1_macro,F1_aman,F1_menipis,F1_habis
+LogisticRegression,0.9253,0.9177,0.9357,0.9254,0.931,0.8571,0.988
+RandomForest,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+GradientBoosting,1.0,1.0,1.0,1.0,1.0,1.0,1.0

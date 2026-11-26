@@ -1,0 +1,871 @@
+id_barang,nama_barang,kategori,rasa,tanggal,stok_awal,barang_masuk,barang_keluar,stok_akhir,batas_minimum
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-01,16,0,0,16,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-01,29,0,0,29,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-01,24,0,0,24,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-01,20,0,0,20,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-01,17,0,0,17,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-01,30,0,0,30,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-01,16,0,9,7,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-01,28,0,5,23,5
+PR009,Keju,Roti Manis,Keju,2026-09-01,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-01,20,0,0,20,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-01,30,5,0,35,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-01,13,0,0,13,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-01,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-01,12,0,0,12,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-01,30,0,6,24,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-01,11,0,0,11,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-01,21,0,0,21,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-01,15,0,0,15,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-01,11,9,0,20,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-01,30,0,10,20,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-01,10,0,3,7,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-01,21,0,0,21,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-01,21,0,0,21,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-01,26,0,0,26,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-01,19,0,0,19,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-01,25,0,4,21,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-01,24,0,0,24,5
+AD003,Telur,Tambahan,Telur,2026-09-01,24,0,0,24,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-01,28,9,0,37,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-02,16,0,0,16,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-02,29,0,0,29,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-02,24,0,7,17,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-02,20,0,6,14,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-02,17,0,0,17,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-02,30,0,0,30,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-02,7,0,0,7,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-02,23,0,6,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-02,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-02,20,0,0,20,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-02,35,9,1,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-02,13,0,0,13,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-02,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-02,12,0,0,12,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-02,24,0,0,24,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-02,11,0,0,11,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-02,21,0,0,21,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-02,15,0,0,15,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-02,20,0,0,20,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-02,20,0,0,20,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-02,7,5,0,12,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-02,21,9,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-02,21,2,0,23,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-02,26,0,4,22,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-02,19,0,0,19,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-02,21,0,0,21,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-02,24,0,0,24,5
+AD003,Telur,Tambahan,Telur,2026-09-02,24,0,0,24,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-02,37,0,0,37,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-03,16,0,10,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-03,29,8,8,29,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-03,17,0,0,17,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-03,14,0,0,14,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-03,17,0,0,17,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-03,30,5,0,35,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-03,7,0,0,7,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-03,17,0,0,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-03,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-03,20,0,0,20,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-03,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-03,13,0,13,0,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-03,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-03,12,0,0,12,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-03,24,0,0,24,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-03,11,0,0,11,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-03,21,0,0,21,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-03,15,0,0,15,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-03,20,0,0,20,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-03,20,0,0,20,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-03,12,10,4,18,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-03,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-03,23,0,0,23,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-03,22,0,6,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-03,19,0,0,19,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-03,21,0,0,21,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-03,24,0,0,24,5
+AD003,Telur,Tambahan,Telur,2026-09-03,24,0,10,14,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-03,37,0,0,37,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-04,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-04,29,0,0,29,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-04,17,0,0,17,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-04,14,0,0,14,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-04,17,0,0,17,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-04,35,0,0,35,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-04,7,0,0,7,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-04,17,0,0,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-04,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-04,20,1,0,21,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-04,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-04,0,9,0,9,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-04,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-04,12,0,0,12,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-04,24,0,0,24,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-04,11,0,0,11,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-04,21,6,0,27,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-04,15,0,0,15,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-04,20,0,0,20,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-04,20,0,0,20,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-04,18,0,0,18,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-04,30,2,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-04,23,0,0,23,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-04,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-04,19,0,4,15,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-04,21,0,10,11,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-04,24,1,9,16,5
+AD003,Telur,Tambahan,Telur,2026-09-04,14,5,4,15,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-04,37,5,0,42,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-05,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-05,29,0,0,29,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-05,17,0,8,9,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-05,14,0,0,14,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-05,17,0,2,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-05,35,0,0,35,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-05,7,0,0,7,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-05,17,0,0,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-05,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-05,21,0,0,21,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-05,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-05,9,5,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-05,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-05,12,0,0,12,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-05,24,2,6,20,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-05,11,0,3,8,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-05,27,0,0,27,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-05,15,0,0,15,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-05,20,0,3,17,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-05,20,0,2,18,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-05,18,0,0,18,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-05,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-05,23,9,0,32,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-05,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-05,15,0,10,5,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-05,11,0,0,11,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-05,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-05,15,0,0,15,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-05,42,0,0,42,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-06,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-06,29,0,0,29,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-06,9,0,0,9,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-06,14,0,2,12,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-06,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-06,35,0,0,35,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-06,7,13,0,20,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-06,17,0,0,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-06,20,1,0,21,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-06,21,0,0,21,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-06,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-06,14,0,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-06,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-06,12,0,10,2,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-06,20,0,0,20,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-06,8,0,0,8,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-06,27,0,0,27,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-06,15,0,1,14,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-06,17,0,5,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-06,18,0,0,18,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-06,18,0,8,10,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-06,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-06,32,0,0,32,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-06,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-06,5,0,1,4,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-06,11,0,0,11,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-06,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-06,15,0,5,10,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-06,42,0,0,42,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-07,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-07,29,9,0,38,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-07,9,0,0,9,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-07,12,0,0,12,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-07,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-07,35,0,0,35,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-07,20,0,6,14,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-07,17,0,0,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-07,21,0,1,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-07,21,0,0,21,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-07,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-07,14,0,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-07,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-07,2,0,0,2,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-07,20,5,0,25,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-07,8,0,0,8,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-07,27,0,0,27,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-07,14,0,9,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-07,12,0,0,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-07,18,3,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-07,10,0,2,8,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-07,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-07,32,0,0,32,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-07,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-07,4,0,0,4,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-07,11,1,6,6,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-07,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-07,10,0,8,2,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-07,42,0,0,42,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-08,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-08,38,0,0,38,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-08,9,0,3,6,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-08,12,0,5,7,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-08,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-08,35,0,0,35,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-08,14,0,0,14,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-08,17,5,5,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-08,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-08,21,0,0,21,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-08,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-08,14,0,1,13,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-08,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-08,2,0,2,0,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-08,25,0,6,19,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-08,8,0,0,8,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-08,27,0,7,20,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-08,5,5,0,10,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-08,12,0,0,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-08,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-08,8,0,0,8,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-08,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-08,32,0,0,32,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-08,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-08,4,0,0,4,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-08,6,0,0,6,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-08,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-08,2,0,0,2,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-08,42,0,5,37,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-09,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-09,38,10,0,48,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-09,6,0,0,6,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-09,7,9,7,9,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-09,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-09,35,3,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-09,14,0,0,14,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-09,17,0,0,17,5
+PR009,Keju,Roti Manis,Keju,2026-09-09,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-09,21,0,5,16,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-09,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-09,13,0,0,13,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-09,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-09,0,0,0,0,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-09,19,0,0,19,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-09,8,0,0,8,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-09,20,0,0,20,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-09,10,0,4,6,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-09,12,0,0,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-09,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-09,8,0,0,8,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-09,32,0,2,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-09,32,0,0,32,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-09,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-09,4,0,0,4,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-09,6,0,1,5,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-09,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-09,2,0,0,2,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-09,37,3,0,40,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-10,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-10,48,0,8,40,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-10,6,0,0,6,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-10,9,0,8,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-10,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-10,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-10,14,0,0,14,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-10,17,2,0,19,5
+PR009,Keju,Roti Manis,Keju,2026-09-10,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-10,16,0,2,14,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-10,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-10,13,1,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-10,17,0,0,17,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-10,0,7,6,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-10,19,0,10,9,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-10,8,0,8,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-10,20,0,0,20,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-10,6,0,0,6,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-10,12,0,0,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-10,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-10,8,0,0,8,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-10,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-10,32,0,6,26,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-10,16,0,0,16,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-10,4,0,0,4,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-10,5,0,0,5,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-10,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-10,2,0,2,0,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-10,40,0,0,40,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-11,6,0,0,6,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-11,40,0,0,40,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-11,6,0,0,6,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-11,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-11,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-11,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-11,14,0,0,14,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-11,19,0,1,18,5
+PR009,Keju,Roti Manis,Keju,2026-09-11,20,0,0,20,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-11,14,0,0,14,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-11,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-11,14,0,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-11,17,0,9,8,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-11,1,0,0,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-11,9,0,7,2,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-11,0,5,0,5,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-11,20,0,0,20,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-11,6,0,1,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-11,12,0,0,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-11,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-11,8,0,8,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-11,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-11,26,0,0,26,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-11,16,5,0,21,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-11,4,0,2,2,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-11,5,0,2,3,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-11,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-11,0,0,0,0,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-11,40,0,0,40,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-12,6,0,2,4,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-12,40,0,0,40,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-12,6,0,0,6,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-12,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-12,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-12,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-12,14,0,0,14,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-12,18,0,0,18,5
+PR009,Keju,Roti Manis,Keju,2026-09-12,20,2,0,22,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-12,14,0,0,14,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-12,43,0,0,43,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-12,14,0,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-12,8,3,6,5,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-12,1,0,0,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-12,2,2,0,4,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-12,5,0,0,5,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-12,20,0,0,20,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-12,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-12,12,0,0,12,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-12,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-12,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-12,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-12,26,0,0,26,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-12,21,0,0,21,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-12,2,3,0,5,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-12,3,0,0,3,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-12,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-12,0,13,2,11,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-12,40,0,2,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-13,4,8,0,12,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-13,40,0,0,40,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-13,6,0,0,6,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-13,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-13,15,0,0,15,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-13,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-13,14,9,0,23,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-13,18,10,0,28,5
+PR009,Keju,Roti Manis,Keju,2026-09-13,22,0,6,16,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-13,14,0,0,14,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-13,43,0,1,42,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-13,14,0,7,7,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-13,5,0,0,5,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-13,1,0,0,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-13,4,0,0,4,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-13,5,0,0,5,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-13,20,0,4,16,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-13,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-13,12,0,5,7,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-13,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-13,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-13,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-13,26,0,0,26,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-13,21,3,1,23,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-13,5,0,4,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-13,3,0,0,3,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-13,16,0,0,16,5
+AD003,Telur,Tambahan,Telur,2026-09-13,11,0,0,11,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-13,38,0,0,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-14,12,10,0,22,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-14,40,0,0,40,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-14,6,1,6,1,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-14,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-14,15,4,0,19,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-14,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-14,23,5,0,28,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-14,28,0,10,18,5
+PR009,Keju,Roti Manis,Keju,2026-09-14,16,0,6,10,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-14,14,0,8,6,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-14,42,0,0,42,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-14,7,0,0,7,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-14,5,0,0,5,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-14,1,0,0,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-14,4,0,0,4,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-14,5,0,0,5,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-14,16,0,0,16,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-14,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-14,7,0,0,7,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-14,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-14,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-14,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-14,26,0,0,26,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-14,23,0,0,23,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-14,1,0,0,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-14,3,2,0,5,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-14,16,0,1,15,5
+AD003,Telur,Tambahan,Telur,2026-09-14,11,0,0,11,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-14,38,0,0,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-15,22,0,6,16,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-15,40,7,0,47,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-15,1,0,0,1,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-15,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-15,19,0,0,19,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-15,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-15,28,0,2,26,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-15,18,9,0,27,5
+PR009,Keju,Roti Manis,Keju,2026-09-15,10,0,3,7,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-15,6,0,0,6,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-15,42,0,0,42,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-15,7,7,0,14,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-15,5,0,0,5,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-15,1,0,0,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-15,4,0,0,4,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-15,5,0,5,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-15,16,0,0,16,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-15,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-15,7,0,0,7,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-15,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-15,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-15,30,0,0,30,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-15,26,8,4,30,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-15,23,0,0,23,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-15,1,0,0,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-15,5,0,0,5,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-15,15,0,0,15,5
+AD003,Telur,Tambahan,Telur,2026-09-15,11,0,5,6,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-15,38,0,0,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-16,16,3,0,19,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-16,47,0,0,47,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-16,1,8,1,8,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-16,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-16,19,0,8,11,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-16,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-16,26,0,0,26,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-16,27,0,3,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-16,7,0,0,7,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-16,6,0,0,6,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-16,42,0,0,42,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-16,14,0,3,11,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-16,5,0,0,5,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-16,1,0,0,1,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-16,4,0,0,4,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-16,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-16,16,0,0,16,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-16,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-16,7,0,0,7,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-16,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-16,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-16,30,2,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-16,30,0,0,30,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-16,23,0,4,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-16,1,0,0,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-16,5,0,0,5,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-16,15,0,10,5,5
+AD003,Telur,Tambahan,Telur,2026-09-16,6,0,0,6,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-16,38,0,0,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-17,19,0,5,14,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-17,47,0,0,47,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-17,8,0,6,2,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-17,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-17,11,11,0,22,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-17,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-17,26,0,10,16,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-17,24,0,0,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-17,7,0,0,7,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-17,6,0,0,6,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-17,42,0,0,42,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-17,11,0,0,11,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-17,5,0,0,5,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-17,1,9,1,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-17,4,2,0,6,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-17,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-17,16,0,0,16,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-17,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-17,7,0,0,7,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-17,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-17,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-17,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-17,30,0,5,25,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-17,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-17,1,0,0,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-17,5,0,1,4,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-17,5,0,2,3,5
+AD003,Telur,Tambahan,Telur,2026-09-17,6,0,0,6,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-17,38,0,0,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-18,14,0,0,14,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-18,47,0,0,47,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-18,2,0,0,2,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-18,1,0,0,1,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-18,22,0,0,22,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-18,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-18,16,1,0,17,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-18,24,0,0,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-18,7,0,1,6,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-18,6,0,6,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-18,42,0,0,42,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-18,11,0,0,11,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-18,5,0,5,0,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-18,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-18,6,9,6,9,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-18,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-18,16,10,0,26,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-18,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-18,7,0,7,0,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-18,21,0,0,21,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-18,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-18,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-18,25,0,0,25,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-18,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-18,1,0,0,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-18,4,0,4,0,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-18,3,0,0,3,5
+AD003,Telur,Tambahan,Telur,2026-09-18,6,0,6,0,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-18,38,0,0,38,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-19,14,0,0,14,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-19,47,0,0,47,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-19,2,0,0,2,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-19,1,0,1,0,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-19,22,0,1,21,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-19,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-19,17,0,4,13,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-19,24,0,0,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-19,6,0,0,6,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-19,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-19,42,0,10,32,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-19,11,0,0,11,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-19,0,8,0,8,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-19,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-19,9,0,6,3,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-19,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-19,26,0,0,26,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-19,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-19,0,0,0,0,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-19,21,0,4,17,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-19,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-19,32,0,0,32,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-19,25,0,3,22,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-19,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-19,1,0,0,1,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-19,0,0,0,0,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-19,3,0,0,3,5
+AD003,Telur,Tambahan,Telur,2026-09-19,0,0,0,0,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-19,38,1,7,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-20,14,0,0,14,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-20,47,7,0,54,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-20,2,0,0,2,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-20,0,8,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-20,21,0,0,21,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-20,38,0,0,38,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-20,13,0,10,3,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-20,24,0,0,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-20,6,0,0,6,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-20,0,2,0,2,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-20,32,0,0,32,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-20,11,0,0,11,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-20,8,10,2,16,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-20,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-20,3,0,0,3,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-20,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-20,26,0,0,26,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-20,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-20,0,3,0,3,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-20,17,0,0,17,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-20,0,0,0,0,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-20,32,7,0,39,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-20,22,0,0,22,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-20,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-20,1,6,0,7,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-20,0,0,0,0,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-20,3,8,0,11,5
+AD003,Telur,Tambahan,Telur,2026-09-20,0,3,0,3,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-20,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-21,14,0,0,14,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-21,54,0,0,54,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-21,2,0,0,2,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-21,8,0,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-21,21,0,0,21,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-21,38,3,0,41,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-21,3,0,0,3,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-21,24,0,0,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-21,6,0,0,6,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-21,2,0,0,2,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-21,32,0,9,23,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-21,11,5,10,6,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-21,16,0,0,16,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-21,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-21,3,0,0,3,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-21,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-21,26,0,0,26,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-21,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-21,3,0,0,3,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-21,17,0,7,10,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-21,0,3,0,3,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-21,39,0,0,39,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-21,22,0,7,15,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-21,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-21,7,0,0,7,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-21,0,1,0,1,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-21,11,0,0,11,5
+AD003,Telur,Tambahan,Telur,2026-09-21,3,7,3,7,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-21,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-22,14,0,5,9,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-22,54,0,0,54,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-22,2,0,0,2,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-22,8,0,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-22,21,0,0,21,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-22,41,0,0,41,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-22,3,0,3,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-22,24,0,0,24,5
+PR009,Keju,Roti Manis,Keju,2026-09-22,6,0,0,6,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-22,2,0,0,2,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-22,23,0,0,23,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-22,6,0,0,6,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-22,16,0,9,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-22,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-22,3,0,0,3,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-22,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-22,26,0,0,26,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-22,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-22,3,0,0,3,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-22,10,3,0,13,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-22,3,0,0,3,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-22,39,0,0,39,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-22,15,0,0,15,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-22,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-22,7,10,17,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-22,1,0,0,1,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-22,11,0,4,7,5
+AD003,Telur,Tambahan,Telur,2026-09-22,7,6,0,13,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-22,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-23,9,10,0,19,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-23,54,0,0,54,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-23,2,0,2,0,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-23,8,0,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-23,21,0,3,18,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-23,41,0,2,39,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-23,0,6,0,6,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-23,24,8,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-23,6,0,3,3,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-23,2,0,2,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-23,23,0,0,23,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-23,6,0,0,6,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-23,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-23,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-23,3,0,0,3,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-23,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-23,26,0,0,26,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-23,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-23,3,0,3,0,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-23,13,0,0,13,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-23,3,0,0,3,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-23,39,0,0,39,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-23,15,0,0,15,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-23,19,0,0,19,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-23,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-23,1,0,0,1,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-23,7,0,7,0,5
+AD003,Telur,Tambahan,Telur,2026-09-23,13,0,0,13,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-23,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-24,19,0,0,19,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-24,54,0,0,54,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-24,0,0,0,0,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-24,8,0,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-24,18,0,0,18,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-24,39,0,0,39,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-24,6,0,0,6,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-24,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-24,3,0,3,0,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-24,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-24,23,0,0,23,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-24,6,6,0,12,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-24,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-24,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-24,3,10,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-24,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-24,26,5,1,30,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-24,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-24,0,0,0,0,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-24,13,0,9,4,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-24,3,0,0,3,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-24,39,0,8,31,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-24,15,0,0,15,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-24,19,0,10,9,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-24,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-24,1,0,0,1,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-24,0,2,0,2,5
+AD003,Telur,Tambahan,Telur,2026-09-24,13,0,0,13,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-24,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-25,19,0,0,19,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-25,54,0,7,47,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-25,0,4,0,4,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-25,8,0,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-25,18,7,0,25,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-25,39,0,0,39,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-25,6,0,6,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-25,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-25,0,0,0,0,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-25,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-25,23,0,0,23,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-25,12,0,6,6,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-25,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-25,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-25,13,0,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-25,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-25,30,0,17,13,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-25,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-25,0,0,0,0,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-25,4,0,4,0,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-25,3,0,0,3,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-25,31,0,0,31,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-25,15,0,0,15,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-25,9,0,7,2,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-25,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-25,1,6,0,7,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-25,2,0,0,2,5
+AD003,Telur,Tambahan,Telur,2026-09-25,13,0,0,13,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-25,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-26,19,4,6,17,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-26,47,5,4,48,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-26,4,0,0,4,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-26,8,0,0,8,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-26,25,0,4,21,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-26,39,0,0,39,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-26,0,0,0,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-26,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-26,0,0,0,0,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-26,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-26,23,0,0,23,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-26,6,0,0,6,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-26,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-26,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-26,13,0,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-26,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-26,13,8,3,18,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-26,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-26,0,0,0,0,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-26,0,0,0,0,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-26,3,0,0,3,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-26,31,6,0,37,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-26,15,2,0,17,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-26,2,0,0,2,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-26,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-26,7,0,0,7,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-26,2,0,2,0,5
+AD003,Telur,Tambahan,Telur,2026-09-26,13,0,8,5,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-26,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-27,17,0,0,17,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-27,48,1,0,49,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-27,4,0,0,4,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-27,8,0,8,0,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-27,21,0,0,21,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-27,39,0,9,30,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-27,0,0,0,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-27,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-27,0,0,0,0,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-27,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-27,23,0,3,20,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-27,6,0,6,0,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-27,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-27,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-27,13,0,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-27,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-27,18,0,0,18,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-27,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-27,0,6,0,6,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-27,0,0,0,0,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-27,3,8,0,11,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-27,37,0,0,37,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-27,17,0,12,5,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-27,2,0,0,2,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-27,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-27,7,0,3,4,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-27,0,0,0,0,5
+AD003,Telur,Tambahan,Telur,2026-09-27,5,0,0,5,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-27,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-28,17,0,0,17,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-28,49,0,1,48,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-28,4,0,0,4,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-28,0,0,0,0,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-28,21,0,3,18,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-28,30,4,6,28,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-28,0,0,0,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-28,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-28,0,0,0,0,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-28,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-28,20,0,0,20,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-28,0,0,0,0,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-28,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-28,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-28,13,0,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-28,0,0,0,0,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-28,18,0,10,8,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-28,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-28,6,0,0,6,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-28,0,4,0,4,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-28,11,0,0,11,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-28,37,0,1,36,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-28,5,0,0,5,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-28,2,4,2,4,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-28,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-28,4,0,0,4,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-28,0,6,0,6,5
+AD003,Telur,Tambahan,Telur,2026-09-28,5,0,0,5,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-28,32,0,0,32,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-29,17,0,5,12,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-29,48,0,0,48,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-29,4,0,0,4,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-29,0,0,0,0,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-29,18,0,0,18,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-29,28,0,6,22,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-29,0,0,0,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-29,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-29,0,4,0,4,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-29,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-29,20,1,0,21,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-29,0,0,0,0,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-29,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-29,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-29,13,0,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-29,0,18,0,18,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-29,8,0,0,8,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-29,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-29,6,0,0,6,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-29,4,0,0,4,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-29,11,0,0,11,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-29,36,0,0,36,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-29,5,0,0,5,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-29,4,0,0,4,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-29,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-29,4,0,0,4,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-29,6,0,1,5,5
+AD003,Telur,Tambahan,Telur,2026-09-29,5,0,3,2,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-29,32,0,8,24,5
+PR001,Lotus Biscoff,Roti Manis,Lotus Biscoff,2026-09-30,12,0,0,12,5
+PR002,Coklat Keju,Roti Manis,Coklat Keju,2026-09-30,48,0,0,48,5
+PR003,Coklat Kacang,Roti Manis,Coklat Kacang,2026-09-30,4,10,0,14,5
+PR004,Nutella Keju,Roti Manis,Nutella Keju,2026-09-30,0,0,0,0,5
+PR005,Silverqueen Keju,Roti Manis,Silverqueen Keju,2026-09-30,18,0,0,18,5
+PR006,Ovomaltine Keju,Roti Manis,Ovomaltine Keju,2026-09-30,22,0,0,22,5
+PR007,Srikaya,Roti Manis,Srikaya,2026-09-30,0,0,0,0,5
+PR008,Coklat Crunchy,Roti Manis,Coklat Crunchy,2026-09-30,32,0,0,32,5
+PR009,Keju,Roti Manis,Keju,2026-09-30,4,0,0,4,5
+PR010,Strawberry,Roti Manis,Strawberry,2026-09-30,0,0,0,0,5
+PR011,Blueberry,Roti Manis,Blueberry,2026-09-30,21,0,0,21,5
+PR012,Tiramisu,Roti Manis,Tiramisu,2026-09-30,0,0,0,0,5
+PR013,Greentea,Roti Manis,Greentea,2026-09-30,7,0,0,7,5
+PR014,Kacang (Peanut Butter),Roti Manis,Kacang (Peanut Butter),2026-09-30,9,0,0,9,5
+PR015,Nutella,Roti Manis,Nutella,2026-09-30,13,0,0,13,5
+PR016,Silverqueen,Roti Manis,Silverqueen,2026-09-30,18,0,0,18,5
+PR017,Ovomaltine,Roti Manis,Ovomaltine,2026-09-30,8,0,0,8,5
+PR018,Telur Mayo,Roti Asin,Telur Mayo,2026-09-30,5,0,0,5,5
+PR019,Sosis Mayo,Roti Asin,Sosis Mayo,2026-09-30,6,0,0,6,5
+PR020,Telur Sosis Mayo,Roti Asin,Telur Sosis Mayo,2026-09-30,4,0,0,4,5
+PR021,Beef Mayo,Roti Asin,Beef Mayo,2026-09-30,11,0,0,11,5
+PR022,Beef Sosis Mayo,Roti Asin,Beef Sosis Mayo,2026-09-30,36,0,0,36,5
+PR023,Telur Beef,Roti Asin,Telur Beef,2026-09-30,5,0,0,5,5
+PR024,Double Beef,Roti Asin,Double Beef,2026-09-30,4,0,0,4,5
+PR025,Telur Beef Sosis,Roti Asin,Telur Beef Sosis,2026-09-30,0,0,0,0,5
+AD001,Keju Slice,Tambahan,Keju Slice,2026-09-30,4,0,0,4,5
+AD002,Keju Parut,Tambahan,Keju Parut,2026-09-30,5,0,0,5,5
+AD003,Telur,Tambahan,Telur,2026-09-30,2,0,0,2,5
+AD004,Selai Lain,Tambahan,Selai Lain,2026-09-30,24,0,0,24,5

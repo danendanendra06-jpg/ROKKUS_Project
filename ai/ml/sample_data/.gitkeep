@@ -1,0 +1,5 @@
+# Direktori ini diisi oleh make_dummy_data.py dengan:
+# - stok_harian.csv
+#
+# ⚠️ DATA SINTETIS – bukan data asli ROKKUS
+# Jalankan: python src/make_dummy_data.py

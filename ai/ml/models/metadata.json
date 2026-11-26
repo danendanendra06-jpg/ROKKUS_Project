@@ -1,0 +1,34 @@
+{
+  "versi": "1.0.0",
+  "model_nama": "RandomForest",
+  "fitur": [
+    "stok_saat_ini",
+    "batas_minimum",
+    "barang_masuk",
+    "barang_keluar",
+    "avg_keluar_7h",
+    "days_of_cover",
+    "rasio_stok",
+    "total_masuk_7h",
+    "total_keluar_7h",
+    "kategori",
+    "rasa"
+  ],
+  "label_kelas": [
+    "aman",
+    "menipis",
+    "habis"
+  ],
+  "tanggal_latih": "2026-11-22T20:09:44.423697",
+  "metrik_test": {
+    "accuracy": 1.0,
+    "f1_macro": 1.0,
+    "f1_per_kelas": {
+      "aman": 1.0,
+      "menipis": 1.0,
+      "habis": 1.0
+    }
+  },
+  "config_path": "C:\\Users\\husai\\ROKKUS_Project\\ai\\ml\\configs\\config.yaml",
+  "data_path": "sample_data/stok_harian.csv"
+}

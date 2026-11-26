@@ -1,0 +1,5 @@
+# Direktori ini diisi oleh train.py dengan file:
+# - best_model.joblib
+# - metadata.json
+#
+# Jalankan: python src/train.py
