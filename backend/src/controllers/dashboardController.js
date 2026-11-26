@@ -151,7 +151,7 @@ const getDashboardData = async (req, res) => {
         ? axios.post(
             `${mlApiUrl}/ml/predict-status`,
             { items: mlPayloadItems },
-            { timeout: 5000 }
+            { timeout: 15000 }
           )
         : Promise.reject(
             new Error(
