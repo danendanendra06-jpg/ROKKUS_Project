@@ -1,0 +1,16 @@
+# Dependensi modul ROKKUS AI Inventory Assistant
+# Framework REST API
+fastapi>=0.110.0,<0.120.0
+uvicorn[standard]>=0.28.0,<0.35.0
+
+# Validasi data & konfigurasi environment
+pydantic>=2.6.0,<3.0.0
+pydantic-settings>=2.2.0,<3.0.0
+
+# Google Gen AI SDK Resmi
+google-genai>=0.1.0
+
+# Pengujian & Test Client
+pytest>=8.0.0,<9.0.0
+pytest-asyncio>=0.23.0,<0.26.0
+httpx>=0.27.0,<0.29.0
