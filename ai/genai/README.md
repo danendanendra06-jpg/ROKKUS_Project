@@ -286,22 +286,40 @@ Model ML memerlukan 11 fitur numerik dan kategorik per item:
 
 ---
 
-## 9. Hasil Pengujian Aktual & Keterbatasan Live Gemini API
+## 9. Hasil Pengujian Aktual, Evaluasi Model, & Keterbatasan Live Gemini API
 
 Pengujian otomatis dijalankan secara berkala menggunakan pytest:
 ```powershell
 pytest ai/genai/tests/ -v
 ```
 **Status Pengujian Terkini**:
-- **Total Tests**: **86 passed, 0 failed** (100% kelulusan).
+- **Total Tests**: **93 passed, 0 failed** (100% kelulusan).
 - **Cakupan Pengujian**:
   - `test_stock_rules.py`: Evaluasi status EMPTY, LOW, SAFE (14 tests).
   - `test_ds_adapter.py`: Validasi adapter dataset DS (7 tests).
   - `test_backend_contract.py`: Validasi kontrak payload backend & HTTP 422 (4 tests).
   - `test_gemini_integration.py`: Mock timeout, 429, dan 503 UNAVAILABLE (10 tests).
   - `test_guardrails.py` & `test_daily_summary_guardrails.py`: Keamanan prompt & deteksi halusinasi (14 tests).
-  - `test_ml_integration.py`: Kontrak 11 fitur ML & resilience fallback (9 tests).
+  - `test_ml_integration.py`: Kontrak 11 fitur ML, forecasting T+7, & resilience fallback (16 tests).
   - `test_endpoints.py`, `test_daily_summary.py`, `test_mock_inventory.py`, `test_mock_llm.py`, `test_prompt_builder.py` (28 tests).
+
+### Laporan Perbandingan & Evaluasi Model
+Dokumentasi lengkap mengenai analisis model LLM, komparasi pendekatan Generative AI vs Deterministic Fallback, serta status evaluasi model dapat dilihat pada:
+📄 [Laporan Perbandingan Model GenAI](reports/model_comparison.md)
+
+### Integrasi Google Gen AI SDK & Provider Mock
+Layanan GenAI mendukung dua mode provider yang dapat dikonfigurasi melalui `LLM_PROVIDER`:
+1. **`LLM_PROVIDER=gemini`**: Menggunakan Google Gen AI SDK resmi (`google-genai`) dengan model default `gemini-2.5-flash` secara asinkron.
+2. **`LLM_PROVIDER=mock`**: Menggunakan layanan mock terstruktur untuk kebutuhan automated test dan integrasi offline tanpa dependensi API key eksternal.
+
+### Mekanisme Fallback Deterministik
+Jika terjadi gangguan pada panggilan LLM (seperti timeout, kuota 429, server 503, atau format yang tidak memenuhi guardrail), sistem secara otomatis mengaktifkan *Deterministic Fallback Engine*. Respons tetap mengembalikan status `200 OK` dengan metadata `fallback_applied: true`, menjamin sistem inventaris UMKM tidak pernah terhenti.
+
+### Integrasi Nyata Backend, ML, dan GenAI
+Pada pengujian integrasi live multi-service (Tahap 9C.2), modul GenAI di port 8000 dan ML di port 8001 berhasil dipanggil secara paralel oleh Backend Express di port 5000:
+- Endpoint backend `GET /api/v1/dashboard` sukses mengembalikan status `ai.status: "available"`.
+- Klasifikasi status ML untuk 29 produk master dan ringkasan eksekutif GenAI berhasil tersaji dengan latensi end-to-end 2.24 detik.
+- Ringkasan harian berhasil disimpan secara atomik ke tabel PostgreSQL `ai_summaries`.
 
 ### Keterbatasan Live Gemini API
 Pada pengujian live request menggunakan `google-genai` SDK dan model `gemini-2.5-flash`, server Google AI Studio sempat mengalami kendala kapasitas (`503 UNAVAILABLE: The model is overloaded`). 
