@@ -65,6 +65,22 @@ class TestGeminiIntegration(unittest.TestCase):
         )
         self.assertEqual(service.provider_name, "gemini-2.0-flash")
 
+    def test_gemini_init_configures_http_options_and_retry(self):
+        """Memastikan inisialisasi default mengonfigurasi HttpOptions (timeout_ms) dan retry_options (attempts=1)."""
+        with patch("src.services.gemini_summary_llm.genai.Client") as mock_client_cls:
+            GeminiSummaryLLMService(
+                api_key="test-key",
+                timeout_seconds=8.0,
+            )
+            mock_client_cls.assert_called_once()
+            call_kwargs = mock_client_cls.call_args.kwargs
+            self.assertEqual(call_kwargs.get("api_key"), "test-key")
+            http_opts = call_kwargs.get("http_options")
+            self.assertIsNotNone(http_opts)
+            self.assertEqual(http_opts.timeout, 8000)
+            self.assertIsNotNone(http_opts.retry_options)
+            self.assertEqual(http_opts.retry_options.attempts, 1)
+
     def test_gemini_async_success_call_with_mock_client(self):
         """Memastikan pemanggilan asinkron yang berhasil lolos guardrail dan metadata akurat."""
         valid_gemini_json = json.dumps({

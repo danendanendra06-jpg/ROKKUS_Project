@@ -57,7 +57,26 @@ class GeminiSummaryLLMService(BaseSummaryLLMService):
                 raise ValueError(
                     "GEMINI_API_KEY wajib dikonfigurasi di environment (.env) untuk menggunakan Gemini."
                 )
-            self.client = genai.Client(api_key=self.api_key)
+
+            # Konfigurasi batas waktu HTTP dan pembatasan retry bawaan SDK
+            http_options = None
+            if hasattr(types, "HttpOptions"):
+                retry_options = None
+                if hasattr(types, "HttpRetryOptions"):
+                    # Nonaktifkan retry loop bawaan (cukup 1 percobaan) agar 503/429
+                    # langsung memicu fallback deterministik tanpa memakan waktu puluhan detik
+                    retry_options = types.HttpRetryOptions(attempts=1)
+
+                timeout_ms = max(1000, int(self.timeout_seconds * 1000))
+                http_options = types.HttpOptions(
+                    timeout=timeout_ms,
+                    retry_options=retry_options,
+                )
+
+            if http_options is not None:
+                self.client = genai.Client(api_key=self.api_key, http_options=http_options)
+            else:
+                self.client = genai.Client(api_key=self.api_key)
 
     @property
     def provider_name(self) -> str:
